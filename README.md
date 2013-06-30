@@ -28,7 +28,7 @@ The following functions are currently supported:
 * <b>fopen / popen</b><br>
     File modes
 
-* <b>mysql_connect/mysqli_connect</b><br>
+* <b>mysql_connect / mysqli_connect</b><br>
     Currently only &quot;localhost&quot; for host parameter<br><br></li>
 
 <b>Important:</b><br>
