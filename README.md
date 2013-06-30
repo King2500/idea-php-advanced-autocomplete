@@ -34,4 +34,4 @@ The following functions are currently supported:
 Important:
 You have to start a string literal and press <i>Ctrl</i> + <i>Space</i> to activate the completion popup
 
-If you have further suggestions/ideas, just send me an e-mail.
+If you have further suggestions/ideas, just send me an e-mail to <i>phpstorm at king2500.net</i>.
