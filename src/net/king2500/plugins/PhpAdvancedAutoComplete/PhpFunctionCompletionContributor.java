@@ -18,13 +18,6 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
         PsiElementPattern.Capture<PsiElement> stringInFuncCall = PlatformPatterns.psiElement(PhpElementTypes.STRING)
             .withParent(PlatformPatterns.psiElement(PhpElementTypes.PARAMETER_LIST)
                     .withParent(PlatformPatterns.psiElement(PhpElementTypes.FUNCTION_CALL)
-                    /*.withText(PlatformPatterns.or(
-                            PlatformPatterns.string().startsWith("ini_get"),
-                            PlatformPatterns.string().startsWith("ini_set"),
-                            PlatformPatterns.string().startsWith("ini_restore"),
-                            PlatformPatterns.string().startsWith("get_cfg_var")
-                        )
-                    )*/
                     )
             );
         extend(CompletionType.BASIC,
