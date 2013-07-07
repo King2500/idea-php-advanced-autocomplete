@@ -2,7 +2,7 @@
 
 Plugin URL: http://plugins.jetbrains.com/plugin/7276?pr=phpStorm
 
-Adds auto-completion support for various built-in PHP functions, where parameter is a string literal.
+Adds auto-completion support for various built-in PHP functions and methods, where parameter is a string literal.
 
 
 The following functions are currently supported:
@@ -28,8 +28,17 @@ The following functions are currently supported:
 * <b>fopen / popen</b><br>
     File modes
 
-* <b>mysql_connect / mysqli_connect</b><br>
-    Currently only &quot;localhost&quot; for host parameter<br><br></li>
+* <b>mysql_connect/mysqli_connect/mysqli/PDO</b><br>
+    Hostnames, database names and usernames from data sources defined in project
+
+* <b>mysql_select_db/mysqli_select_db/mysqli::select_db</b><br>
+    Database names from data sources defined in project
+
+* <b>mysqli_change_user/mysqli::change_user</b><br>
+    Usernames and database names from data sources defined in project
+
+* <b>mysql_set_charset/mysqli_set_charset/mysqli::set_charset</b><br>
+    Supported charsets for MySQL
 
 <b>Important:</b><br>
 You have to start a string literal and press <i>Ctrl</i> + <i>Space</i> to activate the completion popup
