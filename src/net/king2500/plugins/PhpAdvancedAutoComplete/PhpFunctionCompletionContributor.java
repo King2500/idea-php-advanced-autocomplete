@@ -11,6 +11,7 @@ import com.jetbrains.php.lang.PhpLanguage;
 import com.jetbrains.php.lang.lexer.PhpTokenTypes;
 import com.jetbrains.php.lang.parser.PhpElementTypes;
 import net.king2500.plugins.PhpAdvancedAutoComplete.utils.DbHelper;
+import net.king2500.plugins.PhpAdvancedAutoComplete.utils.FileHelper;
 import net.king2500.plugins.PhpAdvancedAutoComplete.utils.PhpHelper;
 import org.jetbrains.annotations.NotNull;
 
@@ -54,7 +55,7 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                     boolean resultBold = false;
                     boolean resultCaseSensitivity = true;
 
-                    int paramIndex = getParameterIndex(parameters.getPosition().getParent());
+                    int paramIndex = PhpHelper.getParameterIndex(parameters.getPosition().getParent());
 
                     if(Arrays.asList(PhpCompletionTokens.iniFuncs).contains(funcName) && paramIndex == 0) {
                         resultElements = PhpCompletionTokens.iniElements;
@@ -97,7 +98,13 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                         resultElements = PhpCompletionTokens.phpExtensionElements;
                     }
 
-                    if(Arrays.asList(PhpCompletionTokens.fileModeFuncs).contains(funcName) && paramIndex == 1) {
+/*
+                    if(Arrays.asList(PhpCompletionTokens.fileFuncs).contains(funcName + ":" + paramIndex)) {
+                        resultElements = FileHelper.getRelativeFiles(parameters.getPosition().getContainingFile().getOriginalFile());
+                    }
+*/
+
+                    if(Arrays.asList(PhpCompletionTokens.fileModeFuncs).contains(funcName + ":" + paramIndex)) {
                         resultElements = PhpCompletionTokens.fileModeElements;
                         resultInfos = PhpCompletionTokens.fileModeInfos;
                         resultBold = true;
@@ -127,6 +134,10 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                         resultElements = PhpCompletionTokens.mbStringLanguageElements;
                     }
 
+                    if(Arrays.asList(PhpCompletionTokens.obHandlerFuncs).contains(funcName) && paramIndex == 0) {
+                        resultElements = PhpCompletionTokens.obHandlerElements;
+                    }
+
                     if(Arrays.asList(PhpCompletionTokens.httpHeaderResponseFuncs).contains(funcName) && paramIndex == 0) {
                         String stringLiteral = parameters.getPosition().getText();
                         String stringPrefix = stringLiteral.substring(1, stringLiteral.indexOf("IntellijIdeaRulezzz"));
@@ -151,7 +162,8 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                             resultElements = PhpCompletionTokens.isoLanguageCodes;
                         }
                         else if(stringPrefix.startsWith("Content-Location:") || stringPrefix.startsWith("Location:")) {
-                            // TODO: possible locations (.php or .html)
+                            resultElements = prefixArray("/", FileHelper.getProjectFiles(project));
+                            resultElements = concatArrays(new String[] { "/" }, resultElements);
                         }
                         else if(stringPrefix.startsWith("Content-Disposition:")) {
                             resultElements = PhpCompletionTokens.httpContentDispositionTokens;
@@ -226,25 +238,10 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                         if(resultInfos.length > 0)
                             builder = builder.withTypeText(resultInfos[i]);
 
+                        //LookupElement element = builder.withAutoCompletionPolicy(AutoCompletionPolicy.ALWAYS_AUTOCOMPLETE);
+                        //resultSet.addElement(element);
                         resultSet.addElement(builder);
                     }
-                }
-
-                private int getParameterIndex(PsiElement paramElement) {
-                    int index = 0;
-                    PsiElement element = paramElement;
-
-                    while(element != null && element.getPrevSibling() != null) {
-                        String elementClass = element.getPrevSibling().getClass().getSimpleName();
-
-                        if(elementClass.equals("LeafPsiElement")) {
-                            index++;
-                        }
-
-                        element = element.getPrevSibling();
-                    }
-
-                    return index;
                 }
 
                 private String[] concatArrays(String[] A, String[] B) {
@@ -263,8 +260,6 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                     }
                     return B;
                 }
-
-
             }
         );
     }

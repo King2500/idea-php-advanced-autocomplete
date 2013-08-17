@@ -1,6 +1,11 @@
 Changelog
 =========
 
+### 1.0.2
+* Added support for completion and file reference (Ctrl+Click, Rename..) for various file and folder related functions and methods
+* Added file mode completion support for SplFileInfo::openFile
+* Added basic file url completion support for header('Location: ... and header('Content-Location: ...
+
 ### 1.0.1
 * Added infos for date format characters
 * Added infos for fopen/popen file modes

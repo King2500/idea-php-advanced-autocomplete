@@ -249,11 +249,14 @@ public class PhpCompletionTokens {
     public static String[] mbStringLanguageFuncs = { "mb_language" };
     public static String[] mbStringLanguageElements = { "uni", "en", "English", "ja", "Japanese" };
 
+    public static String[] obHandlerFuncs = { "ob_start" };
+    public static String[] obHandlerElements = { "ob_gzhandler" };
+
     public static String[] dateFormatFuncs = { "date" };
     public static String[] dateFormatTokens = { "d", "D", "j", "jS", "l", "N", "S", "w", "z", "W", "F", "m", "M", "n", "t", "L", "o", "Y", "y", "a", "A", "B", "g", "G", "h", "H", "i", "s", "u", "e", "I", "O", "P", "T", "Z", "c", "r", "U", "H:i", "H:i:s", "m.d.y", "m.d.Y", "m/d/Y", "d.m.y", "d.m.Y", "d.m.Y H:i:s", "Ymd", "Y-m-d", "Y-m-d H:i:s", "Y/m/d H:i:s", "F j, Y, g:i a" };
     public static String[] dateFormatInfos = { "Day of month (01..31)", "Weekday (Mon..Sun)", "Day of month (1..31)", "Day of month (1st..31th)", "Weekday (Monday..Sunday)", "Weekday (1..7)", "Day of month suffix (st, nd, rd, th)", "Weekday (0..6)", "Day of year (0..365)", "Week of year (1..52)", "Month (January..December)", "Month (01..12)", "Month (Jan..Dec)", "Month (1..12)", "Number of days in month (28..31)", "Leap year (1=yes, 0=no)", "Year in ISO-8601 (ex. 2013)", "Year (ex. 2013)", "Year (ex. 13)", "am or pm", "AM or PM", "Swatch Internet time (000..999)", "Hour (1..12)", "Hour (0..23)", "Hour (01..12)", "Hour (00..23)", "Minutes (00..59)", "Seconds (00..59)", "Microseconds (000000..999999)", "Timezone identifier (UTC, GMT, ...)", "Daylight Saving Time (1=yes, 0=no)", "GMT in hours (ex. +0200)", "GMT with colon (ex. +02:00)", "Timezone abbreviation (EST, MDT, ...)", "Timezone offset in seconds (-43200..50400)", "ISO 8601 formatted date", "RFC 2822 formatted date", "Seconds since Jan 1st, 1970", "Hour and minutes", "Hour, minutes and seconds", "Month, day, year", "Month, day, year", "Month, day, year", "Day, month, year", "Day, month, year", "Day, month, year, hour, minutes, seconds", "Year, month, day", "Year, month, day", "Year, month, day, hour, minutes, seconds", "Year, month, day, hour, minutes, seconds", "Month, day, year, hour, minutes, am/pm" };
 
-    public static String[] fileModeFuncs = { "fopen", "popen" };
+    public static String[] fileModeFuncs = { "fopen:1", "popen:1", "SplFileInfo::openFile:0" };
     public static String[] fileModeElements = { "r", "r+", "w", "w+", "a", "a+", "x", "x+", "c", "c+" };
     public static String[] fileModeInfos = {
             "Read from beginning", "Read/write from beginning",
@@ -262,4 +265,6 @@ public class PhpCompletionTokens {
             "Create/write from beginning (fails if file exists)", "Create/write/read from beginning (fails if file exists)",
             "Create/write from beginning", "Create/write/read from beginning"
     };
+
+    public static String[] fileFuncs = { "basename:0", "chgrp:0", "chmod:0", "chown:0", "clearstatcache:1", "copy:0", "copy:1", "dirname:0", "file_exists:0", "file_get_contents:0:f", "file_put_contents:0:f", "file:0:f", "fileatime:0", "filectime:0", "filegroup:0", "fileinode:0", "filemtime:0", "fileowner:0", "fileperms:0", "filesize:0:f", "filetype:0:f", "fopen:0:f", "is_dir:0:d", "is_executable:0:f", "is_file:0:f", "is_link:0", "is_readable:0:f", "is_writable:0:f", "is_writeable:0:f", "lchgrp:0", "lchown:0", "link:0", "link:1", "linkinfo:0", "lstat:0", "move_uploaded_file:1:f", "parse_ini_file:0:f", "pathinfo:0", "readfile:0:f", "readlink:0", "realpath:0", "rename:0", "rename:1", "stat:0", "symlink:0", "symlink:1", "touch:0", "unlink:0:f", "dir:0:d", "chdir:0:d", "chroot:0:d", "mkdir:0:d", "rmdir:0:d", "opendir:0:d", "scandir:0:d", "stream_resolve_include_path:0", "SplFileInfo::__construct:0", "SplFileObject::__construct:0", "DirectoryIterator::__construct:0:d", "FilesystemIterator::__construct:0:d", "RecursiveDirectoryIterator::__construct:0:d", "ZipArchive::open:0:f", "ZipArchive::addFile:0:f", "DOMDocument::load:0:f", "simplexml_load_file:0:f", "SimpleXMLElement::asXML:0:f", "SimpleXMLElement::saveXML:0:f", "XMLWriter::openURI:0:f", "xmlwriter_open_uri:0:f", "XMLReader::open:0:f", "imagecreatefromjpeg:0:f", "ImageCreateFromJpeg:0:f", "imagecreatefrompng:0:f", "ImageCreateFromPng:0:f", "imagecreatefromgif:0:f", "ImageCreateFromGif:0:f" };
 }

@@ -1,7 +1,7 @@
 <idea-plugin version="2">
   <id>net.king2500.plugins.PhpAdvancedAutoComplete</id>
   <name>PHP Advanced AutoComplete</name>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
   <vendor email="phpstorm@king2500.net" url="https://github.com/King2500/PhpAdvancedAutoComplete">Thomas Schulz</vendor>
 
   <description><![CDATA[
@@ -9,7 +9,9 @@
       <p>The following functions are currently supported:</p>
       <ul>
         <li><b>header/header_remove</b><br>
-            HTTP response headers, status codes, charsets, mime-types, and much more<br><br></li>
+            HTTP response headers, status codes, charsets, mime-types, locations, and much more<br><br></li>
+        <li><b>File and folder related functions and methods (fopen, file_get_contents, dir...)</b><br>
+            Files and/or folders paths relative to the current file (completion and reference)<br><br></li>
         <li><b>date</b><br>
             Format characters and common format strings<br><br></li>
         <li><b>htmlentities/htmlspecialchars</b><br>
@@ -20,7 +22,7 @@
             Known INI variable names<br><br></li>
         <li><b>extension_loaded</b><br>
             Known PHP extensions<br><br></li>
-        <li><b>fopen/popen</b><br>
+        <li><b>fopen/popen/SplFileInfo::openFile</b><br>
             File modes<br><br></li>
         <li><b>mysql_connect/mysqli_connect/mysqli/PDO</b><br>
             Hostnames, database names and usernames from data sources defined in project<br><br></li>
@@ -38,6 +40,13 @@
       ]]></description>
 
   <change-notes><![CDATA[
+
+<h2>1.0.2</h2>
+<ul>
+    <li>Added support for completion and file reference (Ctrl+Click, Rename..) for various file and folder related functions and methods</li>
+    <li>Added file mode completion support for SplFileInfo::openFile</li>
+    <li>Added basic file url completion support for header('Location: ... and header('Content-Location: ...</li>
+</ul>
 
 <h2>1.0.1</h2>
 <ul>
@@ -78,6 +87,7 @@
   </actions>
 
   <extensions defaultExtensionNs="com.intellij">
+      <psi.referenceContributor implementation="net.king2500.plugins.PhpAdvancedAutoComplete.PhpFileReferenceContributor"/>
       <completion.contributor language="PHP" implementationClass="net.king2500.plugins.PhpAdvancedAutoComplete.PhpFunctionCompletionContributor"/>
   </extensions>
 </idea-plugin>

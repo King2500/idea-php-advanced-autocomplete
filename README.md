@@ -8,7 +8,10 @@ Adds auto-completion support for various built-in PHP functions and methods, whe
 The following functions are currently supported:
 
 * <b>header / header_remove</b><br>
-    HTTP response headers, status codes, charsets, mime-types, and much more
+    HTTP response headers, status codes, charsets, mime-types, locations, and much more
+
+* <b>File and folder related functions and methods (fopen, file_get_contents, dir...)</b><br>
+    Files and/or folders paths relative to the current file (completion and reference)
 
 * <b>date</b><br>
     Format characters and common format strings
@@ -25,7 +28,7 @@ The following functions are currently supported:
 * <b>extension_loaded</b><br>
     Known PHP extensions
 
-* <b>fopen / popen</b><br>
+* <b>fopen / popen / SplFileInfo::openFile</b><br>
     File modes
 
 * <b>mysql_connect/mysqli_connect/mysqli/PDO</b><br>

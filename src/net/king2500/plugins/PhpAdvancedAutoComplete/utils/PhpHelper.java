@@ -11,6 +11,24 @@ import com.jetbrains.php.lang.psi.elements.*;
  * Time: 21:08
  */
 public class PhpHelper {
+
+    public static int getParameterIndex(PsiElement paramElement) {
+        int index = 0;
+        PsiElement element = paramElement;
+
+        while(element != null && element.getPrevSibling() != null) {
+            String elementClass = element.getPrevSibling().getClass().getSimpleName();
+
+            if(elementClass.equals("LeafPsiElement")) {
+                index++;
+            }
+
+            element = element.getPrevSibling();
+        }
+
+        return index;
+    }
+
     public static String getCanonicalFuncName(PsiElement caller) {
         if(caller.getReference() instanceof MethodReference) {
             return getMethodName(caller);
