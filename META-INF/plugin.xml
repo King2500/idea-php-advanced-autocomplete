@@ -1,7 +1,7 @@
 <idea-plugin version="2">
   <id>net.king2500.plugins.PhpAdvancedAutoComplete</id>
   <name>PHP Advanced AutoComplete</name>
-  <version>1.0.2</version>
+  <version>1.0.3</version>
   <vendor email="phpstorm@king2500.net" url="https://github.com/King2500/PhpAdvancedAutoComplete">Thomas Schulz</vendor>
 
   <description><![CDATA[
@@ -37,9 +37,16 @@
       <p><b>Important:</b> You have to start a string literal and press <i>Ctrl</i> + <i>Space</i> to activate the completion popup</p>
 
       <p>If you have further suggestions/ideas, just send me an e-mail.</p>
+      <p><a href="http://plugins.jetbrains.com/plugin/writeComment?pr=&pluginId=7276">Commend and rate this plugin here</a></p>
       ]]></description>
 
   <change-notes><![CDATA[
+
+<h2>1.0.3</h2>
+<ul>
+    <li>Added support for date and time format characters for date_format, DateTime::format, DateTime::createFromFormat,
+    date_create_from_format, strftime, gmstrftime and strptime</li>
+</ul>
 
 <h2>1.0.2</h2>
 <ul>

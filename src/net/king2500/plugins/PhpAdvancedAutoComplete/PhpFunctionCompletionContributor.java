@@ -110,9 +110,15 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                         resultBold = true;
                     }
 
-                    if(Arrays.asList(PhpCompletionTokens.dateFormatFuncs).contains(funcName) && paramIndex == 0) {
+                    if(Arrays.asList(PhpCompletionTokens.dateFormatFuncs).contains(funcName + ":" + paramIndex)) {
                         resultElements = PhpCompletionTokens.dateFormatTokens;
                         resultInfos = PhpCompletionTokens.dateFormatInfos;
+                        resultBold = true;
+                    }
+
+                    if(Arrays.asList(PhpCompletionTokens.timeFormatFuncs).contains(funcName + ":" + paramIndex)) {
+                        resultElements = PhpCompletionTokens.timeFormatTokens;
+                        resultInfos = PhpCompletionTokens.timeFormatInfos;
                         resultBold = true;
                     }
 
