@@ -19,6 +19,7 @@ import java.util.Arrays;
 
 public class PhpFunctionCompletionContributor extends CompletionContributor {
     public PhpFunctionCompletionContributor() {
+        //noinspection unchecked
         PsiElementPattern.Capture<PsiElement> stringInFuncCall = PlatformPatterns.psiElement(PhpElementTypes.STRING)
             .withParent(PlatformPatterns.psiElement(PhpElementTypes.PARAMETER_LIST)
                     .withParent(
@@ -29,6 +30,7 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                             )
                     )
             );
+        //noinspection unchecked
         extend(CompletionType.BASIC,
             PlatformPatterns.or(
                     PlatformPatterns
@@ -56,6 +58,10 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                     boolean resultCaseSensitivity = true;
 
                     int paramIndex = PhpHelper.getParameterIndex(parameters.getPosition().getParent());
+
+                    if(funcName == null) {
+                        return;
+                    }
 
                     if(Arrays.asList(PhpCompletionTokens.iniFuncs).contains(funcName) && paramIndex == 0) {
                         resultElements = PhpCompletionTokens.iniElements;
@@ -98,11 +104,9 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                         resultElements = PhpCompletionTokens.phpExtensionElements;
                     }
 
-/*
-                    if(Arrays.asList(PhpCompletionTokens.fileFuncs).contains(funcName + ":" + paramIndex)) {
-                        resultElements = FileHelper.getRelativeFiles(parameters.getPosition().getContainingFile().getOriginalFile());
-                    }
-*/
+//                    if(Arrays.asList(PhpCompletionTokens.fileFuncs).contains(funcName + ":" + paramIndex)) {
+//                        resultElements = FileHelper.getRelativeFiles(parameters.getPosition().getContainingFile().getOriginalFile());
+//                    }
 
                     if(Arrays.asList(PhpCompletionTokens.fileModeFuncs).contains(funcName + ":" + paramIndex)) {
                         resultElements = PhpCompletionTokens.fileModeElements;
@@ -146,7 +150,11 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
 
                     if(Arrays.asList(PhpCompletionTokens.httpHeaderResponseFuncs).contains(funcName) && paramIndex == 0) {
                         String stringLiteral = parameters.getPosition().getText();
-                        String stringPrefix = stringLiteral.substring(1, stringLiteral.indexOf("IntellijIdeaRulezzz"));
+                        String stringPrefix = "";
+
+                        if(stringLiteral.contains("IntellijIdeaRulezzz")) {
+                            stringPrefix = stringLiteral.substring(0, stringLiteral.indexOf("IntellijIdeaRulezzz"));
+                        }
 
                         if(stringPrefix.startsWith("Allow:")) {
                             resultElements = PhpCompletionTokens.httpMethods;
