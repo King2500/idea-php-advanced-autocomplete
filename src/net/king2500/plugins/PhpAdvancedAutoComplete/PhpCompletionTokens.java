@@ -260,6 +260,16 @@ public class PhpCompletionTokens {
     public static String[] timeFormatTokens = { "%a", "%A", "%d", "%e", "%j", "%u", "%w", "%U", "%V", "%W", "%h", "%b", "%B", "%m", "%C", "%g", "%G", "%y", "%Y", "%H", "%k", "%I", "%l", "%M", "%p", "%P", "%r", "%R", "%S", "%T", "%X", "%z", "%Z", "%c", "%D", "%F", "%s", "%x", "%n", "%t", "%%", "%d.%m.%y", "%d.%m.%Y", "%d.%m.%Y %H:%M:%S", "%H:%M", "%H:%M:%S", "%m.%d.%y", "%m.%d.%Y", "%m/%d/%Y", "%Y%m%d", "%Y-%m-%d", "%Y-%m-%d %H:%M:%S", "%Y/%m/%d %H:%M:%S" };
     public static String[] timeFormatInfos = { "Weekday (Mon..Sun)", "Weekday (Monday..Sunday)", "Day of month (01..31)", "Day of month (1..31)", "Day of year (001..366)", "Weekday (1..7 =Mon..Sun)", "Weekday (0..6 =Sun..Sat)", "Full week number (1..52)", "Week of year (01..53)", "Week of year (1..53)", "Month (Jan..Dec)", "Month (Jan..Dec)", "Month (January..December)", "Month (01..12)", "Century (ex. 20)", "Year in ISO-8601 (ex. 14)", "Year in ISO-8601 (ex. 2014)", "Year (ex. 14)", "Year (ex. 2014)", "Hour (00..23)", "Hour (0..23)", "Hour (01..12)", "Hour (1..12)", "Minutes (00..59)", "AM or PM", "am or pm", "hour, minutes, seconds, am/pm", "hour and minutes", "Seconds (00..59)", "Hour, minutes and seconds", "Locale based time", "Timezone offset (ex. -0500)", "Timezone abbreviation (EST, MDT, ...)", "Locale based date and time", "Month, day, year", "Year, month, day", "Unix timestamp", "Locale based date", "Newline character", "Tab character", "Percentage character", "Day, month, year", "Day, month, year", "Day, month, year, hour, minutes, seconds", "Hour and minutes", "Hour, minutes and seconds", "Month, day, year", "Month, day, year", "Month, day, year", "Year, month, day", "Year, month, day", "Year, month, day, hour, minutes, seconds", "Year, month, day, hour, minutes, seconds" };
 
+    public static String[] dateTimeParserFuncs = { "strtotime:0", "DateTime::__construct:0", "DateTime::modify:0", "date_create:0", "date_modify:1" };
+    public static String[] dateTimeRelativeFormats = { "yesterday", "midnight", "today", "now", "noon", "tomorrow", "back of ", "front of ", "first ", "last ", "first day of ", "last day of " };
+    public static String dateTimeAgo = "ago";
+    public static String[] dateTimeDayNames = { "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sun", "mon", "tue", "wed", "thu", "fri", "sat" };
+    public static String[] dateTimeDayTexts = { "weekday", "weekdays" };
+    public static String[] dateTimeOrdinal = { "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth", "eleventh", "twelfth", "next", "last", "previous", "this" };
+    public static String[] dateTimeRelTexts = { "next", "last", "previous", "this" };
+    public static String[] dateTimeUnits = { "sec", "second", "min", "minute", "hour", "day", "fortnight", "forthnight", "month", "year", "week" };
+    public static String[] dateTimeUnits2 = { "secs", "seconds", "mins", "minutes", "hours", "days", "fortnights", "forthnights", "months", "years", "weeks" };
+
     public static String[] fileModeFuncs = { "fopen:1", "popen:1", "SplFileInfo::openFile:0" };
     public static String[] fileModeElements = { "r", "r+", "w", "w+", "a", "a+", "x", "x+", "c", "c+" };
     public static String[] fileModeInfos = {
