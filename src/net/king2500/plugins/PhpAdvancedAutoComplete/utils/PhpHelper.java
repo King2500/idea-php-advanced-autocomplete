@@ -103,6 +103,9 @@ public class PhpHelper {
 
         Method method = (Method)resolvedReference;
 
+        if(method.getName() == null)
+            return null;
+
         if(!method.getName().equals("__construct"))
             return null;
 

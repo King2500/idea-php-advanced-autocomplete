@@ -18,6 +18,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 
 public class PhpFunctionCompletionContributor extends CompletionContributor {
+    private static final String CARET_MAGIC_IDENTIFIER = "IntellijIdeaRulezzz";
+
     public PhpFunctionCompletionContributor() {
         //noinspection unchecked
         PsiElementPattern.Capture<PsiElement> stringInFuncCall = PlatformPatterns.psiElement(PhpElementTypes.STRING)
@@ -63,11 +65,11 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                         return;
                     }
 
-                    if(Arrays.asList(PhpCompletionTokens.iniFuncs).contains(funcName) && paramIndex == 0) {
+                    if(methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.iniFuncs, 0)) {
                         resultElements = PhpCompletionTokens.iniElements;
                     }
 
-                    if(Arrays.asList(PhpCompletionTokens.dbConnectFuncs).contains(funcName) && paramIndex == 0) {
+                    if(methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.dbConnectFuncs, 0)) {
                         if(funcName.startsWith("PDO::")) {
                             resultElements = DbHelper.getPdoDSNs(project, "mysql://");
 
@@ -87,73 +89,73 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                         }
                     }
 
-                    if(Arrays.asList(PhpCompletionTokens.dbConnectUserFuncs).contains(funcName + ":" + paramIndex)) {
+                    if(methodMatches(funcName, paramIndex, PhpCompletionTokens.dbConnectUserFuncs)) {
                         resultElements = DbHelper.getDbUsers(project, "mysql://");
                     }
 
-                    if(Arrays.asList(PhpCompletionTokens.dbCharSetFuncs).contains(funcName + ":" + paramIndex)) {
+                    if(methodMatches(funcName, paramIndex, PhpCompletionTokens.dbCharSetFuncs)) {
                         resultElements = PhpCompletionTokens.dbCharSets;
                         resultInfos = PhpCompletionTokens.dbCharSetsInfos;
                     }
 
-                    if(Arrays.asList(PhpCompletionTokens.dbSelectDbFuncs).contains(funcName + ":" + paramIndex)) {
+                    if(methodMatches(funcName, paramIndex, PhpCompletionTokens.dbSelectDbFuncs)) {
                         resultElements = DbHelper.getDbNames(project, "mysql://");
                     }
 
-                    if(Arrays.asList(PhpCompletionTokens.phpExtensionFuncs).contains(funcName) && paramIndex == 0) {
+                    if(methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.phpExtensionFuncs, 0)) {
                         resultElements = PhpCompletionTokens.phpExtensionElements;
                     }
 
-//                    if(Arrays.asList(PhpCompletionTokens.fileFuncs).contains(funcName + ":" + paramIndex)) {
+//                    if(methodMatches(funcName, paramIndex, PhpCompletionTokens.fileFuncs)) {
 //                        resultElements = FileHelper.getRelativeFiles(parameters.getPosition().getContainingFile().getOriginalFile());
 //                    }
 
-                    if(Arrays.asList(PhpCompletionTokens.fileModeFuncs).contains(funcName + ":" + paramIndex)) {
+                    if (methodMatches(funcName, paramIndex, PhpCompletionTokens.fileModeFuncs)) {
                         resultElements = PhpCompletionTokens.fileModeElements;
                         resultInfos = PhpCompletionTokens.fileModeInfos;
                         resultBold = true;
                     }
 
-                    if(Arrays.asList(PhpCompletionTokens.dateFormatFuncs).contains(funcName + ":" + paramIndex)) {
+                    if (methodMatches(funcName, paramIndex, PhpCompletionTokens.dateFormatFuncs)) {
                         resultElements = PhpCompletionTokens.dateFormatTokens;
                         resultInfos = PhpCompletionTokens.dateFormatInfos;
                         resultBold = true;
                     }
 
-                    if(Arrays.asList(PhpCompletionTokens.timeFormatFuncs).contains(funcName + ":" + paramIndex)) {
+                    if (methodMatches(funcName, paramIndex, PhpCompletionTokens.timeFormatFuncs)) {
                         resultElements = PhpCompletionTokens.timeFormatTokens;
                         resultInfos = PhpCompletionTokens.timeFormatInfos;
                         resultBold = true;
                     }
 
-                    if(Arrays.asList(PhpCompletionTokens.htmlCharSetFuncs).contains(funcName) && paramIndex == 2) {
+                    if(methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.htmlCharSetFuncs, 2)) {
                         resultElements = PhpCompletionTokens.htmlCharSets;
                         resultCaseSensitivity = false;
                     }
 
-                    if(Arrays.asList(PhpCompletionTokens.mbStringEncodingFuncs).contains(funcName + ":" + paramIndex)) {
+                    if (methodMatches(funcName, paramIndex, PhpCompletionTokens.mbStringEncodingFuncs)) {
                         resultElements = PhpCompletionTokens.mbStringEncodingElements;
                         resultCaseSensitivity = false;
                     }
 
-                    if(Arrays.asList(PhpCompletionTokens.mbStringInfoFuncs).contains(funcName) && paramIndex == 0) {
+                    if(methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.mbStringInfoFuncs, 0)) {
                         resultElements = PhpCompletionTokens.mbStringInfoTypes;
                     }
 
-                    if(Arrays.asList(PhpCompletionTokens.mbStringLanguageFuncs).contains(funcName) && paramIndex == 0) {
+                    if(methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.mbStringLanguageFuncs, 0)) {
                         resultElements = PhpCompletionTokens.mbStringLanguageElements;
                     }
 
-                    if(Arrays.asList(PhpCompletionTokens.obHandlerFuncs).contains(funcName) && paramIndex == 0) {
+                    if(methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.obHandlerFuncs, 0)) {
                         resultElements = PhpCompletionTokens.obHandlerElements;
                     }
 
-                    if(Arrays.asList(PhpCompletionTokens.httpHeaderResponseFuncs).contains(funcName) && paramIndex == 0) {
+                    if(methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.httpHeaderResponseFuncs, 0)) {
                         String stringLiteral = parameters.getPosition().getText();
                         String stringPrefix = "";
 
-                        if(stringLiteral.contains("IntellijIdeaRulezzz")) {
-                            stringPrefix = stringLiteral.substring(0, stringLiteral.indexOf("IntellijIdeaRulezzz"));
+                        if(stringLiteral.contains(CARET_MAGIC_IDENTIFIER)) {
+                            stringPrefix = stringLiteral.substring(0, stringLiteral.indexOf(CARET_MAGIC_IDENTIFIER));
                         }
 
                         if(stringPrefix.startsWith("Allow:")) {
@@ -273,6 +275,14 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                         B[i] = prefix + array[i];
                     }
                     return B;
+                }
+
+                private Boolean methodMatches(String methodName, int paramIndex, String[] tokens) {
+                    return Arrays.asList(tokens).contains(methodName + ":" + paramIndex);
+                }
+
+                private Boolean methodMatchesAt(String methodName, int paramIndex, String[] tokens, int expectedParamIndex) {
+                    return Arrays.asList(tokens).contains(methodName) && paramIndex == expectedParamIndex;
                 }
             }
         );
