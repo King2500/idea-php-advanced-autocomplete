@@ -261,14 +261,22 @@ public class PhpCompletionTokens {
     public static String[] timeFormatInfos = { "Weekday (Mon..Sun)", "Weekday (Monday..Sunday)", "Day of month (01..31)", "Day of month (1..31)", "Day of year (001..366)", "Weekday (1..7 =Mon..Sun)", "Weekday (0..6 =Sun..Sat)", "Full week number (1..52)", "Week of year (01..53)", "Week of year (1..53)", "Month (Jan..Dec)", "Month (Jan..Dec)", "Month (January..December)", "Month (01..12)", "Century (ex. 20)", "Year in ISO-8601 (ex. 14)", "Year in ISO-8601 (ex. 2014)", "Year (ex. 14)", "Year (ex. 2014)", "Hour (00..23)", "Hour (0..23)", "Hour (01..12)", "Hour (1..12)", "Minutes (00..59)", "AM or PM", "am or pm", "hour, minutes, seconds, am/pm", "hour and minutes", "Seconds (00..59)", "Hour, minutes and seconds", "Locale based time", "Timezone offset (ex. -0500)", "Timezone abbreviation (EST, MDT, ...)", "Locale based date and time", "Month, day, year", "Year, month, day", "Unix timestamp", "Locale based date", "Newline character", "Tab character", "Percentage character", "Day, month, year", "Day, month, year", "Day, month, year, hour, minutes, seconds", "Hour and minutes", "Hour, minutes and seconds", "Month, day, year", "Month, day, year", "Month, day, year", "Year, month, day", "Year, month, day", "Year, month, day, hour, minutes, seconds", "Year, month, day, hour, minutes, seconds" };
 
     public static String[] dateTimeParserFuncs = { "strtotime:0", "DateTime::__construct:0", "DateTime::modify:0", "date_create:0", "date_modify:1" };
-    public static String[] dateTimeRelativeFormats = { "yesterday", "midnight", "today", "now", "noon", "tomorrow", "back of ", "front of ", "first ", "last ", "first day of ", "last day of " };
-    public static String dateTimeAgo = "ago";
+    public static String[] dateTimeRelativeFormats = { "yesterday", "midnight", "today", "now", "noon", "tomorrow", "back of ", "front of ", "first ", "last ", "first day of ", "last day of ", "second ", "third ", "fourth ", "fifth ", "sixth ", "seventh ", "eighth ", "ninth ", "tenth ", "eleventh ", "twelfth ", "next ", "last ", "previous ", "this " };
+    public static String[] dateTimeAgo = { "ago" };
     public static String[] dateTimeDayNames = { "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sun", "mon", "tue", "wed", "thu", "fri", "sat" };
     public static String[] dateTimeDayTexts = { "weekday", "weekdays" };
+    public static String[] dateTimeDayRelTexts = { "yesterday", "today", "tomorrow" };
+    public static String[] dateTimeDaytimeTexts = { "midnight", "noon" };
+    public static String[] dateTimeHourTexts = { "0", "1am", "2am", "3am", "4am", "5am", "6am", "7am", "8am", "9am", "10am", "11am", "12am", "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm", "8pm", "9pm", "10pm", "11pm", "12pm", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23" };
+    public static String[] dateTimeMonthNames = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
+    public static String[] dateTimeMonthRelTexts = { "previous month", "next month", "this month" };
+    public static String[] dateTimeOfPrefixes = { "back ", "front ", "first day ", "last day ", "first sunday ", "first monday ", "first tuesday ", "first wednesday ", "first thursday ", "first friday ", "first saturday", "last sunday ", "last monday ", "last tuesday ", "last wednesday ", "last thursday ", "last friday ", "last saturday " };
+    public static String[] dateTimeDayOfTexts = { "first sun of ", "first sunday of ", "first mon of ", "first monday of ", "first tue of ", "first tuesday of ", "first wed of ", "first wednesday of ", "first thu of ", "first thursday of ", "first fri of ", "first friday of ", "first sat of ", "first saturday of ", "last sun of ", "last sunday of ", "last mon of ", "last monday of ", "last tue of ", "last tuesday of ", "last wed of ", "last wednesday of ", "last thu of ", "last thursday of ", "last fri of ", "last friday of ", "last sat of ", "last saturday of " };
     public static String[] dateTimeOrdinal = { "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth", "eleventh", "twelfth", "next", "last", "previous", "this" };
     public static String[] dateTimeRelTexts = { "next", "last", "previous", "this" };
-    public static String[] dateTimeUnits = { "sec", "second", "min", "minute", "hour", "day", "fortnight", "forthnight", "month", "year", "week" };
-    public static String[] dateTimeUnits2 = { "secs", "seconds", "mins", "minutes", "hours", "days", "fortnights", "forthnights", "months", "years", "weeks" };
+    public static String[] dateTimeRelWeek = { "next week", "last week", "previous week", "this week" };
+    public static String[] dateTimeUnits = { "sec", "second", "min", "minute", "hour", "day", "fortnight", "month", "year", "week", "weekday" };
+    public static String[] dateTimeUnits2 = { "secs", "seconds", "mins", "minutes", "hours", "days", "fortnights", "months", "years", "weeks", "weekdays" };
 
     public static String[] fileModeFuncs = { "fopen:1", "popen:1", "SplFileInfo::openFile:0" };
     public static String[] fileModeElements = { "r", "r+", "w", "w+", "a", "a+", "x", "x+", "c", "c+" };

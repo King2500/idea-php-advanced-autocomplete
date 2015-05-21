@@ -65,6 +65,13 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                         return;
                     }
 
+                    String stringLiteral = parameters.getPosition().getText();
+                    String stringPrefix = "";
+
+                    if(stringLiteral.contains(CARET_MAGIC_IDENTIFIER)) {
+                        stringPrefix = stringLiteral.substring(0, stringLiteral.indexOf(CARET_MAGIC_IDENTIFIER));
+                    }
+
                     if(methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.iniFuncs, 0)) {
                         resultElements = PhpCompletionTokens.iniElements;
                     }
@@ -128,6 +135,66 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                         resultBold = true;
                     }
 
+                    if (methodMatches(funcName, paramIndex, PhpCompletionTokens.dateTimeParserFuncs)) {
+                        stringPrefix = stringPrefix.toLowerCase();
+                        resultCaseSensitivity = false;
+
+                        if (stringPrefix.isEmpty()) {
+                            resultElements = concatArrays(PhpCompletionTokens.dateTimeRelativeFormats, PhpCompletionTokens.dateTimeDayNames);
+                        } else if (stringPrefix.endsWith(" ")) {
+                            // yesterday, today, tomorrow
+                            if (Arrays.asList(PhpCompletionTokens.dateTimeDayRelTexts).contains(stringPrefix.trim())) {
+                                resultElements = concatArrays(PhpCompletionTokens.dateTimeDaytimeTexts, PhpCompletionTokens.dateTimeHourTexts);
+                            }
+                            // back of, front of
+                            else if (stringPrefix.equals("back of ") || stringPrefix.equals("front of ")) {
+                                resultElements = PhpCompletionTokens.dateTimeHourTexts;
+                            }
+                            // first day of, last day of
+                            else if (stringPrefix.equals("first day of ") || stringPrefix.equals("last day of ")) {
+                                resultElements = concatArrays(PhpCompletionTokens.dateTimeMonthNames, PhpCompletionTokens.dateTimeMonthRelTexts);
+                            }
+                            // first mon of, last friday of, ...
+                            else if (Arrays.asList(PhpCompletionTokens.dateTimeDayOfTexts).contains(stringPrefix)) {
+                                resultElements = concatArrays(PhpCompletionTokens.dateTimeMonthNames, PhpCompletionTokens.dateTimeMonthRelTexts);
+                            }
+                            // first, last, next, this
+                            else if (Arrays.asList(PhpCompletionTokens.dateTimeOrdinal).contains(stringPrefix.trim())) {
+                                resultElements = concatArrays(PhpCompletionTokens.dateTimeDayNames, PhpCompletionTokens.dateTimeUnits);
+                            }
+                            // back, front, first day, last day, first monday, ...
+                            else if (Arrays.asList(PhpCompletionTokens.dateTimeOfPrefixes).contains(stringPrefix)) {
+                                resultElements = new String[] { "of " };
+                            }
+                            // monday, friday, ...
+                            else if (Arrays.asList(PhpCompletionTokens.dateTimeDayNames).contains(stringPrefix.trim())) {
+                                resultElements = PhpCompletionTokens.dateTimeRelWeek;
+                            }
+                            // -1, +1
+                            else if (stringPrefix.matches("^[-+]?1 ")) {
+                                resultElements = PhpCompletionTokens.dateTimeUnits;
+                            }
+                            // -2, +7
+                            else if (stringPrefix.matches("^[-+]?\\d+ ")) {
+                                resultElements = PhpCompletionTokens.dateTimeUnits2;
+                            }
+                            // 5 days, 3 weeks
+                            else if (stringPrefix.matches("[^-+]?\\d+[ ]?(sec(ond)?|min(ute)?|hour|day|forth?night|month|year|week(day)?)s? $")) {
+                                resultElements = PhpCompletionTokens.dateTimeAgo;
+                            }
+                        }
+                        // "1" without trailing space
+                        else if (stringPrefix.matches("^[-+]?1$")) {
+                            resultElements = PhpCompletionTokens.dateTimeUnits;
+                            resultSet.stopHere();
+                        }
+                        // numbers like 2, 17 without trailing space
+                        else if(stringPrefix.matches("^[-+]?\\d+$")) {
+                            resultElements = PhpCompletionTokens.dateTimeUnits2;
+                            resultSet.stopHere();
+                        }
+                    }
+
                     if(methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.htmlCharSetFuncs, 2)) {
                         resultElements = PhpCompletionTokens.htmlCharSets;
                         resultCaseSensitivity = false;
@@ -151,13 +218,6 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                     }
 
                     if(methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.httpHeaderResponseFuncs, 0)) {
-                        String stringLiteral = parameters.getPosition().getText();
-                        String stringPrefix = "";
-
-                        if(stringLiteral.contains(CARET_MAGIC_IDENTIFIER)) {
-                            stringPrefix = stringLiteral.substring(0, stringLiteral.indexOf(CARET_MAGIC_IDENTIFIER));
-                        }
-
                         if(stringPrefix.startsWith("Allow:")) {
                             resultElements = PhpCompletionTokens.httpMethods;
                         }
@@ -234,7 +294,7 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                         }
                         else if(!stringPrefix.contains(":")) {
                             resultElements = PhpCompletionTokens.httpHeaderResponseFields;
-                            resultPostfix = ": ";
+                            resultPostfix = ":";
                             resultPostfixAlt = " ";
                             resultPostfixExceptions = new String[] { "HTTP/1.0", "HTTP/1.1" };
                         }
@@ -243,13 +303,23 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                     if(resultElements == null)
                         return;
 
+//                    InsertHandler<LookupElement> handler = new InsertHandler<LookupElement>() {
+//                        @Override
+//                        public void handleInsert(InsertionContext context, LookupElement lookupElement) {
+//                            PsiElement element = PsiUtilCore.getElementAtOffset(context.getFile(), context.getStartOffset());
+//                        }
+//                    };
+
                     for(int i=0; i < resultElements.length; i++) {
                         String postfix = Arrays.asList(resultPostfixExceptions).contains(resultElements[i]) ? resultPostfixAlt : resultPostfix;
                         LookupElementBuilder builder = LookupElementBuilder.create(resultElements[i] + postfix)
                                 .withCaseSensitivity(resultCaseSensitivity)
                                 .withPresentableText(resultElements[i])
-                                //.withTailText(resultPostfix, true)
-                                .withBoldness(resultBold);
+//                                .withTailText(resultPostfix, true)
+                                .withBoldness(resultBold)
+                                .withLookupString(resultElements[i].toLowerCase())
+//                                .withInsertHandler(handler)
+                        ;
 
                         if(resultInfos.length > 0)
                             builder = builder.withTypeText(resultInfos[i]);
@@ -286,5 +356,13 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                 }
             }
         );
+    }
+
+    @Override
+    public boolean invokeAutoPopup(@NotNull PsiElement position, char typeChar) {
+        if(typeChar == ' ')
+            return true;
+
+        return super.invokeAutoPopup(position, typeChar);
     }
 }
