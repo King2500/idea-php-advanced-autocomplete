@@ -1,6 +1,10 @@
 Changelog
 =========
 
+### 1.0.5
+* Added completion support for DateTime constructor / DateTime::modify / strtotime DateTime notations
+* AutoPopup completion implemented
+
 ### 1.0.4
 * Changed date format info for 'W' ([#1](https://github.com/King2500/PhpAdvancedAutoComplete/pull/1))
 * Fixed StringIndexOutOfBoundsException: String index out of range ([#2](https://github.com/King2500/PhpAdvancedAutoComplete/issues/2))

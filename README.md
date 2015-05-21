@@ -13,8 +13,11 @@ The following functions are currently supported:
 * <b>File and folder related functions and methods (fopen, file_get_contents, dir...)</b><br>
     Files and/or folders paths relative to the current file (completion and reference)
 
-* <b>date</b><br>
+* <b>date / strftime / DateTime::format etc</b><br>
     Format characters and common format strings
+
+* <b>strtotime / DateTime constructor / DateTime::modify</b><br>
+    DateTime notations
 
 * <b>htmlentities / htmlspecialchars</b><br>
     Supported charsets
@@ -42,8 +45,5 @@ The following functions are currently supported:
 
 * <b>mysql_set_charset/mysqli_set_charset/mysqli::set_charset</b><br>
     Supported charsets for MySQL
-
-<b>Important:</b><br>
-You have to start a string literal and press <i>Ctrl</i> + <i>Space</i> to activate the completion popup
 
 If you have further suggestions/ideas, just send me an e-mail to <i>phpstorm at king2500.net</i>.

@@ -1,7 +1,7 @@
 <idea-plugin version="2">
   <id>net.king2500.plugins.PhpAdvancedAutoComplete</id>
   <name>PHP Advanced AutoComplete</name>
-  <version>1.0.4</version>
+  <version>1.0.5</version>
   <vendor email="phpstorm@king2500.net" url="https://github.com/King2500/PhpAdvancedAutoComplete">Thomas Schulz</vendor>
 
   <description><![CDATA[
@@ -12,8 +12,10 @@
             HTTP response headers, status codes, charsets, mime-types, locations, and much more<br><br></li>
         <li><b>File and folder related functions and methods (fopen, file_get_contents, dir...)</b><br>
             Files and/or folders paths relative to the current file (completion and reference)<br><br></li>
-        <li><b>date</b><br>
+        <li><b>date / strftime / DateTime::format etc</b><br>
             Format characters and common format strings<br><br></li>
+        <li><b>strtotime / DateTime constructor / DateTime::modify</b><br>
+            DateTime notations<br><br></li>
         <li><b>htmlentities/htmlspecialchars</b><br>
             Supported charsets<br><br></li>
         <li><b>mb_string functions</b><br>
@@ -34,13 +36,17 @@
             Supported charsets for MySQL<br><br></li>
       </ul>
 
-      <p><b>Important:</b> You have to start a string literal and press <i>Ctrl</i> + <i>Space</i> to activate the completion popup</p>
-
       <p>If you have further suggestions/ideas, just send me an e-mail.</p>
       <p><a href="http://plugins.jetbrains.com/plugin/writeComment?pr=&pluginId=7276">Commend and rate this plugin here</a></p>
       ]]></description>
 
   <change-notes><![CDATA[
+
+<h2>1.0.5</h2>
+<ul>
+    <li>Added completion support for DateTime constructor / DateTime::modify / strtotime DateTime notations</li>
+    <li>AutoPopup completion implemented</li>
+</ul>
 
 <h2>1.0.4</h2>
 <ul>
