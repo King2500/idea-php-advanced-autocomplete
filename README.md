@@ -1,6 +1,9 @@
 # PhpStorm IDE Plugin:<br>PHP Advanced AutoComplete#
+[![Version](http://phpstorm.espend.de/badge/7276/version)](https://plugins.jetbrains.com/plugin/7276)
+[![Downloads](http://phpstorm.espend.de/badge/7276/downloads)](https://plugins.jetbrains.com/plugin/7276)
+[![Downloads last month](http://phpstorm.espend.de/badge/7276/last-month)](https://plugins.jetbrains.com/plugin/7276)
 
-Plugin URL: http://plugins.jetbrains.com/plugin/7276?pr=phpStorm
+Plugin URL: https://plugins.jetbrains.com/plugin/7276
 
 Adds auto-completion support for various built-in PHP functions and methods, where parameter is a string literal.
 
