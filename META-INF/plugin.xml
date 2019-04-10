@@ -2,7 +2,7 @@
   <id>net.king2500.plugins.PhpAdvancedAutoComplete</id>
   <name>PHP Advanced AutoComplete</name>
   <version>1.0.5</version>
-  <vendor email="phpstorm@king2500.net" url="https://github.com/King2500/PhpAdvancedAutoComplete">Thomas Schulz</vendor>
+  <vendor email="phpstorm@king2500.net" url="https://github.com/King2500">Thomas Schulz</vendor>
 
   <description><![CDATA[
       <p>Adds auto-completion support for various built-in PHP functions and methods, where parameter is a string literal.</p>
