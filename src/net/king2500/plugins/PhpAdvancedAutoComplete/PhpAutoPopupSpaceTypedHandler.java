@@ -2,10 +2,7 @@ package net.king2500.plugins.PhpAdvancedAutoComplete;
 
 import com.intellij.codeInsight.CodeInsightSettings;
 import com.intellij.codeInsight.completion.CompletionPhase;
-import com.intellij.codeInsight.completion.CompletionProgressIndicator;
-import com.intellij.codeInsight.completion.CompletionType;
 import com.intellij.codeInsight.completion.impl.CompletionServiceImpl;
-import com.intellij.codeInsight.editorActions.CompletionAutoPopupHandler;
 import com.intellij.codeInsight.editorActions.TypedHandlerDelegate;
 import com.intellij.ide.PowerSaveMode;
 import com.intellij.openapi.application.ApplicationManager;
@@ -62,7 +59,7 @@ public class PhpAutoPopupSpaceTypedHandler extends TypedHandlerDelegate {
      * PhpTypedHandler.scheduleAutoPopup but use SMART since BASIC is blocked
      */
     public void scheduleAutoPopup(final Project project, final Editor editor, @Nullable final Condition<PsiFile> condition) {
-        if (ApplicationManager.getApplication().isUnitTestMode() && !CompletionAutoPopupHandler.ourTestingAutopopup) {
+        if (ApplicationManager.getApplication().isUnitTestMode()/* && !CompletionAutoPopupHandler.ourTestingAutopopup*/) {
             return;
         }
 
@@ -76,21 +73,21 @@ public class PhpAutoPopupSpaceTypedHandler extends TypedHandlerDelegate {
         if (!CompletionServiceImpl.isPhase(CompletionPhase.CommittingDocuments.class, CompletionPhase.NoCompletion.getClass())) {
             return;
         }
-
-        final CompletionProgressIndicator currentCompletion = CompletionServiceImpl.getCompletionService().getCurrentCompletion();
-        if (currentCompletion != null) {
-            currentCompletion.closeAndFinish(true);
-        }
-
-        final CompletionPhase.CommittingDocuments phase = new CompletionPhase.CommittingDocuments(null, editor);
-        CompletionServiceImpl.setCompletionPhase(phase);
-
-        CompletionAutoPopupHandler.runLaterWithCommitted(project, editor.getDocument(), new Runnable() {
-            @Override
-            public void run() {
-                CompletionAutoPopupHandler.invokeCompletion(CompletionType.BASIC, true, project, editor, 0, false);
-            }
-        });
+//
+//        final CompletionProgressIndicator currentCompletion = CompletionServiceImpl.getCompletionService().getCurrentCompletion();
+//        if (currentCompletion != null) {
+//            currentCompletion.closeAndFinish(true);
+//        }
+//
+//        final CompletionPhase.CommittingDocuments phase = new CompletionPhase.CommittingDocuments(null, editor);
+//        CompletionServiceImpl.setCompletionPhase(phase);
+//
+//        CompletionAutoPopupHandler.runLaterWithCommitted(project, editor.getDocument(), new Runnable() {
+//            @Override
+//            public void run() {
+//                CompletionAutoPopupHandler.invokeCompletion(CompletionType.BASIC, true, project, editor, 0, false);
+//            }
+//        });
     }
 
 }
