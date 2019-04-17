@@ -294,7 +294,7 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                         }
                         else if(!stringPrefix.contains(":")) {
                             resultElements = PhpCompletionTokens.httpHeaderResponseFields;
-                            resultPostfix = ":";
+                            resultPostfix = ": ";
                             resultPostfixAlt = " ";
                             resultPostfixExceptions = new String[] { "HTTP/1.0", "HTTP/1.1" };
                         }
