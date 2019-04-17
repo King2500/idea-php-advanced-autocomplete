@@ -6,8 +6,8 @@ Changelog
 * AutoPopup completion implemented
 
 ### 1.0.4
-* Changed date format info for 'W' ([#1](https://github.com/King2500/PhpAdvancedAutoComplete/pull/1))
-* Fixed StringIndexOutOfBoundsException: String index out of range ([#2](https://github.com/King2500/PhpAdvancedAutoComplete/issues/2))
+* Changed date format info for 'W' ([#1](https://github.com/King2500/idea-php-advanced-autocomplete/pull/1))
+* Fixed StringIndexOutOfBoundsException: String index out of range ([#2](https://github.com/King2500/idea-php-advanced-autocomplete/issues/2))
 
 ### 1.0.3
 * Added support for date and time format characters for date_format, DateTime::format, DateTime::createFromFormat,
