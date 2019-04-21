@@ -63,6 +63,9 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                     boolean resultCaseSensitivity = true;
                     InsertHandler<LookupElement> insertHandler = null;
                     String[] deprecatedElements = {};
+                    boolean allowMultiple = false;
+                    String splitter = ",";
+                    boolean overwriteExistingCompletions = false;
 
                     int paramIndex = PhpHelper.getParameterIndex(parameters.getPosition().getParent());
 
@@ -126,6 +129,7 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                         resultElements = PhpCompletionTokens.fileModeElements;
                         resultInfos = PhpCompletionTokens.fileModeInfos;
                         resultBold = true;
+                        overwriteExistingCompletions = true;
                     }
 
                     if (methodMatches(funcName, paramIndex, PhpCompletionTokens.dateFormatFuncs)) {
@@ -222,9 +226,6 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                         resultElements = PhpCompletionTokens.obHandlerElements;
                     }
 
-                    boolean allowMultiple = false;
-                    String splitter = ",";
-
                     if(methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.httpHeaderResponseFuncs, 0)) {
                         if(!stringPrefix.contains(":")) {
                             resultElements = PhpCompletionTokens.httpHeaderResponseFields;
@@ -233,6 +234,7 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                             resultPostfixExceptions = new String[] { "HTTP/1.0", "HTTP/1.1" };
                             insertHandler = InvokeCompletionInsertHandler.getInstance();
                             deprecatedElements = PhpCompletionTokens.httpHeaderDeprecatedFields;
+                            overwriteExistingCompletions = true;
                         } else {
                             result = result.withPrefixMatcher(stringPrefix.substring(stringPrefix.contains(": ") ? stringPrefix.indexOf(": ") + 2 : stringPrefix.indexOf(":") + 1));
 
@@ -420,6 +422,10 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
 
                     if (allowMultiple && stringPrefix.contains(splitter+" ")) {
                         result = result.withPrefixMatcher(stringPrefix.substring(stringPrefix.lastIndexOf(splitter+" ") + 2));
+                    }
+
+                    if (overwriteExistingCompletions) {
+                        result.stopHere();
                     }
 
                     for(int i=0; i < resultElements.length; i++) {
