@@ -227,15 +227,19 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                     }
 
                     if(methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.httpHeaderResponseFuncs, 0)) {
-                        if(!stringPrefix.contains(":")) {
+                        boolean isFullHeader = funcName.equals("header");
+                        if (!stringPrefix.contains(":")) {
                             resultElements = PhpCompletionTokens.httpHeaderResponseFields;
-                            resultPostfix = ": ";
+                            if (isFullHeader) {
+                                resultPostfix = ": ";
+                                insertHandler = InvokeCompletionInsertHandler.getInstance();
+                            }
                             resultPostfixAlt = " ";
                             resultPostfixExceptions = new String[] { "HTTP/1.0", "HTTP/1.1" };
-                            insertHandler = InvokeCompletionInsertHandler.getInstance();
                             deprecatedElements = PhpCompletionTokens.httpHeaderDeprecatedFields;
                             overwriteExistingCompletions = true;
-                        } else {
+                        }
+                        else if (isFullHeader) {
                             result = result.withPrefixMatcher(stringPrefix.substring(stringPrefix.contains(": ") ? stringPrefix.indexOf(": ") + 2 : stringPrefix.indexOf(":") + 1));
 
                             if(stringPrefix.startsWith("Allow: ") || stringPrefix.startsWith("Access-Control-Allow-Methods: ")) {
