@@ -19,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class PhpFunctionCompletionContributor extends CompletionContributor {
@@ -48,6 +49,12 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                         .withLanguage(PhpLanguage.INSTANCE)
                     ),
             new CompletionProvider<CompletionParameters>() {
+                final Pattern DATETIME_NUMBER_ONE = Pattern.compile("^[-+]?1$");
+                final Pattern DATETIME_NUMBERS = Pattern.compile("^[-+]?\\d+$");
+                final Pattern DATETIME_PREFIX_NUMBER_ONE = Pattern.compile("^[-+]?1 ");
+                final Pattern DATETIME_PREFIX_NUMBERS = Pattern.compile("^[-+]?\\d+ ");
+                final Pattern DATETIME_PREFIX_NUMBERS_UNITS = Pattern.compile("[^-+]?\\d+[ ]?(sec(ond)?|min(ute)?|hour|day|forth?night|month|year|week(day)?)s? ");
+
                 public void addCompletions(@NotNull CompletionParameters parameters,
                                            ProcessingContext context,
                                            @NotNull CompletionResultSet result) {
@@ -61,7 +68,6 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                     String[] resultPostfixExceptions = {};
                     boolean resultBold = false;
                     boolean resultCaseSensitivity = true;
-                    InsertHandler<LookupElement> insertHandler = null;
                     String[] deprecatedElements = {};
                     boolean allowMultiple = false;
                     String splitter = ",";
@@ -148,59 +154,68 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                         stringPrefix = stringPrefix.toLowerCase();
                         resultCaseSensitivity = false;
 
-                        if (stringPrefix.isEmpty()) {
-                            resultElements = concatArrays(PhpCompletionTokens.dateTimeRelativeFormats, PhpCompletionTokens.dateTimeDayNames);
-                        } else if (stringPrefix.endsWith(" ")) {
-                            // yesterday, today, tomorrow
-                            if (Arrays.asList(PhpCompletionTokens.dateTimeDayRelTexts).contains(stringPrefix.trim())) {
-                                resultElements = concatArrays(PhpCompletionTokens.dateTimeDaytimeTexts, PhpCompletionTokens.dateTimeHourTexts);
-                            }
-                            // back of, front of
-                            else if (stringPrefix.equals("back of ") || stringPrefix.equals("front of ")) {
-                                resultElements = PhpCompletionTokens.dateTimeHourTexts;
-                            }
-                            // first day of, last day of
-                            else if (stringPrefix.equals("first day of ") || stringPrefix.equals("last day of ")) {
-                                resultElements = concatArrays(PhpCompletionTokens.dateTimeMonthNames, PhpCompletionTokens.dateTimeMonthRelTexts);
-                            }
-                            // first mon of, last friday of, ...
-                            else if (Arrays.asList(PhpCompletionTokens.dateTimeDayOfTexts).contains(stringPrefix)) {
-                                resultElements = concatArrays(PhpCompletionTokens.dateTimeMonthNames, PhpCompletionTokens.dateTimeMonthRelTexts);
-                            }
-                            // first, last, next, this
-                            else if (Arrays.asList(PhpCompletionTokens.dateTimeOrdinal).contains(stringPrefix.trim())) {
-                                resultElements = concatArrays(PhpCompletionTokens.dateTimeDayNames, PhpCompletionTokens.dateTimeUnits);
-                            }
-                            // back, front, first day, last day, first monday, ...
-                            else if (Arrays.asList(PhpCompletionTokens.dateTimeOfPrefixes).contains(stringPrefix)) {
-                                resultElements = new String[] { "of " };
-                            }
-                            // monday, friday, ...
-                            else if (Arrays.asList(PhpCompletionTokens.dateTimeDayNames).contains(stringPrefix.trim())) {
-                                resultElements = PhpCompletionTokens.dateTimeRelWeek;
-                            }
-                            // -1, +1
-                            else if (stringPrefix.matches("^[-+]?1 ")) {
-                                resultElements = PhpCompletionTokens.dateTimeUnits;
-                            }
-                            // -2, +7
-                            else if (stringPrefix.matches("^[-+]?\\d+ ")) {
-                                resultElements = PhpCompletionTokens.dateTimeUnits2;
-                            }
-                            // 5 days, 3 weeks
-                            else if (stringPrefix.matches("[^-+]?\\d+[ ]?(sec(ond)?|min(ute)?|hour|day|forth?night|month|year|week(day)?)s? $")) {
-                                resultElements = PhpCompletionTokens.dateTimeAgo;
-                            }
-                        }
                         // "1" without trailing space
-                        else if (stringPrefix.matches("^[-+]?1$")) {
+                        if (patternMatches(DATETIME_NUMBER_ONE, stringPrefix)) {
                             resultElements = PhpCompletionTokens.dateTimeUnits;
                             result.stopHere();
                         }
                         // numbers like 2, 17 without trailing space
-                        else if(stringPrefix.matches("^[-+]?\\d+$")) {
+                        else if(patternMatches(DATETIME_NUMBERS, stringPrefix)) {
                             resultElements = PhpCompletionTokens.dateTimeUnits2;
                             result.stopHere();
+                        }
+                        else if (stringPrefix.contains(" ")) {
+                            result = result.withPrefixMatcher(stringPrefix.substring(stringPrefix.lastIndexOf(" ") + 1));
+                            String[] prefixParts = stringPrefix.split(" ");
+                            int numParts = prefixParts.length;
+
+                            // yesterday, today, tomorrow
+                            if (numParts >= 1 && numParts <= 2 && Arrays.asList(PhpCompletionTokens.dateTimeDayRelTexts).contains(prefixParts[0])) {
+                                resultElements = concatArrays(PhpCompletionTokens.dateTimeDaytimeTexts, PhpCompletionTokens.dateTimeHourTexts);
+                            }
+                            // back of, front of
+                            else if (numParts <= 3 && (stringPrefix.startsWith("back of ") || stringPrefix.startsWith("front of "))) {
+                                resultElements = PhpCompletionTokens.dateTimeHourTexts;
+                            }
+                            // first day of, last day of
+                            else if (numParts <= 5 && (stringPrefix.startsWith("first day of ") || stringPrefix.startsWith("last day of "))) {
+                                result = result.withPrefixMatcher(stringPrefix.substring(stringPrefix.lastIndexOf("day of ") + 7));
+                                resultElements = concatArrays(PhpCompletionTokens.dateTimeMonthNames, PhpCompletionTokens.dateTimeMonthRelTexts);
+                            }
+                            // first mon of, last friday of, ...
+                            else if (numParts <= 5 && stringPrefix.contains("of ") && Arrays.asList(PhpCompletionTokens.dateTimeDayOfTexts).contains(stringPrefix.substring(0, stringPrefix.indexOf("of ") + 3))) {
+                                result = result.withPrefixMatcher(stringPrefix.substring(stringPrefix.lastIndexOf("of ") + 3));
+                                resultElements = concatArrays(PhpCompletionTokens.dateTimeMonthNames, PhpCompletionTokens.dateTimeMonthRelTexts);
+                            }
+                            // first, last, next, this
+                            else if ((numParts == 1 || (numParts == 2 && !stringPrefix.endsWith(" "))) && Arrays.asList(PhpCompletionTokens.dateTimeOrdinal).contains(prefixParts[0])) {
+                                resultElements = concatArrays(PhpCompletionTokens.dateTimeDayNames, PhpCompletionTokens.dateTimeUnits);
+                            }
+                            // back, front, first day, last day, first monday, ...
+                            else if (numParts >= 1 && Arrays.asList(PhpCompletionTokens.dateTimeOfPrefixes).contains(prefixParts[0] + " ")
+                                || numParts >= 2 && Arrays.asList(PhpCompletionTokens.dateTimeOfPrefixes).contains(prefixParts[0] + " " + prefixParts[1] + " ")) {
+                                resultElements = new String[]{"of "};
+                            }
+                            // monday, friday, ...
+                            else if (numParts >= 1 && Arrays.asList(PhpCompletionTokens.dateTimeDayNames).contains(prefixParts[0])) {
+                                result = result.withPrefixMatcher(stringPrefix.substring(stringPrefix.indexOf(" ") + 1));
+                                resultElements = PhpCompletionTokens.dateTimeRelWeek;
+                            }
+                            // -1, +1
+                            else if ((numParts == 1 || (numParts == 2 && !stringPrefix.endsWith(" "))) && patternMatches(DATETIME_PREFIX_NUMBER_ONE, stringPrefix)) {
+                                resultElements = PhpCompletionTokens.dateTimeUnits;
+                            }
+                            // -2, +7
+                            else if ((numParts == 1 || (numParts == 2 && !stringPrefix.endsWith(" "))) && patternMatches(DATETIME_PREFIX_NUMBERS, stringPrefix)) {
+                                resultElements = PhpCompletionTokens.dateTimeUnits2;
+                            }
+                            // 5 days, 3 weeks
+                            else if (numParts <= 3 && patternMatches(DATETIME_PREFIX_NUMBERS_UNITS, stringPrefix) && !stringPrefix.contains(" ago ")) {
+                                resultElements = PhpCompletionTokens.dateTimeAgo;
+                            }
+                        }
+                        else {
+                            resultElements = concatArrays(PhpCompletionTokens.dateTimeRelativeFormats, PhpCompletionTokens.dateTimeDayNames);
                         }
                     }
 
@@ -232,7 +247,6 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                             resultElements = PhpCompletionTokens.httpHeaderResponseFields;
                             if (isFullHeader) {
                                 resultPostfix = ": ";
-                                insertHandler = InvokeCompletionInsertHandler.getInstance();
                             }
                             resultPostfixAlt = " ";
                             resultPostfixExceptions = new String[] { "HTTP/1.0", "HTTP/1.1" };
@@ -417,13 +431,6 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                     if(resultElements == null)
                         return;
 
-//                    InsertHandler<LookupElement> handler = new InsertHandler<LookupElement>() {
-//                        @Override
-//                        public void handleInsert(InsertionContext context, LookupElement lookupElement) {
-//                            PsiElement element = PsiUtilCore.getElementAtOffset(context.getFile(), context.getStartOffset());
-//                        }
-//                    };
-
                     if (allowMultiple && stringPrefix.contains(splitter+" ")) {
                         result = result.withPrefixMatcher(stringPrefix.substring(stringPrefix.lastIndexOf(splitter+" ") + 2));
                     }
@@ -444,7 +451,6 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
 //                                .withTailText(resultPostfix, true)
                                 .withBoldness(resultBold)
                                 .withLookupString(resultElements[i].toLowerCase() + postfix)
-//                                .withInsertHandler(handler)
                         ;
 
                         if (Arrays.asList(deprecatedElements).contains(resultElements[i])) {
@@ -453,6 +459,13 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
 
                         if (resultInfos.length > 0) {
                             builder = builder.withTypeText(resultInfos[i]);
+                        }
+
+
+                        InsertHandler<LookupElement> insertHandler = null;
+
+                        if ((resultElements[i] + postfix).endsWith(" ")) {
+                            insertHandler = InvokeCompletionInsertHandler.getInstance();
                         }
 
                         if (insertHandler != null) {
@@ -482,12 +495,16 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                     return B;
                 }
 
-                private Boolean methodMatches(String methodName, int paramIndex, String[] tokens) {
+                private boolean methodMatches(String methodName, int paramIndex, String[] tokens) {
                     return Arrays.asList(tokens).contains(methodName + ":" + paramIndex);
                 }
 
-                private Boolean methodMatchesAt(String methodName, int paramIndex, String[] tokens, int expectedParamIndex) {
+                private boolean methodMatchesAt(String methodName, int paramIndex, String[] tokens, int expectedParamIndex) {
                     return Arrays.asList(tokens).contains(methodName) && paramIndex == expectedParamIndex;
+                }
+
+                private boolean patternMatches(Pattern pattern, @NotNull String string) {
+                    return pattern.matcher(string).lookingAt();
                 }
             }
         );
