@@ -485,7 +485,7 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
 
     @Override
     public boolean invokeAutoPopup(@NotNull PsiElement position, char typeChar) {
-        if (typeChar == ' ') {
+        if (typeChar == ' ' || typeChar == '-') {
             return true;
         }
 
