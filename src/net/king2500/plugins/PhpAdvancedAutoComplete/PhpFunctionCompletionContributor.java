@@ -13,7 +13,6 @@ import com.jetbrains.php.lang.PhpLanguage;
 import com.jetbrains.php.lang.lexer.PhpTokenTypes;
 import com.jetbrains.php.lang.parser.PhpElementTypes;
 import net.king2500.plugins.PhpAdvancedAutoComplete.utils.DbHelper;
-import net.king2500.plugins.PhpAdvancedAutoComplete.utils.FileHelper;
 import net.king2500.plugins.PhpAdvancedAutoComplete.utils.PhpHelper;
 import org.jetbrains.annotations.NotNull;
 
@@ -289,8 +288,8 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                                 resultElements = PhpCompletionTokens.isoLanguageCodes;
                             }
                             else if(stringPrefix.startsWith("Content-Location: ") || stringPrefix.startsWith("Location: ")) {
-                                resultElements = prefixArray("/", FileHelper.getProjectFiles(project));
-                                resultElements = concatArrays(new String[] { "/" }, resultElements);
+//                                resultElements = prefixArray("/", FileHelper.getProjectFiles(project));
+//                                resultElements = concatArrays(new String[] { "/" }, resultElements);
                             }
                             else if(stringPrefix.startsWith("Content-Range: ")) {
                                 resultElements = new String[] { PhpCompletionTokens.httpRangeTypes[0] };
@@ -486,8 +485,9 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
 
     @Override
     public boolean invokeAutoPopup(@NotNull PsiElement position, char typeChar) {
-        if(typeChar == ' ')
+        if (typeChar == ' ') {
             return true;
+        }
 
         return super.invokeAutoPopup(position, typeChar);
     }
