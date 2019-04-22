@@ -241,6 +241,10 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                         resultElements = PhpCompletionTokens.obHandlerElements;
                     }
 
+                    if (methodMatches(funcName, paramIndex, PhpCompletionTokens.envFuncs)) {
+                        resultElements = PhpCompletionTokens.envNames;
+                    }
+
                     if(methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.httpHeaderResponseFuncs, 0)) {
                         boolean isFullHeader = funcName.equals("header");
                         if (!stringPrefix.contains(":")) {

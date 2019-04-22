@@ -49,4 +49,7 @@ The following functions are currently supported:
 * <b>mysql_set_charset/mysqli_set_charset/mysqli::set_charset</b><br>
     Supported charsets for MySQL
 
+* <b>getenv</b><br>
+    Common environment variables (like in $_SERVER array keys)   
+
 If you have further suggestions/ideas, just send me an e-mail to <i>phpstorm at king2500.net</i>.
