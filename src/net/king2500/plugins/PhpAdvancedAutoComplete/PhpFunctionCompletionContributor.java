@@ -86,10 +86,6 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                         stringPrefix = stringLiteral.substring(0, stringLiteral.indexOf(CompletionUtil.DUMMY_IDENTIFIER));
                     }
 
-                    if(methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.iniFuncs, 0)) {
-                        resultElements = PhpCompletionTokens.iniElements;
-                    }
-
                     if(methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.dbConnectFuncs, 0)) {
                         if(funcName.startsWith("PDO::")) {
                             resultElements = DbHelper.getPdoDSNs(project, "mysql://");

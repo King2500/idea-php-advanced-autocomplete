@@ -28,9 +28,6 @@ The following functions are currently supported:
 * <b>mb_string functions</b><br>
     Charset, where required; types for mb_get_info and supported languages for mb_language
 
-* <b>ini_get / ini_set / ini_restore / get_cfg_var</b><br>
-    Known INI variable names
-
 * <b>extension_loaded</b><br>
     Known PHP extensions
 

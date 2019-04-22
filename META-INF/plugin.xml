@@ -20,8 +20,6 @@
             Supported charsets<br><br></li>
         <li><b>mb_string functions</b><br>
             Charset, where required; types for mb_get_info and supported languages for mb_language<br><br></li>
-        <li><b>ini_get/ini_set/ini_restore/get_cfg_var</b><br>
-            Known INI variable names<br><br></li>
         <li><b>extension_loaded</b><br>
             Known PHP extensions<br><br></li>
         <li><b>fopen/popen/SplFileInfo::openFile</b><br>
