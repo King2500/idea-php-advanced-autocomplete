@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>net.king2500.plugins.PhpAdvancedAutoComplete</id>
   <name>PHP Advanced AutoComplete</name>
-  <version>1.0.5</version>
+  <version>1.1.0</version>
   <vendor email="phpstorm@king2500.net" url="https://github.com/King2500">Thomas Schulz</vendor>
 
   <description><![CDATA[
@@ -34,6 +34,8 @@
             Usernames and database names from data sources defined in project<br><br></li>
         <li><b>mysql_set_charset/mysqli_set_charset/mysqli::set_charset</b><br>
             Supported charsets for MySQL<br><br></li>
+        <li><b>getenv</b><br>
+            Common environment variables (like in $_SERVER array keys)<br><br></li>
       </ul>
 
       <p>If you have further suggestions/ideas, just send me an e-mail.</p>
@@ -42,10 +44,23 @@
 
   <change-notes><![CDATA[
 
-<h2>1.0.5</h2>
+<h2>1.1.0</h2>
 <ul>
     <li>Added completion support for DateTime constructor / DateTime::modify / strtotime DateTime notations</li>
+    <li>Added completion for environment variables in getenv() (<a href="https://github.com/King2500/idea-php-advanced-autocomplete/issues/11">#11</a>)</li>
+    <li>Added support for DateTimeImmutable (DateTime formats and notations) (<a href="https://github.com/King2500/idea-php-advanced-autocomplete/issues/12">#12</a>)</li>
     <li>AutoPopup completion implemented</li>
+    <li>Improved file reference contributor</li>
+    <li>Updated HTTP header completion tokens</li>
+    <li>Changed HTTP header field completion to insert space char</li>
+    <li>Fixed HTTP header field completions after colon (<a href="https://github.com/King2500/idea-php-advanced-autocomplete/issues/5">#5</a>)</li>
+    <li>Fixed full header completion in header_remove() function</li>
+    <li>Fixed prefixed completion for DateTime notations (also <a href="https://github.com/King2500/idea-php-advanced-autocomplete/issues/5">#5</a>)</li>
+    <li>Fixed completion auto-popup for '-' char in date formats</li>
+    <li>Fixed date format infos for ISO-8601 weeks</li>
+    <li>Fixed duplicate completion entries when PHP Toolbox plugin is installed (<a href="https://github.com/King2500/idea-php-advanced-autocomplete/issues/15">#15</a>)</li>
+    <li>Changes to compile against JDK 1.8 / PhpStorm 2019.1</li>
+    <li>Minimum IDEA version changed to 2018.2+</li>
 </ul>
 
 <h2>1.0.4</h2>

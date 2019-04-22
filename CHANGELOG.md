@@ -1,9 +1,22 @@
 Changelog
 =========
 
-### 1.0.5
+### 1.1.0
 * Added completion support for DateTime constructor / DateTime::modify / strtotime DateTime notations
+* Added completion for environment variables in getenv() ([#11](https://github.com/King2500/idea-php-advanced-autocomplete/issues/11))
+* Added support for DateTimeImmutable (DateTime formats and notations) ([#12](https://github.com/King2500/idea-php-advanced-autocomplete/issues/12))
 * AutoPopup completion implemented
+* Improved file reference contributor
+* Updated HTTP header completion tokens
+* Changed HTTP header field completion to insert space char
+* Fixed HTTP header field completions after colon ([#5](https://github.com/King2500/idea-php-advanced-autocomplete/issues/5))
+* Fixed full header completion in header_remove() function
+* Fixed prefixed completion for DateTime notations (also [#5](https://github.com/King2500/idea-php-advanced-autocomplete/issues/5))
+* Fixed completion auto-popup for '-' char in date formats
+* Fixed date format infos for ISO-8601 weeks
+* Fixed duplicate completion entries when PHP Toolbox plugin is installed ([#15](https://github.com/King2500/idea-php-advanced-autocomplete/issues/15))
+* Changes to compile against JDK 1.8 / PhpStorm 2019.1
+* Minimum IDEA version changed to 2018.2+
 
 ### 1.0.4
 * Changed date format info for 'W' ([#1](https://github.com/King2500/idea-php-advanced-autocomplete/pull/1))
