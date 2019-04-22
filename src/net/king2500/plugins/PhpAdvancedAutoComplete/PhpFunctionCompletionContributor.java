@@ -12,6 +12,7 @@ import com.jetbrains.php.completion.PhpCompletionUtil;
 import com.jetbrains.php.lang.PhpLanguage;
 import com.jetbrains.php.lang.lexer.PhpTokenTypes;
 import com.jetbrains.php.lang.parser.PhpElementTypes;
+import net.king2500.plugins.PhpAdvancedAutoComplete.utils.DateTimeUtil;
 import net.king2500.plugins.PhpAdvancedAutoComplete.utils.DbHelper;
 import net.king2500.plugins.PhpAdvancedAutoComplete.utils.PhpHelper;
 import org.jetbrains.annotations.NotNull;
@@ -63,6 +64,7 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                     Project project = parameters.getPosition().getProject();
                     String[] resultElements = {};
                     String[] resultInfos = {};
+                    String[] resultParams = {};
                     String resultPostfix = "";
                     String resultPostfixAlt = "";
                     String[] resultPostfixExceptions = {};
@@ -138,6 +140,13 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                         resultElements = PhpCompletionTokens.dateFormatTokens;
                         resultInfos = PhpCompletionTokens.dateFormatInfos;
                         resultBold = true;
+                        resultParams = new String[resultElements.length];
+
+                        for (int i = 0; i < PhpCompletionTokens.dateFormatTokens.length; i++) {
+                            String format = PhpCompletionTokens.dateFormatTokens[i];
+                            String dateTimeText = DateTimeUtil.formatPhpDateTime(format);
+                            resultParams[i] = !dateTimeText.isEmpty() ? (" = " + dateTimeText) : "";
+                        }
                     }
 
                     if (methodMatches(funcName, paramIndex, PhpCompletionTokens.timeFormatFuncs)) {
@@ -457,10 +466,12 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                             builder = builder.withStrikeoutness(true);
                         }
 
-                        if (resultInfos.length > 0) {
+                        if (i < resultParams.length) {
+                            builder = builder.withTailText(resultParams[i], true);
+                        }
+                        if (i < resultInfos.length) {
                             builder = builder.withTypeText(resultInfos[i]);
                         }
-
 
                         InsertHandler<LookupElement> insertHandler = null;
 
