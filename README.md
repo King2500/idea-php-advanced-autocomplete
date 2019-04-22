@@ -34,6 +34,9 @@ The following functions are currently supported:
 * <b>fopen / popen / SplFileInfo::openFile</b><br>
     File modes
 
+* <b>fsockopen / stream_socket_client</b><br>
+    Socket transports (tcp://, udp://, etc)
+
 * <b>mysql_connect/mysqli_connect/mysqli/PDO</b><br>
     Hostnames, database names and usernames from data sources defined in project
 

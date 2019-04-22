@@ -24,6 +24,8 @@
             Known PHP extensions<br><br></li>
         <li><b>fopen/popen/SplFileInfo::openFile</b><br>
             File modes<br><br></li>
+        <li><b>fsockopen / stream_socket_client</b><br>
+            Socket transports (tcp://, udp://, etc)<br><br></li>
         <li><b>mysql_connect/mysqli_connect/mysqli/PDO</b><br>
             Hostnames, database names and usernames from data sources defined in project<br><br></li>
         <li><b>mysql_select_db/mysqli_select_db/mysqli::select_db</b><br>

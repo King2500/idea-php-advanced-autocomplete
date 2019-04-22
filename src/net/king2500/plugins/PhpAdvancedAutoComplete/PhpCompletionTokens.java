@@ -390,6 +390,9 @@ public class PhpCompletionTokens {
             "ImageCreateFromGif:0"
     };
 
+    public static String[] socketFuncs = { "fsockopen:0", "stream_socket_client:0" };
+    public static String[] socketTransports = { "", "tcp://", "udp://", "ssl://", "sslv2://", "sslv3://", "tls://", "unix://", "udg://" };
+
     public static String[] envFuncs = { "getenv:0" };
     public static String[] envNames = {
             "PHP_SELF",

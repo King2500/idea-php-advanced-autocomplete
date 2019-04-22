@@ -246,6 +246,12 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                         resultElements = PhpCompletionTokens.obHandlerElements;
                     }
 
+                    if (methodMatches(funcName, paramIndex, PhpCompletionTokens.socketFuncs)) {
+                        resultElements = PhpCompletionTokens.socketTransports;
+                        resultParams = new String[resultElements.length];
+                        Arrays.fill(resultParams, "<host>");
+                    }
+
                     if (methodMatches(funcName, paramIndex, PhpCompletionTokens.envFuncs)) {
                         resultElements = PhpCompletionTokens.envNames;
                     }
