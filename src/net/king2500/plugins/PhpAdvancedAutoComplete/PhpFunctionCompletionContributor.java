@@ -249,7 +249,7 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                     if (methodMatches(funcName, paramIndex, PhpCompletionTokens.socketFuncs)) {
                         resultElements = PhpCompletionTokens.socketTransports;
                         resultParams = new String[resultElements.length];
-                        Arrays.fill(resultParams, "<host>");
+                        Arrays.fill(resultParams, funcName.equals("stream_socket_client") ? "<host>:<port>" : "<host>");
                     }
 
                     if (methodMatches(funcName, paramIndex, PhpCompletionTokens.envFuncs)) {
