@@ -1,5 +1,7 @@
 package net.king2500.plugins.PhpAdvancedAutoComplete;
 
+import java.util.HashMap;
+
 public class PhpCompletionTokens {
 
     public static String[] httpHeaderResponseFuncs = { "header", "header_remove" };
@@ -94,6 +96,7 @@ public class PhpCompletionTokens {
         "Cookie",
         "Date",
         "DNT",
+        "Downlink",
         "DPR",
         "Early-Data",
         "Expect",
@@ -127,6 +130,79 @@ public class PhpCompletionTokens {
         "X-Requested-With",
     };
 
+    public final static HashMap<String, String> httpHeaderResponseFieldsSyntax = new HashMap<String, String>() {{
+        put("Accept-Ranges", ": bytes | none");
+        put("Accept-CH", ": <field>, <field>, ...");
+        put("Accept-CH-Lifetime", ": <delta-seconds>");
+        put("Access-Control-Allow-Credentials", ": true");
+        put("Access-Control-Allow-Headers", ": <header>, <header>, ...");
+        put("Access-Control-Allow-Methods", ": <method>, <method>, ...");
+        put("Access-Control-Allow-Origin", ": * | <origin> | null");
+        put("Access-Control-Expose-Headers", ": <header>, <header>, ...");
+        put("Access-Control-Max-Age", ": <delta-seconds>");
+        put("Age", ": <delta-seconds>");
+        put("Allow", ": <method>, <method>, ...");
+        put("Cache-Control", ": <directive>, <directive>, ...");
+        put("Clear-Site-Data", ": \"*\" | \"<directive>\", \"<directive>\", ...");
+        put("Connection", ": close");
+        put("Content-DPR", ": <pixel-ratio>");
+        put("Content-Encoding", ": <encoding>, <encoding>, ...");
+        put("Content-Language", ": <language-tag>, <language-tag>, ...");
+        put("Content-Length", ": <length>");
+        put("Content-Location", ": <url>");
+        put("Content-MD5", ": <base64-encoded-checksum>");
+        put("Content-Disposition", ": inline | attachment[; filename=\"name.ext\"]");
+        put("Content-Range", ": <unit> <range-start>-<range-end>/<size>");
+        put("Content-Security-Policy", ": <policy-directive>; <policy-directive>; ...");
+        put("Content-Security-Policy-Report-Only", ": <policy-directive>; <policy-directive>; ...");
+        put("Content-Type", ": <mime-type>[; charset=<charset>]");
+        put("Cross-Origin-Resource-Policy", ": same-site | same-origin");
+        put("Date", ": <day-name>, <day> <month> <year> <hour>:<minute>:<second> GMT");
+        put("ETag", ": [W/]\"<etag-value>\"");
+        put("Expect-CT", ": <directive>, <directive>, ...");
+        put("Expires", ": <http-date>");
+        put("Feature-Policy", ": <directive> <allowlist>; <directive> <allowlist>; ...");
+        put("Keep-Alive", ": <parameters>, <parameters>, ...");
+        put("Large-Allocation", ": 0 | <megabytes>");
+        put("Last-Modified", ": <day-name>, <day> <month> <year> <hour>:<minute>:<second> GMT");
+        put("Link", ": <<link-uri>>; rel=\"<param>\"");
+        put("Location", ": <url>");
+        put("P3P", ": CP=\"<policy>\"");
+        put("Pragma", ": no-cache");
+        put("Proxy-Authenticate", ": <type> realm=<realm>");
+        put("Public-Key-Pins", ": <directive>; <directive>; ...");
+        put("Public-Key-Pins-Report-Only", ": <directive>; <directive>; ...");
+        put("Referrer-Policy", ": <policy>");
+        put("Refresh", ": <seconds>; url=<url>");
+        put("Retry-After", ": <http-date> | <delay-seconds>");
+        put("Server", ": <product>");
+        put("Server-Timing", ": <metric>[;<param>=<val>], <metric>, ...");
+        put("Set-Cookie", ": <cookie-name>=<cookie-value>[; <param>=<val>][; <param>] ...");
+        put("SourceMap", ": <url>");
+        put("Status", ": <status-code> <message>");
+        put("Strict-Transport-Security", ": max-age=<expire-time>[; includeSubDomains][; preload]");
+        put("Timing-Allow-Origin", ": * | <origin>, <origin>, ...");
+        put("Tk", ": <directive>");
+        put("Trailer", ": <header>, <header>, ...");
+        put("Transfer-Encoding", ": <encoding>, <encoding>, ...");
+        put("Vary", ": * | <header-name>, <header-name>, ...");
+        put("Via", ": [<protocol-name>/]<protocol-version> <host>[:<port>], ...");
+        put("Warning", ": <warn-code> <warn-agent> <warn-text> [<warn-date>]");
+        put("WWW-Authenticate", ": <type> realm=<realm>");
+        put("X-Content-Security-Policy", ": <policy-directive>; <policy-directive>; ...");
+        put("X-Content-Type-Options", ": nosniff");
+        put("X-DNS-Prefetch-Control", ": on | off");
+        put("X-Frame-Options", ": deny | sameorigin | allow-from <url>");
+        put("X-Powered-By", ": <product>");
+        put("X-Robots-Tag", ": all | <directive>, <directive>, ...");
+        put("X-SourceMap", ": <url>");
+        put("X-UA-Compatible", ": <condition>,<condition>,...");
+        put("X-WebKit-CSP", ": <policy-directive>; <policy-directive>; ...");
+        put("X-XSS-Protection", ": 0 | 1 | 1; mode=block | 1; report=<reporting-URI>");
+        put("HTTP/1.0", " <status-code> <message>");
+        put("HTTP/1.1", " <status-code> <message>");
+    }};
+
     public static String[] httpHeaderDeprecatedFields = {
         "Pragma", "Status", "X-SourceMap",
     };
@@ -142,7 +218,7 @@ public class PhpCompletionTokens {
     public static String[] httpACAllowOrigin = { "*", "https://", "null" };
     public static String[] httpCacheControlDirectives = { "public", "private", "must-revalidate", "no-cache", "no-store", "no-transform", "proxy-revalidate", "max-age=", "s-maxage=", "immutable", "stale-while-revalidate=", "stale-if-error=" };
     public static String[] httpClearSiteDataDirectives = { "\"cache\"", "\"cookies\"", "\"storage\"", "\"executionContexts\"", "\"*\"" };
-    public static String[] httpClientHintDirectives = { "DPR", "Viewport-Width", "Width" };
+    public static String[] httpClientHintDirectives = { "Downlink", "DPR", "Viewport-Width", "Width" };
     public static String[] httpConnectionOptions = { "close" };
     public static String[] httpEncodingTokens = { "gzip", "compress", "deflate", "identity", "br" };
     public static String[] isoLanguageCodes = { "aa", "ab", "af", "am", "ar-AE", "ar-BH", "ar-DZ", "ar-EG", "ar-IQ", "ar-JO", "ar-KW", "ar-LB", "ar-LY", "ar-MA", "ar-OM", "ar-QA", "ar-SA", "ar-SY", "ar-TN", "ar-YE", "ar", "as", "ay", "az", "ba", "be", "bg", "bh", "bi", "bn", "bo", "br", "ca", "cel-gaulish", "co", "cs", "cy", "da", "de-AT", "de-CH", "de-DE", "de-LI", "de-LU", "de", "div", "dz", "el", "en-AU", "en-BZ", "en-CA", "en-GB", "en-IE", "en-JM", "en-NZ", "en-PH", "en-TT", "en-US", "en-ZA", "en-ZW", "en", "eo", "es-AR", "es-BO", "es-CL", "es-CO", "es-CR", "es-DO", "es-EC", "es-ES", "es-GT", "es-HN", "es-MX", "es-NI", "es-PA", "es-PE", "es-PR", "es-PY", "es-SV", "es-US", "es-UY", "es-VE", "es", "et", "eu", "fa", "fi", "fj", "fo", "fr-BE", "fr-CA", "fr-CH", "fr-FR", "fr-LU", "fr-MC", "fr", "fy", "ga", "gd", "gl", "gn", "gu", "ha", "he", "hi", "hr", "hu", "hy", "ia", "id", "ie", "ik", "is", "it-CH", "it-IT", "it", "iu", "iw", "ja", "ji", "jv", "ka", "kk", "kl", "km", "kn", "ko", "kok", "ks", "ku", "ky", "kz", "la", "ln", "lo", "lt", "lv", "mg", "mi", "mk", "ml", "mn", "mo", "mr", "ms", "mt", "my", "na", "nb-NO", "ne", "nl-BE", "nl-NL", "nl", "nn-NO", "no-NO", "no", "oc", "om", "or", "pa", "pl", "ps", "pt-BR", "pt-PT", "pt", "qu", "rm", "rn", "ro-MD", "ro-RO", "ro", "ru-MD", "ru-RU", "ru", "rw", "sa", "sb", "sd", "sg", "sh", "si", "sk", "sl", "sm", "sn", "so", "sq", "sr", "ss", "st", "su", "sv-FI", "sv-SE", "sv", "sw", "sx", "syr", "ta", "te", "tg", "th", "ti", "tk", "tl", "tn", "to", "tr", "ts", "tt", "tw", "ug", "uk", "ur", "uz", "vi", "vo", "wo", "xh", "yi", "yo", "za", "zh-CN", "zh-HK", "zh-MO", "zh-SG", "zh-TW", "zh-guoyu", "zh-min-nan", "zh-xiang", "zh", "zu", "x-elmer", "x-hacker", "x-klingon", "x-pig-latin", "x-pirate" };

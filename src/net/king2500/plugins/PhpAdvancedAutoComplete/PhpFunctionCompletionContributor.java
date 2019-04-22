@@ -252,15 +252,26 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
 
                     if(methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.httpHeaderResponseFuncs, 0)) {
                         boolean isFullHeader = funcName.equals("header");
-                        if (!stringPrefix.contains(":")) {
+                        if (!stringPrefix.contains(":") && !stringPrefix.startsWith("HTTP/1.0") && !stringPrefix.startsWith("HTTP/1.1")) {
                             resultElements = PhpCompletionTokens.httpHeaderResponseFields;
                             if (isFullHeader) {
                                 resultPostfix = ": ";
                             }
+                            resultBold = true;
                             resultPostfixAlt = " ";
                             resultPostfixExceptions = new String[] { "HTTP/1.0", "HTTP/1.1" };
                             deprecatedElements = PhpCompletionTokens.httpHeaderDeprecatedFields;
                             overwriteExistingCompletions = true;
+
+                            resultParams = new String[resultElements.length];
+
+                            for (int i = 0; i < resultElements.length; i++) {
+                                String header = resultElements[i];
+                                resultParams[i] = "";
+                                if (PhpCompletionTokens.httpHeaderResponseFieldsSyntax.containsKey(header)) {
+                                    resultParams[i] = PhpCompletionTokens.httpHeaderResponseFieldsSyntax.get(header);
+                                }
+                            }
                         }
                         else if (isFullHeader) {
                             result = result.withPrefixMatcher(stringPrefix.substring(stringPrefix.contains(": ") ? stringPrefix.indexOf(": ") + 2 : stringPrefix.indexOf(":") + 1));
