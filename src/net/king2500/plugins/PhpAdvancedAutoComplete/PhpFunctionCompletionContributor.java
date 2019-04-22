@@ -260,22 +260,21 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                         boolean isFullHeader = funcName.equals("header");
                         if (!stringPrefix.contains(":") && !stringPrefix.startsWith("HTTP/1.0") && !stringPrefix.startsWith("HTTP/1.1")) {
                             resultElements = PhpCompletionTokens.httpHeaderResponseFields;
-                            if (isFullHeader) {
-                                resultPostfix = ": ";
-                            }
-                            resultBold = true;
                             resultPostfixAlt = " ";
                             resultPostfixExceptions = new String[] { "HTTP/1.0", "HTTP/1.1" };
                             deprecatedElements = PhpCompletionTokens.httpHeaderDeprecatedFields;
                             overwriteExistingCompletions = true;
+                            if (isFullHeader) {
+                                resultBold = true;
+                                resultPostfix = ": ";
+                                resultParams = new String[resultElements.length];
 
-                            resultParams = new String[resultElements.length];
-
-                            for (int i = 0; i < resultElements.length; i++) {
-                                String header = resultElements[i];
-                                resultParams[i] = "";
-                                if (PhpCompletionTokens.httpHeaderResponseFieldsSyntax.containsKey(header)) {
-                                    resultParams[i] = PhpCompletionTokens.httpHeaderResponseFieldsSyntax.get(header);
+                                for (int i = 0; i < resultElements.length; i++) {
+                                    String header = resultElements[i];
+                                    resultParams[i] = "";
+                                    if (PhpCompletionTokens.httpHeaderResponseFieldsSyntax.containsKey(header)) {
+                                        resultParams[i] = PhpCompletionTokens.httpHeaderResponseFieldsSyntax.get(header);
+                                    }
                                 }
                             }
                         }
