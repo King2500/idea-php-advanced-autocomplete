@@ -18,7 +18,7 @@ import java.io.IOException;
  * Time: 18:04
  * To change this template use File | Settings | File Templates.
  */
-public class XmlHelper {
+public class XmlUtil {
     public static NodeList getNodesByXPath(File file, String xpath) {
         if(!file.isFile() || !file.canRead())
             return null;

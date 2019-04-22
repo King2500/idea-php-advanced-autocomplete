@@ -12,9 +12,9 @@ import com.jetbrains.php.completion.PhpCompletionUtil;
 import com.jetbrains.php.lang.PhpLanguage;
 import com.jetbrains.php.lang.lexer.PhpTokenTypes;
 import com.jetbrains.php.lang.parser.PhpElementTypes;
+import net.king2500.plugins.PhpAdvancedAutoComplete.utils.DatabaseUtil;
 import net.king2500.plugins.PhpAdvancedAutoComplete.utils.DateTimeUtil;
-import net.king2500.plugins.PhpAdvancedAutoComplete.utils.DbHelper;
-import net.king2500.plugins.PhpAdvancedAutoComplete.utils.PhpHelper;
+import net.king2500.plugins.PhpAdvancedAutoComplete.utils.PhpElementsUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -60,7 +60,7 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                                            ProcessingContext context,
                                            @NotNull CompletionResultSet result) {
 
-                    String funcName = PhpHelper.getCanonicalFuncName(parameters.getPosition().getParent().getParent().getParent());
+                    String funcName = PhpElementsUtil.getCanonicalFuncName(parameters.getPosition().getParent().getParent().getParent());
                     Project project = parameters.getPosition().getProject();
                     String[] resultElements = {};
                     String[] resultInfos = {};
@@ -75,7 +75,7 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                     String splitter = ",";
                     boolean overwriteExistingCompletions = false;
 
-                    int paramIndex = PhpHelper.getParameterIndex(parameters.getPosition().getParent());
+                    int paramIndex = PhpElementsUtil.getParameterIndex(parameters.getPosition().getParent());
 
                     if(funcName == null) {
                         return;
@@ -90,7 +90,7 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
 
                     if(methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.dbConnectFuncs, 0)) {
                         if(funcName.startsWith("PDO::")) {
-                            resultElements = DbHelper.getPdoDSNs(project, "mysql://");
+                            resultElements = DatabaseUtil.getPdoDSNs(project, "mysql://");
 
                             if(resultElements == null) {
                                 resultElements = prefixArray("mysql:dbname=;host=", PhpCompletionTokens.dbConnectElements);
@@ -99,7 +99,7 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                             resultElements = concatArrays(resultElements, prefixArray("mysql:dbname=;host=", PhpCompletionTokens.dbConnectElements));
                         }
                         else {
-                            resultElements = DbHelper.getDbHostnames(project, "mysql://");
+                            resultElements = DatabaseUtil.getDbHostnames(project, "mysql://");
                             if(resultElements == null) {
                                 resultElements = PhpCompletionTokens.dbConnectElements;
                             }
@@ -109,7 +109,7 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                     }
 
                     if(methodMatches(funcName, paramIndex, PhpCompletionTokens.dbConnectUserFuncs)) {
-                        resultElements = DbHelper.getDbUsers(project, "mysql://");
+                        resultElements = DatabaseUtil.getDbUsers(project, "mysql://");
                     }
 
                     if(methodMatches(funcName, paramIndex, PhpCompletionTokens.dbCharSetFuncs)) {
@@ -118,7 +118,7 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                     }
 
                     if(methodMatches(funcName, paramIndex, PhpCompletionTokens.dbSelectDbFuncs)) {
-                        resultElements = DbHelper.getDbNames(project, "mysql://");
+                        resultElements = DatabaseUtil.getDbNames(project, "mysql://");
                     }
 
                     if(methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.phpExtensionFuncs, 0)) {
@@ -126,7 +126,7 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                     }
 
 //                    if(methodMatches(funcName, paramIndex, PhpCompletionTokens.fileFuncs)) {
-//                        resultElements = FileHelper.getRelativeFiles(parameters.getPosition().getContainingFile().getOriginalFile());
+//                        resultElements = FileUtil.getRelativeFiles(parameters.getPosition().getContainingFile().getOriginalFile());
 //                    }
 
                     if (methodMatches(funcName, paramIndex, PhpCompletionTokens.fileModeFuncs)) {
@@ -317,7 +317,7 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                                 resultElements = PhpCompletionTokens.isoLanguageCodes;
                             }
                             else if(stringPrefix.startsWith("Content-Location: ") || stringPrefix.startsWith("Location: ")) {
-//                                resultElements = prefixArray("/", FileHelper.getProjectFiles(project));
+//                                resultElements = prefixArray("/", FileUtil.getProjectFiles(project));
 //                                resultElements = concatArrays(new String[] { "/" }, resultElements);
                             }
                             else if(stringPrefix.startsWith("Content-Range: ")) {

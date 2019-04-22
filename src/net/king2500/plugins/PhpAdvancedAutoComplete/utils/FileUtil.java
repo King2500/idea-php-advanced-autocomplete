@@ -20,7 +20,7 @@ import java.util.Map;
  * Date: 16.08.13
  * Time: 19:09
  */
-public class FileHelper {
+public class FileUtil {
     static final public int TYPE_ALL = 0;
     static final public int TYPE_FILE = 1;
     static final public int TYPE_DIR = 2;

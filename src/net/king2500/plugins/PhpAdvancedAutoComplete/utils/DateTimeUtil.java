@@ -154,9 +154,9 @@ public class DateTimeUtil {
     }
 
     private static int getCurrentTimeInBeats() {
-        java.util.Calendar cal = java.util.Calendar.getInstance( java.util.TimeZone.getTimeZone( "GMT+01:00" ) );
+        java.util.Calendar cal = java.util.Calendar.getInstance(java.util.TimeZone.getTimeZone("GMT+01:00"));
         //noinspection UnnecessaryLocalVariable
-        int beats = (int) ( ( cal.get( java.util.Calendar.SECOND ) + ( cal.get( java.util.Calendar.MINUTE ) * 60 ) + ( cal.get( java.util.Calendar.HOUR_OF_DAY ) * 3600 ) ) / 86.4 );
+        int beats = (int) ((cal.get(java.util.Calendar.SECOND) + (cal.get(java.util.Calendar.MINUTE) * 60) + (cal.get(java.util.Calendar.HOUR_OF_DAY) * 3600)) / 86.4);
         return beats;
     }
 }

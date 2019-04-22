@@ -1,9 +1,12 @@
 package net.king2500.plugins.PhpAdvancedAutoComplete;
 
 import com.intellij.codeInsight.lookup.LookupElement;
-import com.intellij.psi.*;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFileSystemItem;
+import com.intellij.psi.PsiReference;
+import com.intellij.psi.PsiReferenceBase;
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression;
-import net.king2500.plugins.PhpAdvancedAutoComplete.utils.FileHelper;
+import net.king2500.plugins.PhpAdvancedAutoComplete.utils.FileUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -36,7 +39,7 @@ public class GenericFileReference extends PsiReferenceBase<PsiElement> implement
     @Nullable
     @Override
     public PsiElement resolve() {
-        Map<String, PsiFileSystemItem> filesByName = FileHelper.getRelativeFilesByName(getElement().getContainingFile(), fileType);
+        Map<String, PsiFileSystemItem> filesByName = FileUtil.getRelativeFilesByName(getElement().getContainingFile(), fileType);
 
         return filesByName.get(fileName);
     }
@@ -46,7 +49,7 @@ public class GenericFileReference extends PsiReferenceBase<PsiElement> implement
     public Object[] getVariants() {
         List<LookupElement> results = new ArrayList<LookupElement>();
 
-        Map<String, PsiFileSystemItem> filesByName = FileHelper.getRelativeFilesByName(getElement().getContainingFile(), fileType);
+        Map<String, PsiFileSystemItem> filesByName = FileUtil.getRelativeFilesByName(getElement().getContainingFile(), fileType);
         for (Map.Entry<String, PsiFileSystemItem> entry : filesByName.entrySet()) {
             results.add(
                    new GenericFileLookupElement(entry.getKey(), entry.getValue())

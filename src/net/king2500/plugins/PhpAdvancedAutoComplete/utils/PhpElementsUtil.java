@@ -10,7 +10,7 @@ import com.jetbrains.php.lang.psi.elements.*;
  * Date: 07.07.13
  * Time: 21:08
  */
-public class PhpHelper {
+public class PhpElementsUtil {
 
     public static int getParameterIndex(PsiElement paramElement) {
         int index = 0;

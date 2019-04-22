@@ -10,7 +10,7 @@ import com.jetbrains.php.lang.psi.elements.FunctionReference;
 import com.jetbrains.php.lang.psi.elements.ParameterList;
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression;
 import com.jetbrains.php.lang.psi.elements.impl.NewExpressionImpl;
-import net.king2500.plugins.PhpAdvancedAutoComplete.utils.PhpHelper;
+import net.king2500.plugins.PhpAdvancedAutoComplete.utils.PhpElementsUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -40,8 +40,8 @@ public class PhpFileReferenceContributor extends PsiReferenceContributor {
                             return new PsiReference[0];
                         }
 
-                        String funcName = PhpHelper.getCanonicalFuncName(psiElement.getParent().getParent());
-                        int paramIndex = PhpHelper.getParameterIndex(psiElement);
+                        String funcName = PhpElementsUtil.getCanonicalFuncName(psiElement.getParent().getParent());
+                        int paramIndex = PhpElementsUtil.getParameterIndex(psiElement);
 
                         if (funcName == null) {
                             return new PsiReference[0];

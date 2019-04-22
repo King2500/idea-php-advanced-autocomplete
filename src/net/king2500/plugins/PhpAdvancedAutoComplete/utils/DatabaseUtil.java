@@ -14,7 +14,7 @@ import java.util.List;
  * Date: 07.07.13
  * Time: 22:43
  */
-public class DbHelper {
+public class DatabaseUtil {
     public static String[] getDbHostnames(Project project, String jdbcPrefix)
     {
         List<String> hostnames = new ArrayList<String>();
@@ -31,7 +31,7 @@ public class DbHelper {
 
         String jdbcPrefixQuoted = '"' + jdbcPrefix + '"';
 
-        NodeList nodes = XmlHelper.getNodesByXPath(dataSourcesFile, "/project/component/data-source/jdbc-url/text()[starts-with(., " + jdbcPrefixQuoted + ")]");
+        NodeList nodes = XmlUtil.getNodesByXPath(dataSourcesFile, "/project/component/data-source/jdbc-url/text()[starts-with(., " + jdbcPrefixQuoted + ")]");
 
         if(nodes == null)
             return null;
@@ -67,7 +67,7 @@ public class DbHelper {
 
         String jdbcPrefixQuoted = '"' + jdbcPrefix + '"';
 
-        NodeList nodes = XmlHelper.getNodesByXPath(dataSourcesFile, "/project/component/data-source[jdbc-url/text()[starts-with(., " + jdbcPrefixQuoted + ")]]/user-name/text()");
+        NodeList nodes = XmlUtil.getNodesByXPath(dataSourcesFile, "/project/component/data-source[jdbc-url/text()[starts-with(., " + jdbcPrefixQuoted + ")]]/user-name/text()");
 
         if(nodes == null)
             return null;
@@ -97,7 +97,7 @@ public class DbHelper {
         String jdbcPrefixQuoted = '"' + jdbcPrefix + '"';
 
         // Search in JDBC URL
-        NodeList nodes1 = XmlHelper.getNodesByXPath(dataSourcesFile, "/project/component/data-source/jdbc-url/text()[starts-with(., " + jdbcPrefixQuoted + ")]");
+        NodeList nodes1 = XmlUtil.getNodesByXPath(dataSourcesFile, "/project/component/data-source/jdbc-url/text()[starts-with(., " + jdbcPrefixQuoted + ")]");
 
         if(nodes1 == null)
             return null;
@@ -118,7 +118,7 @@ public class DbHelper {
         }
 
         // Search in selected schemas
-        NodeList nodes2 = XmlHelper.getNodesByXPath(dataSourcesFile, "/project/component/data-source[jdbc-url/text()[starts-with(., " + jdbcPrefixQuoted + ")]]/*[self::schema-pattern or self::default-schemas]/text()");
+        NodeList nodes2 = XmlUtil.getNodesByXPath(dataSourcesFile, "/project/component/data-source[jdbc-url/text()[starts-with(., " + jdbcPrefixQuoted + ")]]/*[self::schema-pattern or self::default-schemas]/text()");
 
         if(nodes2 == null)
             return null;
@@ -157,7 +157,7 @@ public class DbHelper {
 
         String jdbcPrefixQuoted = '"' + jdbcPrefix + '"';
 
-        NodeList nodes = XmlHelper.getNodesByXPath(dataSourcesFile, "/project/component/data-source[jdbc-url/text()[starts-with(., " + jdbcPrefixQuoted + ")]]");
+        NodeList nodes = XmlUtil.getNodesByXPath(dataSourcesFile, "/project/component/data-source[jdbc-url/text()[starts-with(., " + jdbcPrefixQuoted + ")]]");
 
         if(nodes == null)
             return null;
