@@ -1,10 +1,7 @@
 package net.king2500.plugins.PhpAdvancedAutoComplete.utils;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.TimeZone;
+import java.util.*;
 
 public class DateTimeUtil {
 
@@ -39,7 +36,7 @@ public class DateTimeUtil {
         put("r", "EEE, d MMM yyyy HH:mm:ss Z");
     }};
 
-    public static String formatPhpDateTime(String phpFormat) {
+    public static String formatPhpDateTime(String phpFormat, Locale locale) {
         StringBuilder str = new StringBuilder();
         for (char phpChar : phpFormat.toCharArray()) {
             String phpCharStr = Character.toString(phpChar);
@@ -47,7 +44,7 @@ public class DateTimeUtil {
                 switch (phpChar) {
                     case 'S':
                         // S -> st, nd, rd, th
-                        String day = formatDateTime("d");
+                        String day = formatDateTime("d", locale);
                         switch (day.charAt(day.length() - 1)) {
                             case '1':
                                 str.append("st");
@@ -68,7 +65,7 @@ public class DateTimeUtil {
 
                     case 'w':
                         // w -> 0 (Sun) ... 6 (Sat)
-                        String weekday = formatDateTime("u");
+                        String weekday = formatDateTime("u", locale);
                         if (weekday.equals("7")) {
                             weekday = "0";
                         }
@@ -77,8 +74,8 @@ public class DateTimeUtil {
 
                     case 't':
                         // t -> Number of days in month
-                        String month = formatDateTime("M");
-                        String year = formatDateTime("y");
+                        String month = formatDateTime("M", locale);
+                        String year = formatDateTime("y", locale);
                         byte numDays = 31;
                         if ("4".equals(month) || "6".equals(month) || "9".equals(month) || "11".equals(month)) {
                             numDays = 30;
@@ -91,13 +88,13 @@ public class DateTimeUtil {
 
                     case 'L':
                         // L -> Leap year = 0 or 1
-                        String y = formatDateTime("y");
+                        String y = formatDateTime("y", locale);
                         str.append(isLeapYear(Integer.parseInt(y)) ? '1' : '0');
                         continue;
 
                     case 'a':
                         // a -> am/pm in lowercase
-                        String dayTime = formatDateTime("a");
+                        String dayTime = formatDateTime("a", locale);
                         str.append(dayTime.toLowerCase());
                         continue;
 
@@ -137,13 +134,13 @@ public class DateTimeUtil {
                 continue;
             }
             String javaPattern = dateTimePhpToJavaPattern.get(phpCharStr);
-            str.append(formatDateTime(javaPattern));
+            str.append(formatDateTime(javaPattern, locale));
         }
         return str.toString();
     }
 
-    private static String formatDateTime(String pattern) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+    private static String formatDateTime(String pattern, Locale locale) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(pattern, locale);
         return dateFormat.format(new Date());
     }
 

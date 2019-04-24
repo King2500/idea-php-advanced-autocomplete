@@ -19,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -144,7 +145,7 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
 
                         for (int i = 0; i < PhpCompletionTokens.dateFormatTokens.length; i++) {
                             String format = PhpCompletionTokens.dateFormatTokens[i];
-                            String dateTimeText = DateTimeUtil.formatPhpDateTime(format);
+                            String dateTimeText = DateTimeUtil.formatPhpDateTime(format, Locale.ENGLISH);
                             resultParams[i] = !dateTimeText.isEmpty() ? (" = " + dateTimeText) : "";
                         }
                     }
