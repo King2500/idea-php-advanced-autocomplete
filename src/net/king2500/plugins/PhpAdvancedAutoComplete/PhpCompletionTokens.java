@@ -229,6 +229,7 @@ public class PhpCompletionTokens {
     public static String[] httpExpectCT = { "report-uri=", "enforce", "max-age=" };
     public static String[] httpFeaturePolicyDirectives = { "autoplay", "camera", "document-domain", "encrypted-media", "fullscreen", "geolocation", "microphone", "midi", "payment", "vr", "xr" };
     public static String[] httpKeepAliveDirectives = { "timeout=", "max=" };
+    public static String[] httpLocationBaseUrls = { "/", "http://", "https://" };
     public static String[] httpPragmaDirectives = { "no-cache" };
     public static String[] httpAuthenticationTypes = { "Basic", "Digest", "NTLM" };
     public static String[] httpPublicKeyPinsDirectives = { "pin-sha256=", "max-age=", "includeSubDomains", "report-uri=" };

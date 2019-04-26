@@ -68,6 +68,7 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                     String[] resultParams = {};
                     String resultPostfix = "";
                     String resultPostfixAlt = "";
+                    String resultTailText = null;
                     String[] resultPostfixExceptions = {};
                     boolean resultBold = false;
                     boolean resultCaseSensitivity = true;
@@ -75,6 +76,7 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                     boolean allowMultiple = false;
                     String splitter = ",";
                     boolean overwriteExistingCompletions = false;
+                    InsertHandler<LookupElement> insertHandler = null;
 
                     int paramIndex = PhpElementsUtil.getParameterIndex(parameters.getPosition().getParent());
 
@@ -333,9 +335,16 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                                 allowMultiple = true;
                                 resultElements = PhpCompletionTokens.isoLanguageCodes;
                             }
-                            else if(stringPrefix.startsWith("Content-Location: ") || stringPrefix.startsWith("Location: ")) {
+//                            else if(stringPrefix.startsWith("Content-Location: ") || stringPrefix.startsWith("Location: ")) {
 //                                resultElements = prefixArray("/", FileUtil.getProjectFiles(project));
 //                                resultElements = concatArrays(new String[] { "/" }, resultElements);
+//                            }
+                            else if((stringPrefix.equals("Content-Location: ") || stringPrefix.equals("Location: ")
+                                || stringPrefix.startsWith("Content-Location: h") || stringPrefix.startsWith("Location: h"))
+                                && !stringPrefix.contains("://")) {
+                                resultElements = PhpCompletionTokens.httpLocationBaseUrls;
+                                insertHandler = InvokeCompletionInsertHandler.getInstance();
+                                resultTailText = "...";
                             }
                             else if(stringPrefix.startsWith("Content-Range: ")) {
                                 resultElements = new String[] { PhpCompletionTokens.httpRangeTypes[0] };
@@ -485,19 +494,21 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
 
                         if (i < resultParams.length) {
                             builder = builder.withTailText(resultParams[i], true);
+                        } else if (resultTailText != null) {
+                            builder = builder.withTailText(resultTailText, true);
                         }
                         if (i < resultInfos.length) {
                             builder = builder.withTypeText(resultInfos[i]);
                         }
 
-                        InsertHandler<LookupElement> insertHandler = null;
+                        InsertHandler<LookupElement> handler = insertHandler;
 
-                        if ((resultElements[i] + postfix).endsWith(" ")) {
-                            insertHandler = InvokeCompletionInsertHandler.getInstance();
+                        if (handler == null && (resultElements[i] + postfix).endsWith(" ")) {
+                            handler = InvokeCompletionInsertHandler.getInstance();
                         }
 
-                        if (insertHandler != null) {
-                            builder = builder.withInsertHandler(insertHandler);
+                        if (handler != null) {
+                            builder = builder.withInsertHandler(handler);
                         }
 
                         //LookupElement element = builder.withAutoCompletionPolicy(AutoCompletionPolicy.ALWAYS_AUTOCOMPLETE);
