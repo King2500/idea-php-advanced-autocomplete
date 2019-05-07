@@ -161,16 +161,15 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                     if (methodMatches(funcName, paramIndex, PhpCompletionTokens.dateTimeParserFuncs)) {
                         stringPrefix = stringPrefix.toLowerCase();
                         resultCaseSensitivity = false;
+                        overwriteExistingCompletions = true;
 
                         // "1" without trailing space
                         if (patternMatches(DATETIME_NUMBER_ONE, stringPrefix)) {
                             resultElements = PhpCompletionTokens.dateTimeUnits;
-                            result.stopHere();
                         }
                         // numbers like 2, 17 without trailing space
                         else if(patternMatches(DATETIME_NUMBERS, stringPrefix)) {
                             resultElements = PhpCompletionTokens.dateTimeUnits2;
-                            result.stopHere();
                         }
                         else if (stringPrefix.contains(" ")) {
                             result = result.withPrefixMatcher(stringPrefix.substring(stringPrefix.lastIndexOf(" ") + 1));
