@@ -30,11 +30,11 @@ public class PhpFileReferenceContributor extends PsiReferenceContributor {
                     @NotNull
                     @Override
                     public PsiReference[] getReferencesByElement(@NotNull PsiElement psiElement, @NotNull ProcessingContext processingContext) {
-                        if(!(psiElement.getContext() instanceof ParameterList)) {
+                        if (!(psiElement.getContext() instanceof ParameterList)) {
                             return new PsiReference[0];
                         }
 
-                        ParameterList parameterList = (ParameterList)psiElement.getContext();
+                        ParameterList parameterList = (ParameterList) psiElement.getContext();
 
                         if (!(parameterList.getContext() instanceof FunctionReference || parameterList.getContext() instanceof NewExpressionImpl)) {
                             return new PsiReference[0];
@@ -47,37 +47,48 @@ public class PhpFileReferenceContributor extends PsiReferenceContributor {
                             return new PsiReference[0];
                         }
 
-                        if(Arrays.asList(PhpCompletionTokens.fileFuncs).contains(funcName + ":" + paramIndex + ":d")) {
+                        if (Arrays.asList(PhpCompletionTokens.fileFuncs).contains(funcName + ":" + paramIndex + ":d")) {
                             return (new FileReferenceSet(psiElement) {
                                 @Override
                                 protected Condition<PsiFileSystemItem> getReferenceCompletionFilter() {
                                     return FileReferenceSet.DIRECTORY_FILTER;
                                 }
                             }).getAllReferences();
-                        } else if(Arrays.asList(PhpCompletionTokens.fileFuncs).contains(funcName + ":" + paramIndex)) {
+                        } else if (Arrays.asList(PhpCompletionTokens.fileFuncs).contains(funcName + ":" + paramIndex)) {
                             return (new FileReferenceSet(psiElement)).getAllReferences();
                         }
 
-                        String text = ((StringLiteralExpression)psiElement).getContents();
-                        String prefix = "Location: /";
+                        String text = ((StringLiteralExpression) psiElement).getContents();
+                        String prefix1 = "Location: /";
+                        String prefix2 = "Content-Location: /";
 
-                        if (funcName.equals("header") && text.startsWith(prefix)) {
-                            FileReferenceSet referenceSet = new FileReferenceSet(((StringLiteralExpression) psiElement).getContents(), psiElement, prefix.length() + 1, null, false) {
-                                @Override
-                                protected boolean isUrlEncoded() {
-                                    return true;
-                                }
-
-                                @Override
-                                public boolean isEndingSlashNotAllowed() {
-                                    return false;
-                                }
-                            };
-                            referenceSet.addCustomization(FileReferenceSet.DEFAULT_PATH_EVALUATOR_OPTION, FileReferenceSet.ABSOLUTE_TOP_LEVEL);
-                            return referenceSet.getAllReferences();
+                        if (funcName.equals("header")) {
+                            if (text.startsWith(prefix1)) {
+                                return getFileReferenceAfterPrefix(psiElement, prefix1);
+                            }
+                            if (text.startsWith(prefix2)) {
+                                return getFileReferenceAfterPrefix(psiElement, prefix2);
+                            }
                         }
 
                         return new PsiReference[0];
+                    }
+
+                    @NotNull
+                    private PsiReference[] getFileReferenceAfterPrefix(@NotNull PsiElement psiElement, String prefix) {
+                        FileReferenceSet referenceSet = new FileReferenceSet(((StringLiteralExpression) psiElement).getContents(), psiElement, prefix.length() + 1, null, false) {
+                            @Override
+                            protected boolean isUrlEncoded() {
+                                return true;
+                            }
+
+                            @Override
+                            public boolean isEndingSlashNotAllowed() {
+                                return false;
+                            }
+                        };
+                        referenceSet.addCustomization(FileReferenceSet.DEFAULT_PATH_EVALUATOR_OPTION, FileReferenceSet.ABSOLUTE_TOP_LEVEL);
+                        return referenceSet.getAllReferences();
                     }
                 }
         );
