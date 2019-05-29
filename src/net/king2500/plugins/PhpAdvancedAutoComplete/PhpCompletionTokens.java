@@ -117,6 +117,7 @@ public class PhpCompletionTokens {
         "Proxy-Connection",
         "Range",
         "Referer",
+        "Save-Data",
         "TE",
         "Upgrade-Insecure-Requests",
         "User-Agent",
@@ -127,6 +128,7 @@ public class PhpCompletionTokens {
         "X-Forwarded-For",
         "X-Forwarded-Host",
         "X-Forwarded-Proto",
+        "X-Powered-By",
         "X-Requested-With",
     };
 
