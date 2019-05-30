@@ -14,6 +14,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+/**
+ * @author Thomas Schulz <mail@king2500.net>
+ */
 public class PhpHeaderDocumentationProvider implements DocumentationProvider {
 
     @Override
@@ -33,7 +36,7 @@ public class PhpHeaderDocumentationProvider implements DocumentationProvider {
         }
 
 
-        String headerName = ((HeaderDocElement) psiElement).getHeaderName();
+        String headerName = ((HeaderDocElement)psiElement).getHeaderName();
 
         if (!PhpCompletionTokens.httpHeaderFieldsDocumentation.containsKey(headerName)) {
             return null;
