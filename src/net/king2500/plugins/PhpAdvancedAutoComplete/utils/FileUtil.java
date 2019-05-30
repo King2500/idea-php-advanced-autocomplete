@@ -32,20 +32,16 @@ public class FileUtil {
 
         ProjectFileIndex fileIndex = ProjectFileIndex.SERVICE.getInstance(project);
 
-        fileIndex.iterateContentUnderDirectory(projectDirectory, new ContentIterator() {
-            @Override
-            public boolean processFile(VirtualFile file) {
-                String relativePath = file.getPath().replace(projectDirectory.getPath() + "/", "");
+        fileIndex.iterateContentUnderDirectory(projectDirectory, file -> {
+            String relativePath = file.getPath().replace(projectDirectory.getPath() + "/", "");
 
-                //files.add(file.getName());
-                if(!file.isDirectory() && !relativePath.startsWith(".idea/")) {
-                    files.add(relativePath);
-                }
-
-                return true;
+            //files.add(file.getName());
+            if(!file.isDirectory() && !relativePath.startsWith(".idea/")) {
+                files.add(relativePath);
             }
-        }
-        );
+
+            return true;
+        });
 
         return files.toArray(new String[files.size()]);
     }
