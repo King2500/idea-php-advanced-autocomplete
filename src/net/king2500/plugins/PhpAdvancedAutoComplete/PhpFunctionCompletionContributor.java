@@ -7,20 +7,23 @@ import com.intellij.openapi.project.Project;
 import com.intellij.patterns.PlatformPatterns;
 import com.intellij.patterns.PsiElementPattern;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.ProcessingContext;
 import com.jetbrains.php.completion.PhpCompletionUtil;
 import com.jetbrains.php.lang.PhpLanguage;
 import com.jetbrains.php.lang.lexer.PhpTokenTypes;
 import com.jetbrains.php.lang.parser.PhpElementTypes;
+import com.jetbrains.php.lang.psi.elements.FunctionReference;
+import com.jetbrains.php.lang.psi.elements.ParameterList;
+import com.jetbrains.php.lang.psi.elements.PhpNamespace;
+import com.jetbrains.php.lang.psi.elements.StringLiteralExpression;
 import net.king2500.plugins.PhpAdvancedAutoComplete.utils.DatabaseUtil;
 import net.king2500.plugins.PhpAdvancedAutoComplete.utils.DateTimeUtil;
 import net.king2500.plugins.PhpAdvancedAutoComplete.utils.FileUtil;
 import net.king2500.plugins.PhpAdvancedAutoComplete.utils.PhpElementsUtil;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -465,6 +468,10 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                         }
                     }
 
+                    if (funcName.equals("argumentsSet")) {
+                        resultElements = collectMetaArgumentsSets(parameters.getPosition());
+                    }
+
                     if(resultElements == null)
                         return;
 
@@ -549,6 +556,32 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                 }
             }
         );
+    }
+
+    private String[] collectMetaArgumentsSets(PsiElement position) {
+        Collection<String> argumentsSets = new ArrayList<>();
+
+        PhpNamespace root = PsiTreeUtil.getParentOfType(position, PhpNamespace.class);
+        if (root == null || !"PHPSTORM_META".equals(root.getName())) {
+            return new String[0];
+        }
+
+        Collection<ParameterList> arguments = PsiTreeUtil.findChildrenOfType(root, ParameterList.class);
+        for (ParameterList args : arguments) {
+            PsiElement parent = args.getParent();
+            if (!(parent instanceof FunctionReference) || !"registerArgumentsSet".equals(((FunctionReference) parent).getName())) {
+                continue;
+            }
+
+            StringLiteralExpression arg0 = PsiTreeUtil.findChildOfType(args, StringLiteralExpression.class);
+            if (arg0 == null) {
+                continue;
+            }
+
+            argumentsSets.add(arg0.getContents());
+        }
+
+        return argumentsSets.toArray(new String[0]);
     }
 
     @Override
