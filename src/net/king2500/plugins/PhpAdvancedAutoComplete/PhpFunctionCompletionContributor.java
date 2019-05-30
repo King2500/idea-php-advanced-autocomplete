@@ -14,6 +14,7 @@ import com.jetbrains.php.lang.lexer.PhpTokenTypes;
 import com.jetbrains.php.lang.parser.PhpElementTypes;
 import net.king2500.plugins.PhpAdvancedAutoComplete.utils.DatabaseUtil;
 import net.king2500.plugins.PhpAdvancedAutoComplete.utils.DateTimeUtil;
+import net.king2500.plugins.PhpAdvancedAutoComplete.utils.FileUtil;
 import net.king2500.plugins.PhpAdvancedAutoComplete.utils.PhpElementsUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -334,10 +335,11 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                                 allowMultiple = true;
                                 resultElements = PhpCompletionTokens.isoLanguageCodes;
                             }
-//                            else if(stringPrefix.startsWith("Content-Location: ") || stringPrefix.startsWith("Location: ")) {
-//                                resultElements = prefixArray("/", FileUtil.getProjectFiles(project));
-//                                resultElements = concatArrays(new String[] { "/" }, resultElements);
-//                            }
+                            else if(stringPrefix.startsWith("Content-Location: /") || stringPrefix.startsWith("Location: /")) {
+                                overwriteExistingCompletions = true;
+                                resultElements = prefixArray("/", FileUtil.getProjectFiles(project));
+                                resultElements = concatArrays(new String[] { "/" }, resultElements);
+                            }
                             else if((stringPrefix.equals("Content-Location: ") || stringPrefix.equals("Location: ")
                                 || stringPrefix.startsWith("Content-Location: h") || stringPrefix.startsWith("Location: h"))
                                 && !stringPrefix.contains("://")) {
