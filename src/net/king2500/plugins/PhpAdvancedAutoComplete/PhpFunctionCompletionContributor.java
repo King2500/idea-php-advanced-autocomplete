@@ -422,6 +422,7 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                                 resultElements = filteredHeaderFields.toArray(resultElements);
                             }
                             else if(stringPrefix.startsWith("Transfer-Encoding: ")) {
+                                allowMultiple = true;
                                 resultElements = PhpCompletionTokens.httpTransferEncodingValues;
                             }
                             else if(stringPrefix.startsWith("Vary: ")) {
