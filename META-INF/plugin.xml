@@ -126,6 +126,7 @@
       <completion.confidence language="PHP" implementationClass="net.king2500.plugins.PhpAdvancedAutoComplete.PhpParameterStringCompletionConfidence"
                              id="asTrue" order="first"/>
 
+      <typedHandler implementation="net.king2500.plugins.PhpAdvancedAutoComplete.PhpFunctionParameterTypedHandler"/>
       <!--<typedHandler implementation="net.king2500.plugins.PhpAdvancedAutoComplete.PhpAutoPopupSpaceTypedHandler"/>-->
   </extensions>
 </idea-plugin>
