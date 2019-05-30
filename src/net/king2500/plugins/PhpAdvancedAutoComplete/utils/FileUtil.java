@@ -15,10 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Thomas
- * Date: 16.08.13
- * Time: 19:09
+ * @author Thomas Schulz <mail@king2500.net>
  */
 public class FileUtil {
     static final public int TYPE_ALL = 0;

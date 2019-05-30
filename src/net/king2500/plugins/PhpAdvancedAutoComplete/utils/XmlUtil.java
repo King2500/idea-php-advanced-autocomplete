@@ -12,16 +12,13 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Thomas
- * Date: 07.07.13
- * Time: 18:04
- * To change this template use File | Settings | File Templates.
+ * @author Thomas Schulz <mail@king2500.net>
  */
 public class XmlUtil {
     public static NodeList getNodesByXPath(File file, String xpath) {
-        if(!file.isFile() || !file.canRead())
+        if (!file.isFile() || !file.canRead()) {
             return null;
+        }
 
         Document document;
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -37,7 +34,7 @@ public class XmlUtil {
             return null;
         }
 
-        if(document == null) {
+        if (document == null) {
             return null;
         }
 
@@ -50,6 +47,6 @@ public class XmlUtil {
             return null;
         }
 
-       return (NodeList)result;
+        return (NodeList)result;
     }
 }

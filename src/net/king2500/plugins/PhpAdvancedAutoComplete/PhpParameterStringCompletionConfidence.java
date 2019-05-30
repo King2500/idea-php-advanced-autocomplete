@@ -9,18 +9,21 @@ import com.jetbrains.php.lang.psi.elements.ParameterList;
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * @author Thomas Schulz <mail@king2500.net>
+ */
 public class PhpParameterStringCompletionConfidence extends CompletionConfidence {
 
     @NotNull
     @Override
     public ThreeState shouldSkipAutopopup(@NotNull PsiElement contextElement, @NotNull PsiFile psiFile, int offset) {
 
-        if(!(psiFile instanceof PhpFile)) {
+        if (!(psiFile instanceof PhpFile)) {
             return ThreeState.UNSURE;
         }
 
         PsiElement context = contextElement.getContext();
-        if(!(context instanceof StringLiteralExpression)) {
+        if (!(context instanceof StringLiteralExpression)) {
             return ThreeState.UNSURE;
         }
 
@@ -31,7 +34,7 @@ public class PhpParameterStringCompletionConfidence extends CompletionConfidence
 
         // $object->method("");
         PsiElement stringContext = context.getContext();
-        if(stringContext instanceof ParameterList) {
+        if (stringContext instanceof ParameterList) {
             return ThreeState.NO;
         }
 

@@ -10,10 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Thomas
- * Date: 16.08.13
- * Time: 21:59
+ * @author Thomas Schulz <mail@king2500.net>
  */
 public class GenericFileLookupElement extends LookupElement {
     private String fileName;

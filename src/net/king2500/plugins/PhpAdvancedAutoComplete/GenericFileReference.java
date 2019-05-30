@@ -15,10 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Thomas
- * Date: 16.08.13
- * Time: 21:29
+ * @author Thomas Schulz <mail@king2500.net>
  */
 public class GenericFileReference extends PsiReferenceBase<PsiElement> implements PsiReference {
 
@@ -29,8 +26,8 @@ public class GenericFileReference extends PsiReferenceBase<PsiElement> implement
         super(element);
 
         fileName = element.getText().substring(
-                element.getValueRange().getStartOffset(),
-                element.getValueRange().getEndOffset()
+            element.getValueRange().getStartOffset(),
+            element.getValueRange().getEndOffset()
         );
 
         fileType = type;
@@ -52,7 +49,7 @@ public class GenericFileReference extends PsiReferenceBase<PsiElement> implement
         Map<String, PsiFileSystemItem> filesByName = FileUtil.getRelativeFilesByName(getElement().getContainingFile(), fileType);
         for (Map.Entry<String, PsiFileSystemItem> entry : filesByName.entrySet()) {
             results.add(
-                   new GenericFileLookupElement(entry.getKey(), entry.getValue())
+                new GenericFileLookupElement(entry.getKey(), entry.getValue())
             );
         }
 

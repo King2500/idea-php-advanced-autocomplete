@@ -28,32 +28,35 @@ import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+/**
+ * @author Thomas Schulz <mail@king2500.net>
+ */
 public class PhpFunctionCompletionContributor extends CompletionContributor {
 
     public PhpFunctionCompletionContributor() {
         //noinspection unchecked
         PsiElementPattern.Capture<PsiElement> stringInFuncCall = PlatformPatterns.psiElement(PhpElementTypes.STRING)
             .withParent(PlatformPatterns.psiElement(PhpElementTypes.PARAMETER_LIST)
-                    .withParent(
-                            PlatformPatterns.or(
-                                PlatformPatterns.psiElement(PhpElementTypes.FUNCTION_CALL),
-                                PlatformPatterns.psiElement(PhpElementTypes.METHOD_REFERENCE),
-                                PlatformPatterns.psiElement(PhpElementTypes.NEW_EXPRESSION)
-                            )
+                .withParent(
+                    PlatformPatterns.or(
+                        PlatformPatterns.psiElement(PhpElementTypes.FUNCTION_CALL),
+                        PlatformPatterns.psiElement(PhpElementTypes.METHOD_REFERENCE),
+                        PlatformPatterns.psiElement(PhpElementTypes.NEW_EXPRESSION)
                     )
+                )
             );
         //noinspection unchecked
         extend(CompletionType.BASIC,
             PlatformPatterns.or(
-                    PlatformPatterns
-                        .psiElement(PhpTokenTypes.STRING_LITERAL)
-                        .withParent(stringInFuncCall)
-                        .withLanguage(PhpLanguage.INSTANCE),
-                    PlatformPatterns
-                        .psiElement(PhpTokenTypes.STRING_LITERAL_SINGLE_QUOTE)
-                        .withParent(stringInFuncCall)
-                        .withLanguage(PhpLanguage.INSTANCE)
-                    ),
+                PlatformPatterns
+                    .psiElement(PhpTokenTypes.STRING_LITERAL)
+                    .withParent(stringInFuncCall)
+                    .withLanguage(PhpLanguage.INSTANCE),
+                PlatformPatterns
+                    .psiElement(PhpTokenTypes.STRING_LITERAL_SINGLE_QUOTE)
+                    .withParent(stringInFuncCall)
+                    .withLanguage(PhpLanguage.INSTANCE)
+            ),
             new CompletionProvider<CompletionParameters>() {
                 final Pattern DATETIME_NUMBER_ONE = Pattern.compile("^[-+]?1$");
                 final Pattern DATETIME_NUMBERS = Pattern.compile("^[-+]?\\d+$");
@@ -84,22 +87,22 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
 
                     int paramIndex = PhpElementsUtil.getParameterIndex(parameters.getPosition().getParent());
 
-                    if(funcName == null) {
+                    if (funcName == null) {
                         return;
                     }
 
                     String stringLiteral = parameters.getPosition().getText();
                     String stringPrefix = "";
 
-                    if(stringLiteral.contains(CompletionUtil.DUMMY_IDENTIFIER)) {
+                    if (stringLiteral.contains(CompletionUtil.DUMMY_IDENTIFIER)) {
                         stringPrefix = stringLiteral.substring(0, stringLiteral.indexOf(CompletionUtil.DUMMY_IDENTIFIER));
                     }
 
-                    if(methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.dbConnectFuncs, 0)) {
-                        if(funcName.startsWith("PDO::")) {
+                    if (methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.dbConnectFuncs, 0)) {
+                        if (funcName.startsWith("PDO::")) {
                             resultElements = DatabaseUtil.getPdoDSNs(project, "mysql://");
 
-                            if(resultElements == null) {
+                            if (resultElements == null) {
                                 resultElements = prefixArray("mysql:dbname=;host=", PhpCompletionTokens.dbConnectElements);
                             }
 
@@ -107,7 +110,7 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                         }
                         else {
                             resultElements = DatabaseUtil.getDbHostnames(project, "mysql://");
-                            if(resultElements == null) {
+                            if (resultElements == null) {
                                 resultElements = PhpCompletionTokens.dbConnectElements;
                             }
 
@@ -115,20 +118,20 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                         }
                     }
 
-                    if(methodMatches(funcName, paramIndex, PhpCompletionTokens.dbConnectUserFuncs)) {
+                    if (methodMatches(funcName, paramIndex, PhpCompletionTokens.dbConnectUserFuncs)) {
                         resultElements = DatabaseUtil.getDbUsers(project, "mysql://");
                     }
 
-                    if(methodMatches(funcName, paramIndex, PhpCompletionTokens.dbCharSetFuncs)) {
+                    if (methodMatches(funcName, paramIndex, PhpCompletionTokens.dbCharSetFuncs)) {
                         resultElements = PhpCompletionTokens.dbCharSets;
                         resultInfos = PhpCompletionTokens.dbCharSetsInfos;
                     }
 
-                    if(methodMatches(funcName, paramIndex, PhpCompletionTokens.dbSelectDbFuncs)) {
+                    if (methodMatches(funcName, paramIndex, PhpCompletionTokens.dbSelectDbFuncs)) {
                         resultElements = DatabaseUtil.getDbNames(project, "mysql://");
                     }
 
-                    if(methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.phpExtensionFuncs, 0)) {
+                    if (methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.phpExtensionFuncs, 0)) {
                         resultElements = PhpCompletionTokens.phpExtensionElements;
                     }
 
@@ -172,7 +175,7 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                             resultElements = PhpCompletionTokens.dateTimeUnits;
                         }
                         // numbers like 2, 17 without trailing space
-                        else if(patternMatches(DATETIME_NUMBERS, stringPrefix)) {
+                        else if (patternMatches(DATETIME_NUMBERS, stringPrefix)) {
                             resultElements = PhpCompletionTokens.dateTimeUnits2;
                         }
                         else if (stringPrefix.contains(" ")) {
@@ -230,7 +233,7 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                         }
                     }
 
-                    if(methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.htmlCharSetFuncs, 2)) {
+                    if (methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.htmlCharSetFuncs, 2)) {
                         resultElements = PhpCompletionTokens.htmlCharSets;
                         resultCaseSensitivity = false;
                     }
@@ -240,15 +243,15 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                         resultCaseSensitivity = false;
                     }
 
-                    if(methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.mbStringInfoFuncs, 0)) {
+                    if (methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.mbStringInfoFuncs, 0)) {
                         resultElements = PhpCompletionTokens.mbStringInfoTypes;
                     }
 
-                    if(methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.mbStringLanguageFuncs, 0)) {
+                    if (methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.mbStringLanguageFuncs, 0)) {
                         resultElements = PhpCompletionTokens.mbStringLanguageElements;
                     }
 
-                    if(methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.obHandlerFuncs, 0)) {
+                    if (methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.obHandlerFuncs, 0)) {
                         resultElements = PhpCompletionTokens.obHandlerElements;
                     }
 
@@ -262,12 +265,12 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                         resultElements = PhpCompletionTokens.envNames;
                     }
 
-                    if(methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.httpHeaderResponseFuncs, 0)) {
+                    if (methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.httpHeaderResponseFuncs, 0)) {
                         boolean isFullHeader = funcName.equals("header");
                         if (!stringPrefix.contains(":") && !stringPrefix.startsWith("HTTP/1.0") && !stringPrefix.startsWith("HTTP/1.1")) {
                             resultElements = PhpCompletionTokens.httpHeaderResponseFields;
                             resultPostfixAlt = " ";
-                            resultPostfixExceptions = new String[] { "HTTP/1.0", "HTTP/1.1" };
+                            resultPostfixExceptions = new String[]{"HTTP/1.0", "HTTP/1.1"};
                             deprecatedElements = PhpCompletionTokens.httpHeaderDeprecatedFields;
                             overwriteExistingCompletions = true;
                             if (isFullHeader) {
@@ -287,79 +290,79 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                         else if (isFullHeader) {
                             result = result.withPrefixMatcher(stringPrefix.substring(stringPrefix.contains(": ") ? stringPrefix.indexOf(": ") + 2 : stringPrefix.indexOf(":") + 1));
 
-                            if(stringPrefix.startsWith("Allow: ") || stringPrefix.startsWith("Access-Control-Allow-Methods: ")) {
+                            if (stringPrefix.startsWith("Allow: ") || stringPrefix.startsWith("Access-Control-Allow-Methods: ")) {
                                 allowMultiple = true;
                                 resultElements = PhpCompletionTokens.httpMethods;
                             }
-                            else if(stringPrefix.startsWith("Accept-CH: ")) {
+                            else if (stringPrefix.startsWith("Accept-CH: ")) {
                                 allowMultiple = true;
                                 resultElements = PhpCompletionTokens.httpClientHintDirectives;
                             }
-                            else if(stringPrefix.startsWith("Accept-Ranges: ")) {
+                            else if (stringPrefix.startsWith("Accept-Ranges: ")) {
                                 resultElements = PhpCompletionTokens.httpRangeTypes;
                             }
-                            else if(stringPrefix.startsWith("Access-Control-Allow-Credentials: ")) {
+                            else if (stringPrefix.startsWith("Access-Control-Allow-Credentials: ")) {
                                 resultElements = PhpCompletionTokens.httpACAllowCredentials;
                             }
-                            else if(stringPrefix.startsWith("Access-Control-Allow-Headers: ")) {
+                            else if (stringPrefix.startsWith("Access-Control-Allow-Headers: ")) {
                                 allowMultiple = true;
                                 List<String> alwaysAllowed = Arrays.asList(PhpCompletionTokens.httpACAllowHeadersAlways);
-                                List<String> filteredHeaderFields = Arrays.stream(PhpCompletionTokens.httpHeaderRequestFields).filter(((Predicate<String>) alwaysAllowed::contains).negate()).collect(Collectors.toList());
+                                List<String> filteredHeaderFields = Arrays.stream(PhpCompletionTokens.httpHeaderRequestFields).filter(((Predicate<String>)alwaysAllowed::contains).negate()).collect(Collectors.toList());
                                 resultElements = new String[filteredHeaderFields.size()];
                                 resultElements = filteredHeaderFields.toArray(resultElements);
                             }
-                            else if(stringPrefix.startsWith("Access-Control-Allow-Origin: ")) {
+                            else if (stringPrefix.startsWith("Access-Control-Allow-Origin: ")) {
                                 resultElements = PhpCompletionTokens.httpACAllowOrigin;
                             }
-                            else if(stringPrefix.startsWith("Access-Control-Expose-Headers: ")) {
+                            else if (stringPrefix.startsWith("Access-Control-Expose-Headers: ")) {
                                 allowMultiple = true;
                                 resultElements = PhpCompletionTokens.httpHeaderResponseFields;
                             }
-                            else if(stringPrefix.startsWith("Cache-Control: ")) {
+                            else if (stringPrefix.startsWith("Cache-Control: ")) {
                                 allowMultiple = true;
                                 resultElements = PhpCompletionTokens.httpCacheControlDirectives;
                             }
-                            else if(stringPrefix.startsWith("Clear-Site-Data: ")) {
+                            else if (stringPrefix.startsWith("Clear-Site-Data: ")) {
                                 allowMultiple = true;
                                 resultElements = PhpCompletionTokens.httpClearSiteDataDirectives;
                             }
-                            else if(stringPrefix.startsWith("Connection: ")) {
+                            else if (stringPrefix.startsWith("Connection: ")) {
                                 resultElements = PhpCompletionTokens.httpConnectionOptions;
                             }
-                            else if(stringPrefix.startsWith("Content-Disposition: ")) {
+                            else if (stringPrefix.startsWith("Content-Disposition: ")) {
                                 resultElements = PhpCompletionTokens.httpContentDispositionTokens;
                             }
-                            else if(stringPrefix.startsWith("Content-Encoding: ")) {
+                            else if (stringPrefix.startsWith("Content-Encoding: ")) {
                                 allowMultiple = true;
                                 resultElements = PhpCompletionTokens.httpEncodingTokens;
                                 resultCaseSensitivity = false;
                             }
-                            else if(stringPrefix.startsWith("Content-Language: ")) {
+                            else if (stringPrefix.startsWith("Content-Language: ")) {
                                 allowMultiple = true;
                                 resultElements = PhpCompletionTokens.isoLanguageCodes;
                             }
-                            else if(stringPrefix.startsWith("Content-Location: /") || stringPrefix.startsWith("Location: /")) {
+                            else if (stringPrefix.startsWith("Content-Location: /") || stringPrefix.startsWith("Location: /")) {
                                 overwriteExistingCompletions = true;
                                 resultElements = prefixArray("/", FileUtil.getProjectFiles(project));
-                                resultElements = concatArrays(new String[] { "/" }, resultElements);
+                                resultElements = concatArrays(new String[]{"/"}, resultElements);
                             }
-                            else if((stringPrefix.equals("Content-Location: ") || stringPrefix.equals("Location: ")
+                            else if ((stringPrefix.equals("Content-Location: ") || stringPrefix.equals("Location: ")
                                 || stringPrefix.startsWith("Content-Location: h") || stringPrefix.startsWith("Location: h"))
                                 && !stringPrefix.contains("://")) {
                                 resultElements = PhpCompletionTokens.httpLocationBaseUrls;
                                 insertHandler = InvokeCompletionInsertHandler.getInstance();
                                 resultTailText = "...";
                             }
-                            else if(stringPrefix.startsWith("Content-Range: ")) {
-                                resultElements = new String[] { PhpCompletionTokens.httpRangeTypes[0] };
+                            else if (stringPrefix.startsWith("Content-Range: ")) {
+                                resultElements = new String[]{PhpCompletionTokens.httpRangeTypes[0]};
                                 resultPostfix = " ";
                             }
-                            else if(stringPrefix.startsWith("Content-Security-Policy: ") || stringPrefix.startsWith("X-Content-Security-Policy: ") || stringPrefix.startsWith("X-WebKit-CSP: ") || stringPrefix.startsWith("Content-Security-Policy-Report-Only: ")) {
+                            else if (stringPrefix.startsWith("Content-Security-Policy: ") || stringPrefix.startsWith("X-Content-Security-Policy: ") || stringPrefix.startsWith("X-WebKit-CSP: ") || stringPrefix.startsWith("Content-Security-Policy-Report-Only: ")) {
                                 allowMultiple = true;
                                 resultElements = PhpCompletionTokens.httpCSP;
                                 splitter = ";";
                             }
-                            else if(stringPrefix.startsWith("Content-Type: ")) {
+                            else if (stringPrefix.startsWith("Content-Type: ")) {
                                 if (!stringPrefix.contains(";")) {
                                     resultElements = PhpCompletionTokens.mimeTypes;
                                 }
@@ -372,97 +375,97 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                                     resultElements = PhpCompletionTokens.httpCharSets;
                                 }
                             }
-                            else if(stringPrefix.startsWith("Cross-Origin-Resource-Policy: ")) {
+                            else if (stringPrefix.startsWith("Cross-Origin-Resource-Policy: ")) {
                                 resultElements = PhpCompletionTokens.httpCORS;
                             }
-                            else if(stringPrefix.startsWith("Expect-CT: ")) {
+                            else if (stringPrefix.startsWith("Expect-CT: ")) {
                                 allowMultiple = true;
                                 resultElements = PhpCompletionTokens.httpExpectCT;
                             }
-                            else if(stringPrefix.startsWith("Feature-Policy: ")) {
+                            else if (stringPrefix.startsWith("Feature-Policy: ")) {
                                 allowMultiple = true;
                                 resultElements = PhpCompletionTokens.httpFeaturePolicyDirectives;
                                 splitter = ";";
                             }
-                            else if(stringPrefix.startsWith("Keep-Alive: ")) {
+                            else if (stringPrefix.startsWith("Keep-Alive: ")) {
                                 allowMultiple = true;
                                 resultElements = PhpCompletionTokens.httpKeepAliveDirectives;
                             }
-                            else if(stringPrefix.startsWith("Pragma: ")) {
+                            else if (stringPrefix.startsWith("Pragma: ")) {
                                 resultElements = PhpCompletionTokens.httpPragmaDirectives;
                             }
-                            else if(stringPrefix.startsWith("Proxy-Authenticate: ") || stringPrefix.startsWith("WWW-Authenticate: ")) {
+                            else if (stringPrefix.startsWith("Proxy-Authenticate: ") || stringPrefix.startsWith("WWW-Authenticate: ")) {
                                 resultElements = PhpCompletionTokens.httpAuthenticationTypes;
                             }
-                            else if(stringPrefix.startsWith("Public-Key-Pins: ") || stringPrefix.startsWith("Public-Key-Pins-Report-Only: ")) {
+                            else if (stringPrefix.startsWith("Public-Key-Pins: ") || stringPrefix.startsWith("Public-Key-Pins-Report-Only: ")) {
                                 allowMultiple = true;
                                 resultElements = PhpCompletionTokens.httpPublicKeyPinsDirectives;
                                 splitter = ";";
                             }
-                            else if(stringPrefix.startsWith("Referrer-Policy: ")) {
+                            else if (stringPrefix.startsWith("Referrer-Policy: ")) {
                                 resultElements = PhpCompletionTokens.httpReferrerPolicyDirectives;
                             }
-                            else if(stringPrefix.startsWith("Set-Cookie: ") && stringPrefix.contains(";")) {
+                            else if (stringPrefix.startsWith("Set-Cookie: ") && stringPrefix.contains(";")) {
                                 allowMultiple = true;
                                 resultElements = PhpCompletionTokens.httpSetCookieDirectives;
                                 splitter = ";";
                             }
-                            else if(stringPrefix.startsWith("Strict-Transport-Security: ")) {
+                            else if (stringPrefix.startsWith("Strict-Transport-Security: ")) {
                                 allowMultiple = true;
                                 resultElements = PhpCompletionTokens.httpStrictTransportSecurityDirectives;
                                 splitter = ";";
                             }
-                            else if(stringPrefix.startsWith("Status: ") || stringPrefix.startsWith("HTTP/1.0 ") || stringPrefix.startsWith("HTTP/1.1 ")) {
+                            else if (stringPrefix.startsWith("Status: ") || stringPrefix.startsWith("HTTP/1.0 ") || stringPrefix.startsWith("HTTP/1.1 ")) {
                                 resultElements = PhpCompletionTokens.httpStatusCodes;
 
-                                if(stringPrefix.startsWith("HTTP/1.1 ")) {
+                                if (stringPrefix.startsWith("HTTP/1.1 ")) {
                                     resultElements = concatArrays(resultElements, PhpCompletionTokens.httpStatusCodes11);
                                 }
                             }
-                            else if(stringPrefix.startsWith("Trailer: ")) {
+                            else if (stringPrefix.startsWith("Trailer: ")) {
                                 allowMultiple = true;
                                 List<String> notAllowed = Arrays.asList(PhpCompletionTokens.httpHeaderResponseFieldsNotInTrailer);
-                                List<String> filteredHeaderFields = Arrays.stream(PhpCompletionTokens.httpHeaderResponseFields).filter(((Predicate<String>) notAllowed::contains).negate()).collect(Collectors.toList());
+                                List<String> filteredHeaderFields = Arrays.stream(PhpCompletionTokens.httpHeaderResponseFields).filter(((Predicate<String>)notAllowed::contains).negate()).collect(Collectors.toList());
                                 resultElements = new String[filteredHeaderFields.size()];
                                 resultElements = filteredHeaderFields.toArray(resultElements);
                             }
-                            else if(stringPrefix.startsWith("Transfer-Encoding: ")) {
+                            else if (stringPrefix.startsWith("Transfer-Encoding: ")) {
                                 allowMultiple = true;
                                 resultElements = PhpCompletionTokens.httpTransferEncodingValues;
                             }
-                            else if(stringPrefix.startsWith("Vary: ")) {
+                            else if (stringPrefix.startsWith("Vary: ")) {
                                 allowMultiple = true;
-                                resultElements = concatArrays(new String[] {"*"}, PhpCompletionTokens.httpHeaderRequestFields);
+                                resultElements = concatArrays(new String[]{"*"}, PhpCompletionTokens.httpHeaderRequestFields);
                             }
-                            else if(stringPrefix.startsWith("Via: ")) {
+                            else if (stringPrefix.startsWith("Via: ")) {
                                 allowMultiple = true;
                                 resultElements = PhpCompletionTokens.httpViaProtocols;
                                 resultPostfix = " ";
                             }
-                            else if(stringPrefix.startsWith("Warning: ")) {
+                            else if (stringPrefix.startsWith("Warning: ")) {
                                 resultElements = PhpCompletionTokens.httpWarningCodes;
                                 resultInfos = PhpCompletionTokens.httpWarningTexts;
                                 resultPostfix = " ";
                             }
-                            else if(stringPrefix.startsWith("X-Content-Type-Options: ")) {
+                            else if (stringPrefix.startsWith("X-Content-Type-Options: ")) {
                                 resultElements = PhpCompletionTokens.httpXContentTypeOptions;
                             }
-                            else if(stringPrefix.startsWith("X-DNS-Prefetch-Control: ")) {
+                            else if (stringPrefix.startsWith("X-DNS-Prefetch-Control: ")) {
                                 resultElements = PhpCompletionTokens.httpXDnsPrefetchControlDirectives;
                             }
-                            else if(stringPrefix.startsWith("X-Frame-Options: ")) {
+                            else if (stringPrefix.startsWith("X-Frame-Options: ")) {
                                 resultElements = PhpCompletionTokens.httpXFrameOptions;
                             }
-                            else if(stringPrefix.startsWith("X-UA-Compatible: ")) {
+                            else if (stringPrefix.startsWith("X-UA-Compatible: ")) {
                                 allowMultiple = true;
                                 resultElements = PhpCompletionTokens.httpXUACompatibleValues;
                                 splitter = ";";
                             }
-                            else if(stringPrefix.startsWith("X-Robots-Tag: ")) {
+                            else if (stringPrefix.startsWith("X-Robots-Tag: ")) {
                                 allowMultiple = true;
                                 resultElements = PhpCompletionTokens.httpXRobotsTagDirectives;
                             }
-                            else if(stringPrefix.startsWith("X-XSS-Protection: ")) {
+                            else if (stringPrefix.startsWith("X-XSS-Protection: ")) {
                                 resultElements = PhpCompletionTokens.httpXXssProtectionValues;
                             }
                         }
@@ -472,30 +475,30 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                         resultElements = collectMetaArgumentsSets(parameters.getPosition());
                     }
 
-                    if(resultElements == null)
+                    if (resultElements == null) {
                         return;
+                    }
 
-                    if (allowMultiple && stringPrefix.contains(splitter+" ")) {
-                        result = result.withPrefixMatcher(stringPrefix.substring(stringPrefix.lastIndexOf(splitter+" ") + 2));
+                    if (allowMultiple && stringPrefix.contains(splitter + " ")) {
+                        result = result.withPrefixMatcher(stringPrefix.substring(stringPrefix.lastIndexOf(splitter + " ") + 2));
                     }
 
                     if (overwriteExistingCompletions) {
                         result.stopHere();
                     }
 
-                    for(int i=0; i < resultElements.length; i++) {
+                    for (int i = 0; i < resultElements.length; i++) {
 
                         if (allowMultiple && stringPrefix.contains(resultElements[i] + splitter)) {
                             continue;
                         }
                         String postfix = Arrays.asList(resultPostfixExceptions).contains(resultElements[i]) ? resultPostfixAlt : resultPostfix;
                         LookupElementBuilder builder = LookupElementBuilder.create(resultElements[i] + postfix)
-                                .withCaseSensitivity(resultCaseSensitivity)
-                                .withPresentableText(resultElements[i])
+                            .withCaseSensitivity(resultCaseSensitivity)
+                            .withPresentableText(resultElements[i])
 //                                .withTailText(resultPostfix, true)
-                                .withBoldness(resultBold)
-                                .withLookupString(resultElements[i].toLowerCase() + postfix)
-                        ;
+                            .withBoldness(resultBold)
+                            .withLookupString(resultElements[i].toLowerCase() + postfix);
 
                         if (Arrays.asList(deprecatedElements).contains(resultElements[i])) {
                             builder = builder.withStrikeoutness(true);
@@ -503,7 +506,8 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
 
                         if (i < resultParams.length) {
                             builder = builder.withTailText(resultParams[i], true);
-                        } else if (resultTailText != null) {
+                        }
+                        else if (resultTailText != null) {
                             builder = builder.withTailText(resultTailText, true);
                         }
                         if (i < resultInfos.length) {
@@ -529,7 +533,7 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                 private String[] concatArrays(String[] A, String[] B) {
                     int aLen = A.length;
                     int bLen = B.length;
-                    String[] C = new String[aLen+bLen];
+                    String[] C = new String[aLen + bLen];
                     System.arraycopy(A, 0, C, 0, aLen);
                     System.arraycopy(B, 0, C, aLen, bLen);
                     return C;
@@ -537,7 +541,7 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
 
                 private String[] prefixArray(String prefix, String[] array) {
                     String[] B = new String[array.length];
-                    for(int i=0; i < B.length; i++) {
+                    for (int i = 0; i < B.length; i++) {
                         B[i] = prefix + array[i];
                     }
                     return B;
@@ -569,7 +573,7 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
         Collection<ParameterList> arguments = PsiTreeUtil.findChildrenOfType(root, ParameterList.class);
         for (ParameterList args : arguments) {
             PsiElement parent = args.getParent();
-            if (!(parent instanceof FunctionReference) || !"registerArgumentsSet".equals(((FunctionReference) parent).getName())) {
+            if (!(parent instanceof FunctionReference) || !"registerArgumentsSet".equals(((FunctionReference)parent).getName())) {
                 continue;
             }
 

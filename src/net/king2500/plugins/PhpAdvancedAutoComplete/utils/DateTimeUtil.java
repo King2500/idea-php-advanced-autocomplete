@@ -3,6 +3,9 @@ package net.king2500.plugins.PhpAdvancedAutoComplete.utils;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * @author Thomas Schulz <mail@king2500.net>
+ */
 public class DateTimeUtil {
 
     private final static HashMap<String, String> dateTimePhpToJavaPattern = new HashMap<String, String>() {{
@@ -81,7 +84,7 @@ public class DateTimeUtil {
                             numDays = 30;
                         }
                         if ("2".equals(month)) {
-                            numDays = (byte) (isLeapYear(Integer.parseInt(year)) ? 29 : 28);
+                            numDays = (byte)(isLeapYear(Integer.parseInt(year)) ? 29 : 28);
                         }
                         str.append(numDays);
                         continue;
@@ -153,7 +156,7 @@ public class DateTimeUtil {
     private static int getCurrentTimeInBeats() {
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+01:00"));
         //noinspection UnnecessaryLocalVariable
-        int beats = (int) ((cal.get(Calendar.SECOND) + (cal.get(Calendar.MINUTE) * 60) + (cal.get(Calendar.HOUR_OF_DAY) * 3600)) / 86.4);
+        int beats = (int)((cal.get(Calendar.SECOND) + (cal.get(Calendar.MINUTE) * 60) + (cal.get(Calendar.HOUR_OF_DAY) * 3600)) / 86.4);
         return beats;
     }
 }

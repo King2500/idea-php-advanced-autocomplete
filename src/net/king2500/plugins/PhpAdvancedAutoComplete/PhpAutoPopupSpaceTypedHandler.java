@@ -17,6 +17,9 @@ import com.jetbrains.php.lang.psi.PhpFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * @author Thomas Schulz <mail@king2500.net>
+ */
 public class PhpAutoPopupSpaceTypedHandler extends TypedHandlerDelegate {
     @Override
     public Result checkAutoPopup(char charTyped, Project project, Editor editor, PsiFile file) {
@@ -45,7 +48,7 @@ public class PhpAutoPopupSpaceTypedHandler extends TypedHandlerDelegate {
             return TypedHandlerDelegate.Result.CONTINUE;
         }
 
-        PsiElement psiElement = file.findElementAt(editor.getCaretModel().getOffset()-2);
+        PsiElement psiElement = file.findElementAt(editor.getCaretModel().getOffset() - 2);
         if (psiElement == null || !(PlatformPatterns.psiElement(PhpTokenTypes.STRING_LITERAL).accepts(psiElement) || PlatformPatterns.psiElement(PhpTokenTypes.STRING_LITERAL_SINGLE_QUOTE).accepts(psiElement))) {
             return TypedHandlerDelegate.Result.CONTINUE;
         }

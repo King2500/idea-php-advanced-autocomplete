@@ -5,10 +5,7 @@ import com.intellij.psi.PsiReference;
 import com.jetbrains.php.lang.psi.elements.*;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Thomas
- * Date: 07.07.13
- * Time: 21:08
+ * @author Thomas Schulz <mail@king2500.net>
  */
 public class PhpElementsUtil {
 
@@ -16,10 +13,10 @@ public class PhpElementsUtil {
         int index = 0;
         PsiElement element = paramElement;
 
-        while(element != null && element.getPrevSibling() != null) {
+        while (element != null && element.getPrevSibling() != null) {
             String elementClass = element.getPrevSibling().getClass().getSimpleName();
 
-            if(elementClass.equals("LeafPsiElement")) {
+            if (elementClass.equals("LeafPsiElement")) {
                 index++;
             }
 
@@ -30,13 +27,13 @@ public class PhpElementsUtil {
     }
 
     public static String getCanonicalFuncName(PsiElement caller) {
-        if(caller.getReference() instanceof MethodReference) {
+        if (caller.getReference() instanceof MethodReference) {
             return getMethodName(caller);
         }
-        else if(caller.getReference() instanceof FunctionReference) {
+        else if (caller.getReference() instanceof FunctionReference) {
             return getFuncName(caller);
         }
-        else if(caller instanceof NewExpression) {
+        else if (caller instanceof NewExpression) {
             return getClassConstructName(caller);
         }
 
@@ -47,13 +44,15 @@ public class PhpElementsUtil {
 
         PsiReference psiReference = caller.getReference();
 
-        if(psiReference == null)
+        if (psiReference == null) {
             return null;
+        }
 
         PsiElement resolvedReference = psiReference.resolve();
 
-        if(!(resolvedReference instanceof Function))
+        if (!(resolvedReference instanceof Function)) {
             return null;
+        }
 
         Function function = (Function)resolvedReference;
 
@@ -64,19 +63,22 @@ public class PhpElementsUtil {
 
         PsiReference psiReference = caller.getReference();
 
-        if(psiReference == null)
+        if (psiReference == null) {
             return null;
+        }
 
         PsiElement resolvedReference = psiReference.resolve();
 
-        if(!(resolvedReference instanceof Method))
+        if (!(resolvedReference instanceof Method)) {
             return null;
+        }
 
         Method method = (Method)resolvedReference;
         PhpClass methodClass = method.getContainingClass();
 
-        if(methodClass == null)
+        if (methodClass == null) {
             return null;
+        }
 
         String className = methodClass.getName();
         String methodName = method.getName();
@@ -88,31 +90,33 @@ public class PhpElementsUtil {
 
         PsiElement[] children = caller.getChildren();
 
-        if(children.length == 0)
+        if (children.length == 0) {
             return null;
+        }
 
         PsiReference psiReference = children[0].getReference();
 
-        if(!(psiReference instanceof ClassReference))
+        if (!(psiReference instanceof ClassReference)) {
             return null;
+        }
 
         PsiElement resolvedReference = psiReference.resolve();
 
-        if(!(resolvedReference instanceof Method))
+        if (!(resolvedReference instanceof Method)) {
             return null;
+        }
 
         Method method = (Method)resolvedReference;
 
-        if(method.getName() == null)
+        if (!method.getName().equals("__construct")) {
             return null;
-
-        if(!method.getName().equals("__construct"))
-            return null;
+        }
 
         PhpClass methodClass = method.getContainingClass();
 
-        if(methodClass == null)
+        if (methodClass == null) {
             return null;
+        }
 
         String className = methodClass.getName();
         return className + "::__construct";

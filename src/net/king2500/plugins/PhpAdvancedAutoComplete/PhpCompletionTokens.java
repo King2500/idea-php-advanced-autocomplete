@@ -2,6 +2,9 @@ package net.king2500.plugins.PhpAdvancedAutoComplete;
 
 import java.util.HashMap;
 
+/**
+ * @author Thomas Schulz <mail@king2500.net>
+ */
 public class PhpCompletionTokens {
 
     public static String[] httpHeaderResponseFuncs = { "header", "header_remove" };
