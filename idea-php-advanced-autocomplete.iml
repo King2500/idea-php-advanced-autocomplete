@@ -10,5 +10,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="php-openapi" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="php" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="restClient" level="project" />
   </component>
 </module>

@@ -125,6 +125,7 @@
       <completion.contributor language="PHP" implementationClass="net.king2500.plugins.PhpAdvancedAutoComplete.PhpFunctionCompletionContributor" order="first"/>
       <completion.confidence language="PHP" implementationClass="net.king2500.plugins.PhpAdvancedAutoComplete.PhpParameterStringCompletionConfidence"
                              id="asTrue" order="first"/>
+      <lang.documentationProvider language="PHP" order="first" implementationClass="net.king2500.plugins.PhpAdvancedAutoComplete.PhpHeaderDocumentationProvider"/>
 
       <!--<typedHandler implementation="net.king2500.plugins.PhpAdvancedAutoComplete.PhpAutoPopupSpaceTypedHandler"/>-->
   </extensions>
