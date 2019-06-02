@@ -22,7 +22,10 @@ public class PhpFileReferenceContributor extends PsiReferenceContributor {
     @Override
     public void registerReferenceProviders(PsiReferenceRegistrar psiReferenceRegistrar) {
         psiReferenceRegistrar.registerReferenceProvider(
-            PlatformPatterns.psiElement(StringLiteralExpression.class).withLanguage(PhpLanguage.INSTANCE),
+            PlatformPatterns
+                .psiElement(StringLiteralExpression.class)
+                .withParent(ParameterList.class)
+                .withLanguage(PhpLanguage.INSTANCE),
             new PsiReferenceProvider() {
                 @NotNull
                 @Override
