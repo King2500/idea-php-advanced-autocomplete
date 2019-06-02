@@ -81,7 +81,9 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                     boolean resultCaseSensitivity = true;
                     String[] deprecatedElements = {};
                     boolean allowMultiple = false;
+                    boolean allowRepeat = false;
                     String splitter = ",";
+                    String splitterSpace = " ";
                     boolean overwriteExistingCompletions = false;
                     InsertHandler<LookupElement> insertHandler = null;
 
@@ -263,6 +265,23 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
 
                     if (methodMatches(funcName, paramIndex, PhpCompletionTokens.envFuncs)) {
                         resultElements = PhpCompletionTokens.envNames;
+                    }
+
+                    if (methodMatches(funcName, paramIndex, PhpCompletionTokens.packFuncs) && !stringPrefix.contains("*")) {
+                        resultElements = PhpCompletionTokens.packCodes;
+                        resultInfos = PhpCompletionTokens.packCodesInfos;
+                        allowMultiple = true;
+                        allowRepeat = true;
+                        splitter = "";
+                    }
+
+                    if (methodMatches(funcName, paramIndex, PhpCompletionTokens.unpackFuncs) && !stringPrefix.contains("*")) {
+                        resultElements = PhpCompletionTokens.packCodes;
+                        resultInfos = PhpCompletionTokens.packCodesInfos;
+                        allowMultiple = true;
+                        allowRepeat = true;
+                        splitter = "/";
+                        splitterSpace = "";
                     }
 
                     if (methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.httpHeaderResponseFuncs, 0)) {
@@ -479,8 +498,13 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                         return;
                     }
 
-                    if (allowMultiple && stringPrefix.contains(splitter + " ")) {
-                        result = result.withPrefixMatcher(stringPrefix.substring(stringPrefix.lastIndexOf(splitter + " ") + 2));
+                    // ", "
+                    String split = splitter + splitterSpace;
+                    if (allowMultiple && !splitter.isEmpty() && stringPrefix.contains(split)) {
+                        result = result.withPrefixMatcher(stringPrefix.substring(stringPrefix.lastIndexOf(split) + split.length()));
+                    }
+                    else if (allowMultiple && splitter.isEmpty()) {
+                        result = result.withPrefixMatcher("");
                     }
 
                     if (overwriteExistingCompletions) {
@@ -489,7 +513,7 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
 
                     for (int i = 0; i < resultElements.length; i++) {
 
-                        if (allowMultiple && stringPrefix.contains(resultElements[i] + splitter)) {
+                        if (allowMultiple && !allowRepeat && stringPrefix.contains(resultElements[i] + splitter)) {
                             continue;
                         }
                         String postfix = Arrays.asList(resultPostfixExceptions).contains(resultElements[i]) ? resultPostfixAlt : resultPostfix;
