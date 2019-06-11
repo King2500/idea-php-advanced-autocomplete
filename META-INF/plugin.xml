@@ -128,5 +128,7 @@
       <lang.documentationProvider language="PHP" order="first" implementationClass="net.king2500.plugins.PhpAdvancedAutoComplete.PhpHeaderDocumentationProvider"/>
 
       <!--<typedHandler implementation="net.king2500.plugins.PhpAdvancedAutoComplete.PhpAutoPopupSpaceTypedHandler"/>-->
+
+      <highlightUsagesHandlerFactory implementation="net.king2500.plugins.PhpAdvancedAutoComplete.reference.PhpHighlightPackParametersUsagesHandlerFactory"/>
   </extensions>
 </idea-plugin>
