@@ -122,6 +122,7 @@
 
   <extensions defaultExtensionNs="com.intellij">
       <psi.referenceContributor implementation="net.king2500.plugins.PhpAdvancedAutoComplete.PhpFileReferenceContributor"/>
+      <psi.referenceContributor implementation="net.king2500.plugins.PhpAdvancedAutoComplete.reference.PhpMetaArgumentsSetReferenceContributor"/>
       <completion.contributor language="PHP" implementationClass="net.king2500.plugins.PhpAdvancedAutoComplete.PhpFunctionCompletionContributor" order="first"/>
       <completion.confidence language="PHP" implementationClass="net.king2500.plugins.PhpAdvancedAutoComplete.PhpParameterStringCompletionConfidence"
                              id="asTrue" order="first"/>
