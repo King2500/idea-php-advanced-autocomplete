@@ -38,7 +38,7 @@ public class PhpMetaArgumentsSetReferenceContributor extends PsiReferenceContrib
                     }
 
                     String funcName = PhpElementsUtil.getCanonicalFuncName(psiElement.getParent().getParent());
-                    if (funcName == null || !funcName.equals("argumentsSet")) {
+                    if (funcName == null || (!funcName.equals("argumentsSet") && !funcName.equals(("registerArgumentsSet")))) {
                         return PsiReference.EMPTY_ARRAY;
                     }
 

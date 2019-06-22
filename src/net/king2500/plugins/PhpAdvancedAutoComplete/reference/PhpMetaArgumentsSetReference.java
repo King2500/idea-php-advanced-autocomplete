@@ -19,12 +19,12 @@ import java.util.Collection;
  */
 public class PhpMetaArgumentsSetReference extends PsiReferenceBase<PsiElement> implements PsiReference {
 
-    private final String argumentsSet;
+    private final String myArgumentsSet;
 
     public PhpMetaArgumentsSetReference(@NotNull StringLiteralExpression element) {
         super(element, element.getValueRange());
 
-        argumentsSet = element.getText().substring(
+        myArgumentsSet = element.getText().substring(
             element.getValueRange().getStartOffset(),
             element.getValueRange().getEndOffset()
         );
@@ -49,7 +49,7 @@ public class PhpMetaArgumentsSetReference extends PsiReferenceBase<PsiElement> i
                 continue;
             }
 
-            if (arg0.getContents().equals(argumentsSet)) {
+            if (arg0.getContents().equals(myArgumentsSet)) {
                 return arg0;
             }
         }
@@ -83,5 +83,10 @@ public class PhpMetaArgumentsSetReference extends PsiReferenceBase<PsiElement> i
         }
 
         return argumentsSets.toArray(new String[0]);
+    }
+
+    @Override
+    public boolean isSoft() {
+        return true;
     }
 }

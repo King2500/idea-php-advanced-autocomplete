@@ -131,5 +131,7 @@
       <!--<typedHandler implementation="net.king2500.plugins.PhpAdvancedAutoComplete.PhpAutoPopupSpaceTypedHandler"/>-->
 
       <highlightUsagesHandlerFactory implementation="net.king2500.plugins.PhpAdvancedAutoComplete.reference.PhpHighlightPackParametersUsagesHandlerFactory"/>
+
+      <renamePsiElementProcessor implementation="net.king2500.plugins.PhpAdvancedAutoComplete.reference.PhpMetaArgumentsSetRenameProcessor"/>
   </extensions>
 </idea-plugin>
