@@ -28,6 +28,10 @@ public class PhpAutoPopupTypedHandler extends TypedHandlerDelegate {
             return Result.CONTINUE;
         }
 
+        if (charTyped != '%') {
+            return Result.CONTINUE;
+        }
+
         int offset = editor.getCaretModel().getOffset();
         PsiElement psiElement = file.findElementAt(offset);
 
@@ -36,7 +40,7 @@ public class PhpAutoPopupTypedHandler extends TypedHandlerDelegate {
             FunctionReference functionCall = ObjectUtils.tryCast(parameterList.getParent(), FunctionReference.class);
             String fqn = PhpElementsUtil.resolveFqn(functionCall);
 
-            if (PhpElementsUtil.isFormatFunction(fqn) && charTyped == '%') {
+            if (/*charTyped == '%' &&*/ PhpElementsUtil.isFormatFunction(fqn)) {
                 if (StringUtil.getPrecedingCharNum(editor.getDocument().getCharsSequence(), offset, '%') % 2 == 0) {
                     PhpCompletionUtil.showCompletion(editor);
                 }
