@@ -126,8 +126,10 @@
       <completion.confidence language="PHP" implementationClass="net.king2500.plugins.PhpAdvancedAutoComplete.PhpParameterStringCompletionConfidence"
                              id="asTrue" order="first"/>
       <lang.documentationProvider language="PHP" order="first" implementationClass="net.king2500.plugins.PhpAdvancedAutoComplete.PhpHeaderDocumentationProvider"/>
+      <lang.documentationProvider language="PHP" order="first" implementationClass="net.king2500.plugins.PhpAdvancedAutoComplete.PhpFormatDocumentationProvider"/>
 
       <!--<typedHandler implementation="net.king2500.plugins.PhpAdvancedAutoComplete.PhpAutoPopupSpaceTypedHandler"/>-->
+      <typedHandler implementation="net.king2500.plugins.PhpAdvancedAutoComplete.PhpAutoPopupTypedHandler"/>
 
       <highlightUsagesHandlerFactory implementation="net.king2500.plugins.PhpAdvancedAutoComplete.reference.PhpHighlightPackParametersUsagesHandlerFactory"/>
   </extensions>

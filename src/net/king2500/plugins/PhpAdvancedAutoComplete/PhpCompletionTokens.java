@@ -504,4 +504,60 @@ public class PhpCompletionTokens {
         "NUL-padded string",
         "NUL-fill to absolute position"
     };
+
+    public static String[] formatFuncs = { "printf:0", "sprintf:0", "fprintf:1", "vprintf:0", "vsprintf:0", "vfprintf:1" };
+    public static String[] formatTokens = { "%", "b", "c", "d", "e", "E", "f", "F", "g", "G", "o", "s", "u", "x", "X" };
+    public static String[] formatInfos = { "", "integer", "integer", "integer", "double", "double", "double", "double", "double", "double", "integer", "string", "integer", "integer", "integer" };
+    public static String[] formatFlags = { "-", "+", "0", "'" };
+
+    public static String[] formatFuncFqns = { "\\printf", "\\sprintf", "\\fprintf", "\\vprintf", "\\vsprintf", "\\vfprintf", "\\sscanf", "\\fscanf" };
+
+    public final static HashMap<String, String> formatTokensDoc = new HashMap<String, String>() {{
+        put("-", "Left-justify within the given field width; Right justification is the default.");
+        put("+", "Prefix positive numbers with a plus sign +; Default only negative are prefixed with a negative sign.");
+        put(" ", "Pads the result with spaces. This is the default.");
+        put("0", "Only left-pads numbers with zeros. With s specifiers this can also right-pad with zeros.");
+        put("'", "Pads the result with the following character.");
+        put("%", "A literal percent character. No argument is required.");
+        put("b", "The argument is treated as an integer and presented as a binary number.");
+        put("c", "The argument is treated as an integer and presented as the character with that ASCII.");
+        put("d", "The argument is treated as an integer and presented as a (signed) decimal number.");
+        put("e", "The argument is treated as scientific notation (e.g. 1.2e+2). The precision specifier stands for the number of digits after the decimal point since PHP 5.2.1. In earlier versions, it was taken as number of significant digits (one less).");
+        put("E", "Like the e specifier but uses uppercase letter (e.g. 1.2E+2).");
+        put("f", "The argument is treated as a float and presented as a floating-point number (locale aware).");
+        put("F", "The argument is treated as a float and presented as a floating-point number (non-locale aware). Available as of PHP 5.0.3.");
+        put("g", "General format.<br><br>Let P equal the precision if nonzero, 6 if the precision is omitted, or 1 if the precision is zero. Then, if a conversion with style E would have an exponent of X:<br><br>If P &gt; X ≥ −4, the conversion is with style f and precision P − (X + 1). Otherwise, the conversion is with style e and precision P − 1.");
+        put("G", "Like the g specifier but uses E and F.");
+        put("o", "The argument is treated as an integer and presented as an octal number.");
+        put("s", "The argument is treated and presented as a string.");
+        put("u", "The argument is treated as an integer and presented as an unsigned decimal number.");
+        put("x", "The argument is treated as an integer and presented as a hexadecimal number (with lowercase letters).");
+        put("X", "The argument is treated as an integer and presented as a hexadecimal number (with uppercase letters).");
+    }};
+
+    public static String[] scanFormatFuncs = { "sscanf:1", "fscanf:1" };
+    public static String[] scanFormatTokens = { "%", "c",     "d",       "D",        "e",     "E",      "f",     "i",        "n", "o", "s", "u", "x", "X" };
+    public static String[] scanFormatInfos = { "", "integer", "integer", "integer", "double", "double", "double", "integer", "integer", "integer", "string", "integer", "integer", "integer" };
+
+    public final static HashMap<String, String> scanFormatTokensDoc = new HashMap<String, String>() {{
+        put("-", "Left-justify within the given field width; Right justification is the default.");
+        put("+", "Prefix positive numbers with a plus sign +; Default only negative are prefixed with a negative sign.");
+        put(" ", "Pads the result with spaces. This is the default.");
+        put("0", "Only left-pads numbers with zeros. With s specifiers this can also right-pad with zeros.");
+        put("'", "Pads the result with the following character.");
+        put("%", "A literal percent character.");
+        put("c", "The text is interpreted as the character with that ASCII and returned as an integer.");
+        put("d", "The text is interpreted as a (signed) decimal number and returned as an integer.");
+        put("D", "The text is interpreted as a decimal number and returned as an integer.");
+        put("e", "The text is interpreted as scientific notation (e.g. 1.2e+2). The precision specifier stands for the number of digits after the decimal point since PHP 5.2.1. In earlier versions, it was taken as number of significant digits (one less).");
+        put("E", "Like the e specifier but uses uppercase letter (e.g. 1.2E+2).");
+        put("f", "The text is interpreted as a floating-point number (not locale aware) and returned as a float.");
+        put("i", "The text is interpreted as an integer with base detection.");
+        put("n", "Returns the number of characters processed so far.");
+        put("o", "The text is interpreted as an octal number and returned as an integer.");
+        put("s", "The text is interpreted as a string.<br>Note: Stops reading at any whitespace character.");
+        put("u", "The text is interpreted as an unsigned decimal number and returned as an integer.");
+        put("x", "The text is interpreted as a hexadecimal number (with lowercase letters) and returned as an integer.");
+        put("X", "The text is interpreted as a hexadecimal number (with uppercase letters) and returned as an integer.");
+    }};
 }
