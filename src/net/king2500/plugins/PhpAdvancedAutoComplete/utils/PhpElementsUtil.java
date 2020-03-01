@@ -2,7 +2,9 @@ package net.king2500.plugins.PhpAdvancedAutoComplete.utils;
 
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
+import com.intellij.psi.ResolveResult;
 import com.intellij.util.ObjectUtils;
+import com.jetbrains.php.lang.psi.PhpPsiUtil;
 import com.jetbrains.php.lang.psi.elements.*;
 import net.king2500.plugins.PhpAdvancedAutoComplete.PhpCompletionTokens;
 import one.util.streamex.StreamEx;
@@ -135,5 +137,28 @@ public class PhpElementsUtil {
     public static String resolveFqn(@Nullable FunctionReference reference) {
         Function function = reference != null ? ObjectUtils.tryCast(reference.resolve(), Function.class) : null;
         return function != null ? function.getFQN() : null;
+    }
+
+    @Nullable
+    public static Function getFunction(PsiElement position) {
+        FunctionReference functionReference = PhpPsiUtil.getParentByCondition(position, true, FunctionReference.INSTANCEOF, Statement.INSTANCEOF);
+        if (functionReference != null) {
+            return getFunction(functionReference);
+        } else {
+            NewExpression newExpression = PhpPsiUtil.getParentByCondition(position, true, NewExpression.INSTANCEOF, Statement.INSTANCEOF);
+            if (newExpression != null) {
+                ClassReference classReference = newExpression.getClassReference();
+                if (classReference != null) {
+                    return getFunction(classReference);
+                }
+            }
+
+            return null;
+        }
+    }
+
+    @Nullable
+    private static Function getFunction(PhpReference reference) {
+        return StreamEx.of(reference.multiResolve(false)).map(ResolveResult::getElement).select(Function.class).findFirst().orElse(null);
     }
 }
