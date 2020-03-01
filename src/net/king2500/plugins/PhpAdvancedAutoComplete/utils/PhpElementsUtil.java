@@ -2,7 +2,11 @@ package net.king2500.plugins.PhpAdvancedAutoComplete.utils;
 
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
+import com.intellij.util.ObjectUtils;
 import com.jetbrains.php.lang.psi.elements.*;
+import net.king2500.plugins.PhpAdvancedAutoComplete.PhpCompletionTokens;
+import one.util.streamex.StreamEx;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * @author Thomas Schulz <mail@king2500.net>
@@ -122,4 +126,14 @@ public class PhpElementsUtil {
         return className + "::__construct";
     }
 
+
+    public static boolean isFormatFunction(String fqn) {
+        return StreamEx.of(PhpCompletionTokens.formatFuncFqns).has(fqn);
+    }
+
+    @Nullable
+    public static String resolveFqn(@Nullable FunctionReference reference) {
+        Function function = reference != null ? ObjectUtils.tryCast(reference.resolve(), Function.class) : null;
+        return function != null ? function.getFQN() : null;
+    }
 }

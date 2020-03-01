@@ -17,10 +17,7 @@ import com.jetbrains.php.lang.psi.elements.FunctionReference;
 import com.jetbrains.php.lang.psi.elements.ParameterList;
 import com.jetbrains.php.lang.psi.elements.PhpNamespace;
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression;
-import net.king2500.plugins.PhpAdvancedAutoComplete.utils.DatabaseUtil;
-import net.king2500.plugins.PhpAdvancedAutoComplete.utils.DateTimeUtil;
-import net.king2500.plugins.PhpAdvancedAutoComplete.utils.FileUtil;
-import net.king2500.plugins.PhpAdvancedAutoComplete.utils.PhpElementsUtil;
+import net.king2500.plugins.PhpAdvancedAutoComplete.utils.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -73,6 +70,7 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                     String[] resultElements = {};
                     String[] resultInfos = {};
                     String[] resultParams = {};
+                    String resultPrefix = "";
                     String resultPostfix = "";
                     String resultPostfixAlt = "";
                     String resultTailText = null;
@@ -282,6 +280,55 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                         allowRepeat = true;
                         splitter = "/";
                         splitterSpace = "";
+                    }
+
+                    if (methodMatches(funcName, paramIndex, PhpCompletionTokens.formatFuncs) || methodMatches(funcName, paramIndex, PhpCompletionTokens.scanFormatFuncs)) {
+
+                        boolean isScanFormat = methodMatches(funcName, paramIndex, PhpCompletionTokens.scanFormatFuncs);
+                        FormatSpecification formatSpec = getFormatSpecification(stringPrefix);
+                        boolean insideFormat = formatSpec != null;
+
+                        if (insideFormat || parameters.getInvocationCount() > 0) {
+                            if (!insideFormat) {
+                                resultPrefix = "%";
+                            }
+                            Collection<String> specifiers = new ArrayList<>();
+                            Collection<String> specifiersInfos = new ArrayList<>();
+                            String[] formatTokens = isScanFormat ? PhpCompletionTokens.scanFormatTokens : PhpCompletionTokens.formatTokens;
+                            String[] formatInfos = isScanFormat ? PhpCompletionTokens.scanFormatInfos : PhpCompletionTokens.formatInfos;
+
+                            for (int i = 0; i < formatTokens.length; i++) {
+                                if (formatSpec != null) {
+                                    if (formatTokens[i].equals("%") && !"%".equals(formatSpec.getText())) {
+                                        continue;
+                                    }
+
+                                    if (formatSpec.hasPrecision() && formatInfos[i].equals("integer")) {
+                                        continue;
+                                    }
+                                }
+
+                                specifiers.add(formatTokens[i]);
+                                specifiersInfos.add(formatInfos[i]);
+                            }
+
+                            if (formatSpec != null && formatSpec.isInsideFlags()) {
+                                for (String flag : PhpCompletionTokens.formatFlags) {
+                                    if (formatSpec.getText().contains(flag)) {
+                                        continue;
+                                    }
+
+                                    specifiers.add(flag);
+                                    specifiersInfos.add("");
+                                }
+                            }
+
+                            resultElements = specifiers.toArray(new String[0]);
+                            resultInfos = specifiersInfos.toArray(new String[0]);
+                            allowMultiple = true;
+                            allowRepeat = true;
+                            splitter = "";
+                        }
                     }
 
                     if (methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.httpHeaderResponseFuncs, 0)) {
@@ -517,12 +564,12 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                             continue;
                         }
                         String postfix = Arrays.asList(resultPostfixExceptions).contains(resultElements[i]) ? resultPostfixAlt : resultPostfix;
-                        LookupElementBuilder builder = LookupElementBuilder.create(resultElements[i] + postfix)
+                        LookupElementBuilder builder = LookupElementBuilder.create(resultPrefix + resultElements[i] + postfix)
                             .withCaseSensitivity(resultCaseSensitivity)
-                            .withPresentableText(resultElements[i])
+                            .withPresentableText(resultPrefix + resultElements[i])
 //                                .withTailText(resultPostfix, true)
                             .withBoldness(resultBold)
-                            .withLookupString(resultElements[i].toLowerCase() + postfix);
+                            .withLookupString(resultPrefix + resultElements[i].toLowerCase() + postfix);
 
                         if (Arrays.asList(deprecatedElements).contains(resultElements[i])) {
                             builder = builder.withStrikeoutness(true);
@@ -584,6 +631,105 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                 }
             }
         );
+    }
+
+    private FormatSpecification getFormatSpecification(String stringPrefix) {
+        if (stringPrefix.isEmpty()) {
+            return null;
+        }
+        FormatSpecification spec = new FormatSpecification();
+        char lastChar = stringPrefix.charAt(stringPrefix.length() - 1);
+
+        if (lastChar == '%' && StringUtil.getPrecedingCharNum(stringPrefix, stringPrefix.length() - 1, '%') % 2 == 0) {
+            spec.setText("%");
+            spec.setInsideFlags(true);
+            return spec;
+        }
+
+        if (lastChar == '$' || Arrays.asList(PhpCompletionTokens.formatFlags).contains(Character.toString(lastChar))) {
+            spec.setInsideFlags(true);
+        }
+
+        // Syntax: %[argnum$][flags][width][.precision]specifier
+
+        char[] chars = stringPrefix.toCharArray();
+
+        for (int i = chars.length - 1; i >= 0; i--) {
+            char c = chars[i];
+
+            // width or precision
+            if (Character.isDigit(c)) {
+                continue;
+            }
+            // .precision
+            if (c == '.' && i < chars.length - 1 && Character.isDigit(chars[i + 1])) {
+                spec.setPrecision();
+                continue;
+            }
+            // '-' flag requires width
+            if (c == '-' && i < chars.length - 1 && Character.isDigit(chars[i + 1])) {
+                continue;
+            }
+            // '(char) flag requires at least one char after it
+            if (c == '\'' && i < chars.length - 1) {
+                continue;
+            }
+            // other flags
+            if (c == '+' || c == ' ' || c == '0') {
+                continue;
+            }
+            // $ for argnum
+            if (c == '$' && i > 0 && Character.isDigit(chars[i - 1])) {
+                continue;
+            }
+
+            if (c == '%') {
+                if (StringUtil.getPrecedingCharNum(stringPrefix, i, '%') % 2 == 0) {
+                    spec.setText(stringPrefix.substring(i));
+                    return spec;
+                }
+            }
+
+            break;
+        }
+
+        return null;
+    }
+
+    private static class FormatSpecification {
+        private String text;
+        private boolean precision;
+        private boolean insideFlags;
+
+        FormatSpecification() {
+        }
+        FormatSpecification(String text) {
+            this.text = text;
+        }
+
+        public String getText() {
+            return text;
+        }
+
+        void setText(String text) {
+            this.text = text;
+        }
+
+        public boolean hasPrecision() {
+            return precision;
+        }
+
+        void setPrecision() {
+            this.precision = true;
+        }
+
+        public boolean isInsideFlags() {
+            return insideFlags;
+        }
+
+        public void setInsideFlags(boolean insideFlags) {
+            this.insideFlags = insideFlags;
+        }
     }
 
     private String[] collectMetaArgumentsSets(PsiElement position) {
