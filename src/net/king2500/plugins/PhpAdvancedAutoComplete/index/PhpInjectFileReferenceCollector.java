@@ -51,7 +51,7 @@ public class PhpInjectFileReferenceCollector extends PhpControlFlowUtil.PhpRecur
             PhpInjectFileReference injectFileReference = this.getInjectFileReference(Arrays.copyOfRange(parameters, 2, parameters.length), argumentIndex, isDir);
 
             if (injectFileReference != null) {
-                this.map.putIfAbsent(fqn, injectFileReference);
+                this.map.putIfAbsent(fqn + ":" + argumentIndex, injectFileReference);
             }
         }
 

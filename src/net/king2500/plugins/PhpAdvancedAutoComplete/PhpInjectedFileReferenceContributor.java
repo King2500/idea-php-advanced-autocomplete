@@ -51,7 +51,7 @@ public class PhpInjectedFileReferenceContributor extends PsiReferenceContributor
                         return PsiReference.EMPTY_ARRAY;
                     }
 
-                    PhpInjectFileReference injectFileReference = PhpInjectFileReferenceIndex.getInjectFileReference(psiElement.getProject(), function);
+                    PhpInjectFileReference injectFileReference = PhpInjectFileReferenceIndex.getInjectFileReference(psiElement.getProject(), function, argumentIndex);
                     if (injectFileReference == null) {
                         return PsiReference.EMPTY_ARRAY;
                     }

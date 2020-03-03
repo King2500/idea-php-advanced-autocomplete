@@ -37,15 +37,15 @@ public class PhpInjectFileReferenceIndex extends FileBasedIndexExtension<String,
     public static final InputFilter INPUT_FILTER;
     public static final DataExternalizer<PhpInjectFileReference> VALUE_EXTERNALIZER;
 
-    public static PhpInjectFileReference getInjectFileReference(@NotNull Project project, @NotNull Function function) {
+    public static PhpInjectFileReference getInjectFileReference(@NotNull Project project, @NotNull Function function, int argumentIndex) {
         FileBasedIndex index = FileBasedIndex.getInstance();
         GlobalSearchScope scope = GlobalSearchScope.allScope(project);
         Ref<List<PhpInjectFileReference>> result = new Ref<>(ContainerUtil.emptyList());
-        result.set(index.getValues(KEY, function.getFQN(), scope));
+        result.set(index.getValues(KEY, function.getFQN() + ":" + argumentIndex, scope));
 
         if (result.get().isEmpty() && function instanceof PhpClassMember) {
             PhpClassHierarchyUtils.processSuperMembers((PhpClassMember)function, (classMember, subClass, baseClass) -> {
-                List<PhpInjectFileReference> values = index.getValues(KEY, classMember.getFQN(), scope);
+                List<PhpInjectFileReference> values = index.getValues(KEY, classMember.getFQN() + ":" + argumentIndex, scope);
                 if (values.isEmpty()) {
                     return true;
                 } else {

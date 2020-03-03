@@ -64,6 +64,7 @@ namespace PHPSTORM_META {
     xAdvancedInjectFileReference(\linkinfo(), 0);
     xAdvancedInjectFileReference(\lstat(), 0);
     xAdvancedInjectFileReference(\move_uploaded_file(), 0);
+    xAdvancedInjectFileReference(\move_uploaded_file(), 1);
     xAdvancedInjectFileReference(\parse_ini_file(), 0);
     xAdvancedInjectFileReference(\pathinfo(), 0);
     xAdvancedInjectFileReference(\readfile(), 0);
