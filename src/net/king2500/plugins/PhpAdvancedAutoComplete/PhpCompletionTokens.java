@@ -318,7 +318,7 @@ public class PhpCompletionTokens {
     };
 
     public static String[] fileFuncs = {
-            "basename:0",
+/*            "basename:0",
             "chgrp:0",
             "chmod:0",
             "chown:0",
@@ -340,7 +340,7 @@ public class PhpCompletionTokens {
             "filesize:0",
             "filetype:0",
             "fopen:0",
-            "is_dir:0:d",
+        "is_dir:0:d",
             "is_executable:0",
             "is_file:0",
             "is_link:0",
@@ -366,19 +366,19 @@ public class PhpCompletionTokens {
             "symlink:1",
             "touch:0",
             "unlink:0",
-            "dir:0:d",
-            "chdir:0:d",
-            "chroot:0:d",
-            "mkdir:0:d",
-            "rmdir:0:d",
-            "opendir:0:d",
-            "scandir:0:d",
-            "stream_resolve_include_path:0:d",
+        "dir:0:d",
+        "chdir:0:d",
+        "chroot:0:d",
+        "mkdir:0:d",
+        "rmdir:0:d",
+        "opendir:0:d",
+        "scandir:0:d",
+        "stream_resolve_include_path:0:d",
             "SplFileInfo::__construct:0",
             "SplFileObject::__construct:0",
-            "DirectoryIterator::__construct:0:d",
-            "FilesystemIterator::__construct:0:d",
-            "RecursiveDirectoryIterator::__construct:0:d",
+        "DirectoryIterator::__construct:0:d",
+        "FilesystemIterator::__construct:0:d",
+        "RecursiveDirectoryIterator::__construct:0:d",
             "ZipArchive::open:0",
             "ZipArchive::addFile:0",
             "DOMDocument::load:0",
@@ -393,7 +393,7 @@ public class PhpCompletionTokens {
             "imagecreatefrompng:0",
             "ImageCreateFromPng:0",
             "imagecreatefromgif:0",
-            "ImageCreateFromGif:0"
+            "ImageCreateFromGif:0"*/
     };
 
     public static String[] socketFuncs = { "fsockopen:0", "stream_socket_client:0" };
