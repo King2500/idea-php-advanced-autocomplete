@@ -1,5 +1,6 @@
 package net.king2500.plugins.PhpAdvancedAutoComplete;
 
+import com.intellij.openapi.util.Condition;
 import com.intellij.patterns.PlatformPatterns;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceSet;
@@ -10,6 +11,7 @@ import com.jetbrains.php.lang.psi.elements.FunctionReference;
 import com.jetbrains.php.lang.psi.elements.ParameterList;
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression;
 import com.jetbrains.php.lang.psi.elements.impl.NewExpressionImpl;
+import net.king2500.plugins.PhpAdvancedAutoComplete.index.PhpInjectDirectoryReference;
 import net.king2500.plugins.PhpAdvancedAutoComplete.index.PhpInjectFileReference;
 import net.king2500.plugins.PhpAdvancedAutoComplete.index.PhpInjectFileReferenceIndex;
 import net.king2500.plugins.PhpAdvancedAutoComplete.utils.PhpElementsUtil;
@@ -56,33 +58,29 @@ public class PhpInjectedFileReferenceContributor extends PsiReferenceContributor
 
                     if (injectFileReference.getArgumentIndex() == argumentIndex) {
                         boolean isAbsolute = injectFileReference.getRelativeMode() == PhpInjectFileReference.RelativeMode.TOP_LEVEL;
-                        FileReferenceSet referenceSet;
+                        boolean isDir = injectFileReference instanceof PhpInjectDirectoryReference;
 
-                        if (isAbsolute) {
-                            referenceSet = new FileReferenceSet(psiElement) {
-                                @Override
-                                public boolean isEndingSlashNotAllowed() {
-                                    return false;
-                                }
+                        FileReferenceSet referenceSet = new FileReferenceSet(psiElement) {
+                            @Override
+                            public boolean isEndingSlashNotAllowed() {
+                                return false;
+                            }
 
-                                @Override
-                                public boolean isAbsolutePathReference() {
-                                    return true;
-                                }
+                            @Override
+                            public boolean isAbsolutePathReference() {
+                                return isAbsolute || super.isAbsolutePathReference();
+                            }
 
-                                @Override
-                                public boolean absoluteUrlNeedsStartSlash() {
-                                    return false;
-                                }
-                            };
-                        } else {
-                            referenceSet = new FileReferenceSet(psiElement) {
-                                @Override
-                                public boolean isEndingSlashNotAllowed() {
-                                    return false;
-                                }
-                            };
-                        }
+                            @Override
+                            public boolean absoluteUrlNeedsStartSlash() {
+                                return !isAbsolute;
+                            }
+
+                            @Override
+                            protected Condition<PsiFileSystemItem> getReferenceCompletionFilter() {
+                                return isDir ? FileReferenceSet.DIRECTORY_FILTER : super.getReferenceCompletionFilter();
+                            }
+                        };
 
                         if (isAbsolute) {
                             referenceSet.addCustomization(FileReferenceSet.DEFAULT_PATH_EVALUATOR_OPTION, FileReferenceSet.ABSOLUTE_TOP_LEVEL);

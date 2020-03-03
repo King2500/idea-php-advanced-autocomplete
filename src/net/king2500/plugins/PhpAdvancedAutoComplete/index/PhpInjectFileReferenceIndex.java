@@ -124,13 +124,17 @@ public class PhpInjectFileReferenceIndex extends FileBasedIndexExtension<String,
     }
 
     private static PhpInjectFileReference read(DataInput in) throws IOException {
+        boolean isDir = in.readBoolean();
         int argumentIndex = in.readInt();
         PhpInjectFileReference.RelativeMode relativeMode = PhpInjectFileReference.RelativeMode.values()[in.readInt()];
         String prefix = StringUtil.nullize(in.readUTF());
-        return new PhpInjectFileReference(argumentIndex, relativeMode, prefix);
+        return isDir
+            ? new PhpInjectDirectoryReference(argumentIndex, relativeMode, prefix)
+            : new PhpInjectFileReference(argumentIndex, relativeMode, prefix);
     }
 
     private static void write(DataOutput out, PhpInjectFileReference fileReference) throws IOException {
+        out.writeBoolean(fileReference instanceof PhpInjectDirectoryReference);
         out.writeInt(fileReference.getArgumentIndex());
         out.writeInt(fileReference.getRelativeMode().ordinal());
         out.writeUTF(StringUtil.notNullize(fileReference.getPrefix()));

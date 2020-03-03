@@ -21,6 +21,7 @@ import java.util.Map;
  */
 public class PhpInjectFileReferenceCollector extends PhpControlFlowUtil.PhpRecursiveInstructionProcessor {
     private static final String INJECT_FILE_REFERENCE_NAME = "xAdvancedInjectFileReference";
+    private static final String INJECT_DIR_REFERENCE_NAME = "xAdvancedInjectDirectoryReference";
     private final Map<String, PhpInjectFileReference> map;
 
     PhpInjectFileReferenceCollector(Map<String, PhpInjectFileReference> map) {
@@ -29,7 +30,12 @@ public class PhpInjectFileReferenceCollector extends PhpControlFlowUtil.PhpRecur
 
     @Override
     public boolean processPhpCallInstruction(PhpCallInstruction instruction) {
+        boolean isDir = false;
         FunctionReference targetFunctionReference = PhpMetaUtil.getMetaFunctionReferenceWithName(instruction, INJECT_FILE_REFERENCE_NAME);
+        if (targetFunctionReference == null) {
+            targetFunctionReference = PhpMetaUtil.getMetaFunctionReferenceWithName(instruction, INJECT_DIR_REFERENCE_NAME);
+            isDir = true;
+        }
         if (targetFunctionReference == null) {
             return true;
         }
@@ -42,7 +48,7 @@ public class PhpInjectFileReferenceCollector extends PhpControlFlowUtil.PhpRecur
         String fqn = getFQN(targetFunctionReference);
         if (fqn != null) {
             int argumentIndex = getArgumentIndexValue(parameters[1]);
-            PhpInjectFileReference injectFileReference = this.getInjectFileReference(Arrays.copyOfRange(parameters, 2, parameters.length), argumentIndex);
+            PhpInjectFileReference injectFileReference = this.getInjectFileReference(Arrays.copyOfRange(parameters, 2, parameters.length), argumentIndex, isDir);
 
             if (injectFileReference != null) {
                 this.map.putIfAbsent(fqn, injectFileReference);
@@ -52,12 +58,14 @@ public class PhpInjectFileReferenceCollector extends PhpControlFlowUtil.PhpRecur
         return super.processPhpCallInstruction(instruction);
     }
 
-    private PhpInjectFileReference getInjectFileReference(PsiElement[] parameters, int argumentIndex) {
+    private PhpInjectFileReference getInjectFileReference(PsiElement[] parameters, int argumentIndex, boolean isDir) {
         if (argumentIndex < 0) {
             return null;
         }
 
         RelativeMode mode = RelativeMode.AUTO;
+        String prefixString = "";
+
         if (parameters.length > 0) {
             if (parameters[0] instanceof StringLiteralExpression) {
                 String relativeString = ((StringLiteralExpression)parameters[0]).getContents();
@@ -67,20 +75,18 @@ public class PhpInjectFileReferenceCollector extends PhpControlFlowUtil.PhpRecur
                 else if (".".equals(relativeString)) {
                     mode = RelativeMode.CURRENT_FILE;
                 }
-                if (parameters.length == 1) {
-                    return new PhpInjectFileReference(argumentIndex, mode);
-                }
             }
         }
 
         if (parameters.length > 1) {
             if (parameters[1] instanceof StringLiteralExpression) {
-                String prefixString = ((StringLiteralExpression)parameters[1]).getContents();
-                return new PhpInjectFileReference(argumentIndex, mode, prefixString);
+                prefixString = ((StringLiteralExpression)parameters[1]).getContents();
             }
         }
 
-        return new PhpInjectFileReference(argumentIndex);
+        return isDir
+            ? new PhpInjectDirectoryReference(argumentIndex, mode, prefixString)
+            : new PhpInjectFileReference(argumentIndex, mode, prefixString);
     }
 
     @Nullable
