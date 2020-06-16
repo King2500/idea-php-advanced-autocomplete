@@ -122,6 +122,7 @@
 
   <extensions defaultExtensionNs="com.intellij">
       <psi.referenceContributor implementation="net.king2500.plugins.PhpAdvancedAutoComplete.PhpFileReferenceContributor"/>
+      <psi.referenceContributor implementation="net.king2500.plugins.PhpAdvancedAutoComplete.PhpInjectedFileReferenceContributor"/>
       <completion.contributor language="PHP" implementationClass="net.king2500.plugins.PhpAdvancedAutoComplete.PhpFunctionCompletionContributor" order="first"/>
       <completion.confidence language="PHP" implementationClass="net.king2500.plugins.PhpAdvancedAutoComplete.PhpParameterStringCompletionConfidence"
                              id="asTrue" order="first"/>
@@ -132,5 +133,10 @@
       <typedHandler implementation="net.king2500.plugins.PhpAdvancedAutoComplete.PhpAutoPopupTypedHandler"/>
 
       <highlightUsagesHandlerFactory implementation="net.king2500.plugins.PhpAdvancedAutoComplete.reference.PhpHighlightPackParametersUsagesHandlerFactory"/>
+
+      <fileBasedIndex implementation="net.king2500.plugins.PhpAdvancedAutoComplete.index.PhpInjectFileReferenceIndex"/>
+  </extensions>
+  <extensions defaultExtensionNs="com.jetbrains.php">
+      <libraryRoot id="php_advanced_meta" path="/php-advanced-meta/" runtime="false"/>
   </extensions>
 </idea-plugin>

@@ -1,6 +1,5 @@
 package net.king2500.plugins.PhpAdvancedAutoComplete;
 
-import com.intellij.openapi.util.Condition;
 import com.intellij.patterns.PlatformPatterns;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceSet;
@@ -12,8 +11,6 @@ import com.jetbrains.php.lang.psi.elements.StringLiteralExpression;
 import com.jetbrains.php.lang.psi.elements.impl.NewExpressionImpl;
 import net.king2500.plugins.PhpAdvancedAutoComplete.utils.PhpElementsUtil;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Arrays;
 
 /**
  * @author Thomas Schulz <mail@king2500.net>
@@ -45,18 +42,6 @@ public class PhpFileReferenceContributor extends PsiReferenceContributor {
 
                     if (funcName == null) {
                         return new PsiReference[0];
-                    }
-
-                    if (Arrays.asList(PhpCompletionTokens.fileFuncs).contains(funcName + ":" + paramIndex + ":d")) {
-                        return (new FileReferenceSet(psiElement) {
-                            @Override
-                            protected Condition<PsiFileSystemItem> getReferenceCompletionFilter() {
-                                return FileReferenceSet.DIRECTORY_FILTER;
-                            }
-                        }).getAllReferences();
-                    }
-                    else if (Arrays.asList(PhpCompletionTokens.fileFuncs).contains(funcName + ":" + paramIndex)) {
-                        return (new FileReferenceSet(psiElement)).getAllReferences();
                     }
 
                     String text = ((StringLiteralExpression) psiElement).getContents();
