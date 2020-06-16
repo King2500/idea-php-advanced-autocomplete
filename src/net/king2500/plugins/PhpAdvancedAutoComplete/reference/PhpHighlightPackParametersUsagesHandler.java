@@ -48,13 +48,13 @@ public class PhpHighlightPackParametersUsagesHandler extends HighlightUsagesHand
             return Collections.singletonList((StringLiteralExpression)parameter);
         }
         else {
-            return PhpConcatenationStringRepresentationConverter.isConcatenation(parameter) ? getLiteralExpressions((BinaryExpression)parameter) : Collections.emptyList();
+            return PhpConcatenationStringRepresentationConverter.isConcatenation(parameter) ? getLiteralExpressions((BinaryExpression)parameter, this.myEditor) : Collections.emptyList();
         }
     }
 
     @NotNull
-    private static List<StringLiteralExpression> getLiteralExpressions(BinaryExpression parameter) {
-        List<PsiElement> parts = ContainerUtil.map(PhpConcatenationStringRepresentationConverter.INSTANCE.getStringParts(parameter), PhpStringPartDescriptor::getElement);
+    private static List<StringLiteralExpression> getLiteralExpressions(BinaryExpression parameter, Editor editor) {
+        List<PsiElement> parts = ContainerUtil.map(PhpConcatenationStringRepresentationConverter.INSTANCE.getStringParts(parameter, editor), PhpStringPartDescriptor::getElement);
         List<StringLiteralExpression> expressions = StreamEx.of(parts).select(StringLiteralExpression.class).collect(Collectors.toList());
         boolean allExpressionHaveSameQuotes = ((StreamEx)StreamEx.of(expressions).distinct(StringLiteralExpression::isSingleQuote)).limit(2L).count() <= 1L;
 
