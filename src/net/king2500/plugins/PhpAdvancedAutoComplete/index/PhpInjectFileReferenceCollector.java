@@ -5,10 +5,7 @@ import com.intellij.util.ObjectUtils;
 import com.jetbrains.php.codeInsight.PhpCodeInsightUtil;
 import com.jetbrains.php.codeInsight.controlFlow.PhpControlFlowUtil;
 import com.jetbrains.php.codeInsight.controlFlow.instructions.PhpCallInstruction;
-import com.jetbrains.php.lang.psi.elements.FunctionReference;
-import com.jetbrains.php.lang.psi.elements.MethodReference;
-import com.jetbrains.php.lang.psi.elements.PhpReference;
-import com.jetbrains.php.lang.psi.elements.StringLiteralExpression;
+import com.jetbrains.php.lang.psi.elements.*;
 import net.king2500.plugins.PhpAdvancedAutoComplete.index.PhpInjectFileReference.RelativeMode;
 import net.king2500.plugins.PhpAdvancedAutoComplete.utils.PhpMetaUtil;
 import org.jetbrains.annotations.Nullable;
@@ -73,6 +70,15 @@ public class PhpInjectFileReferenceCollector extends PhpControlFlowUtil.PhpRecur
                     mode = RelativeMode.TOP_LEVEL;
                 }
                 else if (".".equals(relativeString)) {
+                    mode = RelativeMode.CURRENT_FILE;
+                }
+            }
+            else if (parameters[0] instanceof ConstantReference) {
+                String fqn = ((ConstantReference)parameters[0]).getFQN();
+                if (PhpMetaUtil.getMemberFQN("RELATIVE_TOP_LEVEL").equals(fqn)) {
+                    mode = RelativeMode.TOP_LEVEL;
+                }
+                else if (PhpMetaUtil.getMemberFQN("RELATIVE_CURRENT_FILE").equals(fqn)) {
                     mode = RelativeMode.CURRENT_FILE;
                 }
             }

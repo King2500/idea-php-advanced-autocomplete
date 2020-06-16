@@ -4,28 +4,36 @@ namespace PHPSTORM_META {
     /**
      * Adds injection of project file reference in string literals for specified method or function.
      *
-     * @param mixed       $functionReference Method or function reference, like: \FQN\Foo::bar()
-     * @param int         $argumentIndex     Zero-based index of argument
-     * @param string|null $relativeMode      Either '/' (= from top level), '.' (= from current dir) or '' (auto)
+     * @param mixed  $functionReference Method or function reference, like: \FQN\Foo::bar()
+     * @param int    $argumentIndex     Zero-based index of argument
+     * @param string $relativeMode      Decides if root for completion is project top-level or directory of current file
      * @return string
      */
-    function xAdvancedInjectFileReference($functionReference, $argumentIndex, $relativeMode = null) {
+    function xAdvancedInjectFileReference($functionReference, $argumentIndex, $relativeMode = RELATIVE_CURRENT_FILE) {
         return "xAdvancedInjectFileReference " . $functionReference . " at " . $argumentIndex . ": " . $relativeMode;
     }
 
     /**
      * Adds injection of project folder reference in string literals for specified method or function.
      *
-     * @param mixed       $functionReference Method or function reference, like: \FQN\Foo::bar()
-     * @param int         $argumentIndex     Zero-based index of argument
-     * @param string|null $relativeMode      Either '/' (= from top level), '.' (= from current dir) or '' (auto)
+     * @param mixed  $functionReference Method or function reference, like: \FQN\Foo::bar()
+     * @param int    $argumentIndex     Zero-based index of argument
+     * @param string $relativeMode      Decides if root for completion is project top-level or directory of current file
      * @return string
      */
-    function xAdvancedInjectDirectoryReference($functionReference, $argumentIndex, $relativeMode = null) {
+    function xAdvancedInjectDirectoryReference($functionReference, $argumentIndex, $relativeMode = RELATIVE_CURRENT_FILE) {
         return "xAdvancedInjectDirectoryReference " . $functionReference . " at " . $argumentIndex . ": " . $relativeMode;
     }
 
-    registerArgumentsSet('x_advanced_fileref_relative_modes', '', '/', '.');
+    //const RELATIVE_AUTO = '';
+
+    /** Completion relative from project root */
+    const RELATIVE_TOP_LEVEL = '/';
+
+    /** Completion relative from directory of current file */
+    const RELATIVE_CURRENT_FILE = '.';
+
+    registerArgumentsSet('x_advanced_fileref_relative_modes', \PHPSTORM_META\RELATIVE_TOP_LEVEL, \PHPSTORM_META\RELATIVE_CURRENT_FILE);
     expectedArguments(\PHPSTORM_META\xAdvancedInjectFileReference(), 2, argumentsSet('x_advanced_fileref_relative_modes'));
     expectedArguments(\PHPSTORM_META\xAdvancedInjectDirectoryReference(), 2, argumentsSet('x_advanced_fileref_relative_modes'));
 

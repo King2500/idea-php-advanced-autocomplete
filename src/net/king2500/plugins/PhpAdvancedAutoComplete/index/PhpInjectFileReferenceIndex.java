@@ -19,6 +19,7 @@ import com.jetbrains.php.lang.psi.PhpFile;
 import com.jetbrains.php.lang.psi.elements.Function;
 import com.jetbrains.php.lang.psi.elements.PhpClassMember;
 import gnu.trove.THashMap;
+import net.king2500.plugins.PhpAdvancedAutoComplete.utils.PhpMetaUtil;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
@@ -107,7 +108,7 @@ public class PhpInjectFileReferenceIndex extends FileBasedIndexExtension<String,
     static {
         INPUT_FILTER = new DefaultFileTypeSpecificInputFilter(PhpFileType.INSTANCE) {
             public boolean acceptInput(@NotNull VirtualFile file) {
-                return StringUtil.equals(file.getNameSequence(), ".phpstorm.meta.php") && super.acceptInput(file);
+                return PhpMetaUtil.isMetaFilename(file.getNameSequence()) && super.acceptInput(file);
             }
         };
         VALUE_EXTERNALIZER = new DataExternalizer<PhpInjectFileReference>() {
