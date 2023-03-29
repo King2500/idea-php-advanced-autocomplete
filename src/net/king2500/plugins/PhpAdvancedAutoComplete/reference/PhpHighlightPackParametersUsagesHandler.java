@@ -62,12 +62,12 @@ public class PhpHighlightPackParametersUsagesHandler extends HighlightUsagesHand
     }
 
     @Override
-    protected void selectTargets(List<StringLiteralExpression> targets, Consumer<List<StringLiteralExpression>> selectionConsumer) {
+    protected void selectTargets(@NotNull List<? extends StringLiteralExpression> targets, @NotNull Consumer<? super List<? extends StringLiteralExpression>> selectionConsumer) {
         selectionConsumer.consume(targets);
     }
 
     @Override
-    public void computeUsages(List<StringLiteralExpression> targets) {
+    public void computeUsages(List<? extends StringLiteralExpression> targets) {
         StringLiteralExpression formatExpression = ContainerUtil.getFirstItem(targets);
         if (formatExpression == null) {
             return;
@@ -105,7 +105,7 @@ public class PhpHighlightPackParametersUsagesHandler extends HighlightUsagesHand
     }
 
     @NotNull
-    private static HashMap<Integer, RelativeRange> getRelativeSpecificationRanges(HashMap<Integer, PhpPackFormatSpecificationParser.PackSpecification> specifications, List<StringLiteralExpression> targets) {
+    private static HashMap<Integer, RelativeRange> getRelativeSpecificationRanges(HashMap<Integer, PhpPackFormatSpecificationParser.PackSpecification> specifications, List<? extends StringLiteralExpression> targets) {
         Map<TextRange, StringLiteralExpression> rangesInsideResultingFormatString = getRangesWithExpressionInsideResultingFormatString(targets);
         HashMap<Integer, RelativeRange> result = new HashMap<>();
 
@@ -124,7 +124,7 @@ public class PhpHighlightPackParametersUsagesHandler extends HighlightUsagesHand
     }
 
     @NotNull
-    private static Map<TextRange, StringLiteralExpression> getRangesWithExpressionInsideResultingFormatString(List<StringLiteralExpression> targets) {
+    private static Map<TextRange, StringLiteralExpression> getRangesWithExpressionInsideResultingFormatString(List<? extends StringLiteralExpression> targets) {
         int lastOffset = 0;
         Map<TextRange, StringLiteralExpression> result = new THashMap<>();
 

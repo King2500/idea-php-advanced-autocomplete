@@ -7,10 +7,10 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/resources" type="java-resource" />
     </content>
-    <orderEntry type="jdk" jdkName="PhpStorm PS-193.6911.26" jdkType="IDEA JDK" />
+    <orderEntry type="jdk" jdkName="IntelliJ IDEA IU-212.4746.92" jdkType="IDEA JDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" scope="PROVIDED" name="php" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="php-openapi" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="restClient" level="project" />
+    <orderEntry type="library" name="php" level="project" />
+    <orderEntry type="library" name="restClient" level="project" />
+    <orderEntry type="library" name="php-openapi-src" level="project" />
   </component>
 </module>

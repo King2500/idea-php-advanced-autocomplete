@@ -36,4 +36,12 @@ public class PhpMetaUtil {
     private static boolean metaFunctionWithName(FunctionReference reference, String name) {
         return PhpLangUtil.equalsClassNames(reference.getName(), name) && META_NAMESPACE_PREFIX.equals(reference.getNamespaceName());
     }
+
+    public static int getArgumentIndexValue(PsiElement argumentIndex) {
+        try {
+            return Integer.parseInt(argumentIndex.getText());
+        } catch (NumberFormatException var2) {
+            return -1;
+        }
+    }
 }

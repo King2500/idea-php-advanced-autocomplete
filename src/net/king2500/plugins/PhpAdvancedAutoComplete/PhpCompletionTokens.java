@@ -7,7 +7,6 @@ import java.util.HashMap;
  */
 public class PhpCompletionTokens {
 
-    public static String[] httpHeaderResponseFuncs = { "header", "header_remove" };
     public static String[] httpHeaderResponseFields = {
         "Accept-Ranges",
         "Accept-CH",
@@ -263,33 +262,22 @@ public class PhpCompletionTokens {
     public static String[] dbCharSets = { "armscii8", "ascii", "big5", "binary", "cp1250", "cp1251", "cp1256", "cp1257", "cp850", "cp852", "cp866", "cp932", "dec8", "eucjpms", "euckr", "gb2312", "gbk", "geostd8", "greek", "hebrew", "hp8", "iso-8859-1", "iso-8859-13", "iso-8859-2", "iso-8859-7", "iso-8859-8", "iso-8859-9", "keybcs2", "koi8r", "koi8u", "latin1", "latin2", "latin5", "latin7", "macce", "macroman", "sjis", "swe7", "tis620", "ucs2", "ujis", "utf8" };
     public static String[] dbCharSetsInfos = { "ARMSCII-8 Armenian", "US ASCII", "Big5 Traditional Chinese", "Binary pseudo charset", "Windows Central European", "Windows Cyrillic", "Windows Arabic", "Windows Baltic", "DOS West European", "DOS Central European", "DOS Russian", "SJIS for Windows Japanese", "DEC West European", "UJIS for Windows Japanese", "EUC-KR Korean", "GB2312 Simplified Chinese", "GBK Simplified Chinese", "GEOSTD8 Georgian", "ISO 8859-7 Greek", "ISO 8859-8 Hebrew", "HP West European", "cp1252 West European", "ISO 8859-13 Baltic", "ISO 8859-2 Central European", "ISO 8859-7 Greek", "ISO 8859-8 Hebrew", "ISO 8859-9 Turkish", "DOS Kamenicky Czech-Slovak", "KOI8-R Relcom Russian", "KOI8-U Ukrainian", "cp1252 West European", "ISO 8859-2 Central European", "ISO 8859-9 Turkish", "ISO 8859-13 Baltic", "Mac Central European", "Mac West European", "Shift-JIS Japanese", "7bit Swedish", "TIS620 Thai", "UCS-2 Unicode", "EUC-JP Japanese", "UTF-8 Unicode" };
 
-    public static String[] phpExtensionFuncs = { "extension_loaded" };
     public static String[] phpExtensionElements = { "amqp", "apache", "apc", "apd", "bbcode", "bcmath", "bcompiler", "bz2", "cairo", "calendar", "chdb", "classkit", "com", "crack", "ctype", "cubrid", "curl", "cyrus", "dba", "dbase", "dbplus", "dbx", "dio", "dom", "dotnet", "eio", "enchant", "ev", "event", "exif", "expect", "fam", "fbsql", "fdf", "fileinfo", "filepro", "filter", "fribidi", "ftp", "gearman", "gender", "geoip", "gettext", "gmagick", "gmp", "gnupg", "gupnp", "haru", "htscanner", "pecl_http", "hyperwave", "hwapi", "interbase", "ibm_db2", "iconv", "id3", "informix", "iisfunc", "gd", "imagick", "imap", "inclued", "ingres", "inotify", "intl", "java", "json", "judy", "kadm5", "ktaglib", "lapack", "ldap", "libevent", "libxml", "lua", "lzf", "mailparse", "maxdb", "mbstring", "mcrypt", "mcve", "memcache", "memcached", "memtrack", "mhash", "ming", "mnogosearch", "mongo", "mqseries", "msession", "msql", "mssql", "mysql", "mysqli", "mysqlnd", "mysqlnd_memcache", "mysqlnd_ms", "mysqlnd_mux", "mysqlnd_qc", "mysqlnd_uh", "ncurses", "net_gopher", "newt", "notes", "nsapi", "oauth", "oci8", "oggvorbis", "openal", "openssl", "ovrimos", "paradox", "parsekit", "pcntl", "pcre", "pdflib", "pdo", "pdo_4d", "pdo_cubrid", "pdo_dblib", "pdo_firebird", "pdo_ibm", "pdo_informix", "pdo_mysql", "pdo_oci", "pdo_odbc", "pdo_pgsql", "pdo_sqlite", "pdo_sqlsrv", "pdo_pgsql", "phar", "posix", "printer", "proctitle", "ps", "pspell", "pthreads", "qtdom", "quickhash", "radius", "rar", "readline", "recode", "rpmreader", "rrd", "runkit", "sam", "sca", "scream", "sca_sdo", "sysvmsg", "session", "session_pgsql", "shmop", "simplexml", "snmp", "soap", "sockets", "solr", "sphinx", "spl_types", "spplus", "sqlite", "sqlite3", "sqlsrv", "ssdeep", "ssh2", "stats", "stomp", "svm", "svn", "swf", "swish", "sybase", "taint", "tcpwrap", "tidy", "tokenizer", "tokyo_tyrant", "trader", "odbc", "v8js", "varnish", "vpopmail", "w32api", "wddx", "weakref", "win32ps", "win32service", "wincache", "xattr", "xdiff", "xhprof", "xml", "xmlreader", "xmlrpc", "xmlwriter", "xsl", "xslt", "yaf", "yaml", "yaz", "zip", "zlib" };
 
-    public static String[] htmlCharSetFuncs = { "htmlentities", "htmlspecialchars" };
     public static String[] htmlCharSets = { "ISO-8859-1", "ISO-8859-5", "ISO-8859-15", "UTF-8", "cp866", "cp1251", "cp1252", "KOI8-R", "BIG5", "GB2312", "BIG5-HKSCS", "Shift_JIS", "EUC-JP", "MacRoman" };
 
-    public static String[] mbStringEncodingFuncs = { "mb_check_encoding:1", "mb_convert_case:2", "mb_convert_encoding:1", "mb_convert_encoding:2", "mb_convert_kana:2", "mb_convert_variables:0", "mb_convert_variables:1", "mb_decode_numericentity:2", "mb_detect_encoding:1", "mb_detect_order:0", "mb_encode_mimeheader:1", "mb_encode_numericentity:2", "mb_encoding_aliases:0", "mb_http_output:0", "mb_internal_encoding:0", "mb_preferred_mime_name:0", "mb_regex_encoding:0", "mb_strcut:3", "mb_strimwidth:4", "mb_stripos:3", "mb_stristr:3", "mb_strlen:1", "mb_strpos:3", "mb_strrchr:3", "mb_strrichr:3", "mb_strripos:3", "mb_strrpos:3", "mb_strstr:3", "mb_strtolower:1", "mb_strtoupper:1", "mb_strwidth:1", "mb_substr_count:2", "mb_substr:3" };
     public static String[] mbStringEncodingElements = { "pass", "auto", "wchar", "byte2be", "byte2le", "byte4be", "byte4le", "BASE64", "UUENCODE", "HTML-ENTITIES", "Quoted-Printable", "7bit", "8bit", "UCS-4", "UCS-4BE", "UCS-4LE", "UCS-2", "UCS-2BE", "UCS-2LE", "UTF-32", "UTF-32BE", "UTF-32LE", "UTF-16", "UTF-16BE", "UTF-16LE", "UTF-8", "UTF-7", "UTF7-IMAP", "ASCII", "EUC-JP", "SJIS", "eucJP-win", "SJIS-win", "JIS", "ISO-2022-JP", "Windows-1252", "ISO-8859-1", "ISO-8859-2", "ISO-8859-3", "ISO-8859-4", "ISO-8859-5", "ISO-8859-6", "ISO-8859-7", "ISO-8859-8", "ISO-8859-9", "ISO-8859-10", "ISO-8859-13", "ISO-8859-14", "ISO-8859-15", "EUC-CN", "CP936", "HZ", "EUC-TW", "BIG-5", "EUC-KR", "UHC", "ISO-2022-KR", "Windows-1251", "CP866", "KOI8-R" };
-
-    public static String[] mbStringInfoFuncs = { "mb_get_info" };
     public static String[] mbStringInfoTypes = { "all", "http_output", "http_input", "internal_encoding", "func_overload" };
-
-    public static String[] mbStringLanguageFuncs = { "mb_language" };
     public static String[] mbStringLanguageElements = { "uni", "en", "English", "ja", "Japanese" };
 
-    public static String[] obHandlerFuncs = { "ob_start" };
-    public static String[] obHandlerElements = { "ob_gzhandler" };
+    public static String[] obHandlerElements = { "ob_gzhandler", "ob_iconv_handler", "ob_tidyhandler", "ob_deflatehandler", "ob_inflatehandler", "ob_etaghandler", "mb_output_handler" };
 
-    public static String[] dateFormatFuncs = { "date:0", "date_format:1", "DateTime::format:0", "DateTime::createFromFormat:0", "DateTimeImmutable::format:0", "DateTimeImmutable::createFromFormat:0", "date_create_from_format:0" };
     public static String[] dateFormatTokens = { "d", "D", "j", "jS", "l", "N", "S", "w", "z", "W", "F", "m", "M", "n", "t", "L", "o", "Y", "y", "a", "A", "B", "g", "G", "h", "H", "i", "s", "u", "e", "I", "O", "P", "T", "Z", "c", "r", "U", "H:i", "H:i:s", "m.d.y", "m.d.Y", "m/d/Y", "d.m.y", "d.m.Y", "d.m.Y H:i:s", "Ymd", "Y-m-d", "Y-m-d H:i:s", "Y/m/d H:i:s", "F j, Y, g:i a" };
     public static String[] dateFormatInfos = { "Day of month (01..31)", "Weekday (Mon..Sun)", "Day of month (1..31)", "Day of month (1st..31th)", "Weekday (Monday..Sunday)", "Weekday (1..7)", "Day of month suffix (st, nd, rd, th)", "Weekday (0..6)", "Day of year (0..365)", "Week of year (01..53)", "Month (January..December)", "Month (01..12)", "Month (Jan..Dec)", "Month (1..12)", "Number of days in month (28..31)", "Leap year (1=yes, 0=no)", "Year for ISO-8601 week (ex. 2014)", "Year (ex. 2014)", "Year (ex. 14)", "am or pm", "AM or PM", "Swatch Internet time (000..999)", "Hour (1..12)", "Hour (0..23)", "Hour (01..12)", "Hour (00..23)", "Minutes (00..59)", "Seconds (00..59)", "Microseconds (000000..999999)", "Timezone identifier (UTC, GMT, ...)", "Daylight Saving Time (1=yes, 0=no)", "GMT in hours (ex. +0200)", "GMT with colon (ex. +02:00)", "Timezone abbreviation (EST, MDT, ...)", "Timezone offset in seconds (-43200..50400)", "ISO 8601 formatted date", "RFC 2822 formatted date", "Seconds since Jan 1st, 1970", "Hour and minutes", "Hour, minutes and seconds", "Month, day, year", "Month, day, year", "Month, day, year", "Day, month, year", "Day, month, year", "Day, month, year, hour, minutes, seconds", "Year, month, day", "Year, month, day", "Year, month, day, hour, minutes, seconds", "Year, month, day, hour, minutes, seconds", "Month, day, year, hour, minutes, am/pm" };
 
-    public static String[] timeFormatFuncs = { "strftime:0", "gmstrftime:0", "strptime:1" };
     public static String[] timeFormatTokens = { "%a", "%A", "%d", "%e", "%j", "%u", "%w", "%U", "%V", "%W", "%h", "%b", "%B", "%m", "%C", "%g", "%G", "%y", "%Y", "%H", "%k", "%I", "%l", "%M", "%p", "%P", "%r", "%R", "%S", "%T", "%X", "%z", "%Z", "%c", "%D", "%F", "%s", "%x", "%n", "%t", "%%", "%d.%m.%y", "%d.%m.%Y", "%d.%m.%Y %H:%M:%S", "%H:%M", "%H:%M:%S", "%m.%d.%y", "%m.%d.%Y", "%m/%d/%Y", "%Y%m%d", "%Y-%m-%d", "%Y-%m-%d %H:%M:%S", "%Y/%m/%d %H:%M:%S" };
     public static String[] timeFormatInfos = { "Weekday (Mon..Sun)", "Weekday (Monday..Sunday)", "Day of month (01..31)", "Day of month (1..31)", "Day of year (001..366)", "Weekday (1..7 =Mon..Sun)", "Weekday (0..6 =Sun..Sat)", "Full week number (1..52)", "Week of year (01..53)", "Week of year (1..53)", "Month (Jan..Dec)", "Month (Jan..Dec)", "Month (January..December)", "Month (01..12)", "Century (ex. 20)", "Year in ISO-8601 (ex. 14)", "Year in ISO-8601 (ex. 2014)", "Year (ex. 14)", "Year (ex. 2014)", "Hour (00..23)", "Hour (0..23)", "Hour (01..12)", "Hour (1..12)", "Minutes (00..59)", "AM or PM", "am or pm", "hour, minutes, seconds, am/pm", "hour and minutes", "Seconds (00..59)", "Hour, minutes and seconds", "Locale based time", "Timezone offset (ex. -0500)", "Timezone abbreviation (EST, MDT, ...)", "Locale based date and time", "Month, day, year", "Year, month, day", "Unix timestamp", "Locale based date", "Newline character", "Tab character", "Percentage character", "Day, month, year", "Day, month, year", "Day, month, year, hour, minutes, seconds", "Hour and minutes", "Hour, minutes and seconds", "Month, day, year", "Month, day, year", "Month, day, year", "Year, month, day", "Year, month, day", "Year, month, day, hour, minutes, seconds", "Year, month, day, hour, minutes, seconds" };
 
-    public static String[] dateTimeParserFuncs = { "strtotime:0", "DateTime::__construct:0", "DateTime::modify:0", "DateTimeImmutable::__construct:0", "DateTimeImmutable::modify:0", "date_create:0", "date_modify:1" };
     public static String[] dateTimeRelativeFormats = { "yesterday", "midnight", "today", "now", "noon", "tomorrow", "back of ", "front of ", "first ", "last ", "first day of ", "last day of ", "second ", "third ", "fourth ", "fifth ", "sixth ", "seventh ", "eighth ", "ninth ", "tenth ", "eleventh ", "twelfth ", "next ", "last ", "previous ", "this " };
     public static String[] dateTimeAgo = { "ago" };
     public static String[] dateTimeDayNames = { "sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sun", "mon", "tue", "wed", "thu", "fri", "sat" };
@@ -307,7 +295,6 @@ public class PhpCompletionTokens {
     public static String[] dateTimeUnits = { "sec", "second", "min", "minute", "hour", "day", "fortnight", "month", "year", "week", "weekday" };
     public static String[] dateTimeUnits2 = { "secs", "seconds", "mins", "minutes", "hours", "days", "fortnights", "months", "years", "weeks", "weekdays" };
 
-    public static String[] fileModeFuncs = { "fopen:1", "popen:1", "SplFileInfo::openFile:0" };
     public static String[] fileModeElements = { "r", "r+", "w", "w+", "a", "a+", "x", "x+", "c", "c+" };
     public static String[] fileModeInfos = {
             "Read from beginning", "Read/write from beginning",
@@ -317,10 +304,8 @@ public class PhpCompletionTokens {
             "Create/write from beginning", "Create/write/read from beginning"
     };
 
-    public static String[] socketFuncs = { "fsockopen:0", "stream_socket_client:0" };
     public static String[] socketTransports = { "", "tcp://", "udp://", "ssl://", "sslv2://", "sslv3://", "tls://", "unix://", "udg://" };
 
-    public static String[] envFuncs = { "getenv:0" };
     public static String[] envNames = {
             "PHP_SELF",
             "GATEWAY_INTERFACE",
@@ -359,8 +344,6 @@ public class PhpCompletionTokens {
             "ORIG_PATH_INFO",
     };
 
-    public static String[] packFuncs = { "pack:0" };
-    public static String[] unpackFuncs = { "unpack:0" };
     public static String[] packCodes = {
         "a",
         "A",

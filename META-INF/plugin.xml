@@ -135,6 +135,7 @@
       <highlightUsagesHandlerFactory implementation="net.king2500.plugins.PhpAdvancedAutoComplete.reference.PhpHighlightPackParametersUsagesHandlerFactory"/>
 
       <fileBasedIndex implementation="net.king2500.plugins.PhpAdvancedAutoComplete.index.PhpInjectFileReferenceIndex"/>
+      <fileBasedIndex implementation="net.king2500.plugins.PhpAdvancedAutoComplete.index.PhpMetaCompletionIndex"/>
   </extensions>
   <extensions defaultExtensionNs="com.jetbrains.php">
       <libraryRoot id="php_advanced_meta" path="/php-advanced-meta/" runtime="false"/>

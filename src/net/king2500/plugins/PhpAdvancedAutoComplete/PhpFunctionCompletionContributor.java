@@ -13,10 +13,9 @@ import com.jetbrains.php.completion.PhpCompletionUtil;
 import com.jetbrains.php.lang.PhpLanguage;
 import com.jetbrains.php.lang.lexer.PhpTokenTypes;
 import com.jetbrains.php.lang.parser.PhpElementTypes;
-import com.jetbrains.php.lang.psi.elements.FunctionReference;
-import com.jetbrains.php.lang.psi.elements.ParameterList;
-import com.jetbrains.php.lang.psi.elements.PhpNamespace;
-import com.jetbrains.php.lang.psi.elements.StringLiteralExpression;
+import com.jetbrains.php.lang.psi.elements.*;
+import net.king2500.plugins.PhpAdvancedAutoComplete.index.PhpMetaCompletion;
+import net.king2500.plugins.PhpAdvancedAutoComplete.index.PhpMetaCompletionIndex;
 import net.king2500.plugins.PhpAdvancedAutoComplete.utils.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -65,8 +64,10 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                                            ProcessingContext context,
                                            @NotNull CompletionResultSet result) {
 
-                    String funcName = PhpElementsUtil.getCanonicalFuncName(parameters.getPosition().getParent().getParent().getParent());
                     Project project = parameters.getPosition().getProject();
+                    ParameterList parameterList = (ParameterList)parameters.getOriginalPosition().getParent().getParent();
+
+                    String funcName = PhpElementsUtil.getCanonicalFuncName(parameterList.getParent());
                     String[] resultElements = {};
                     String[] resultInfos = {};
                     String[] resultParams = {};
@@ -96,6 +97,14 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
 
                     if (stringLiteral.contains(CompletionUtil.DUMMY_IDENTIFIER)) {
                         stringPrefix = stringLiteral.substring(0, stringLiteral.indexOf(CompletionUtil.DUMMY_IDENTIFIER));
+                    }
+
+                    Function function = PhpElementsUtil.getFunction(parameterList);
+
+                    PhpMetaCompletion metaCompletion = null;
+
+                    if (function != null) {
+                        metaCompletion = PhpMetaCompletionIndex.getMetaCompletion(project, function, paramIndex);
                     }
 
                     if (methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.dbConnectFuncs, 0)) {
@@ -131,7 +140,7 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                         resultElements = DatabaseUtil.getDbNames(project, "mysql://");
                     }
 
-                    if (methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.phpExtensionFuncs, 0)) {
+                    if (isCompletionList(metaCompletion, "php_extension")) {
                         resultElements = PhpCompletionTokens.phpExtensionElements;
                     }
 
@@ -139,14 +148,14 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
 //                        resultElements = FileUtil.getRelativeFiles(parameters.getPosition().getContainingFile().getOriginalFile());
 //                    }
 
-                    if (methodMatches(funcName, paramIndex, PhpCompletionTokens.fileModeFuncs)) {
+                    if (isCompletionList(metaCompletion, "file_mode")) {
                         resultElements = PhpCompletionTokens.fileModeElements;
                         resultInfos = PhpCompletionTokens.fileModeInfos;
                         resultBold = true;
                         overwriteExistingCompletions = true;
                     }
 
-                    if (methodMatches(funcName, paramIndex, PhpCompletionTokens.dateFormatFuncs)) {
+                    if (isCompletionList(metaCompletion, "date_format")) {
                         resultElements = PhpCompletionTokens.dateFormatTokens;
                         resultInfos = PhpCompletionTokens.dateFormatInfos;
                         resultBold = true;
@@ -159,13 +168,13 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                         }
                     }
 
-                    if (methodMatches(funcName, paramIndex, PhpCompletionTokens.timeFormatFuncs)) {
+                    if (isCompletionList(metaCompletion, "strftime_format")) {
                         resultElements = PhpCompletionTokens.timeFormatTokens;
                         resultInfos = PhpCompletionTokens.timeFormatInfos;
                         resultBold = true;
                     }
 
-                    if (methodMatches(funcName, paramIndex, PhpCompletionTokens.dateTimeParserFuncs)) {
+                    if (isCompletionList(metaCompletion,"datetime_token")) {
                         stringPrefix = stringPrefix.toLowerCase();
                         resultCaseSensitivity = false;
                         overwriteExistingCompletions = true;
@@ -233,39 +242,40 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                         }
                     }
 
-                    if (methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.htmlCharSetFuncs, 2)) {
+                    if (isCompletionList(metaCompletion, "html_charset")) {
                         resultElements = PhpCompletionTokens.htmlCharSets;
                         resultCaseSensitivity = false;
                     }
 
-                    if (methodMatches(funcName, paramIndex, PhpCompletionTokens.mbStringEncodingFuncs)) {
+                    if (isCompletionList(metaCompletion, "mb_encoding")) {
                         resultElements = PhpCompletionTokens.mbStringEncodingElements;
                         resultCaseSensitivity = false;
                     }
 
-                    if (methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.mbStringInfoFuncs, 0)) {
+                    if (isCompletionList(metaCompletion, "mb_info_type")) {
                         resultElements = PhpCompletionTokens.mbStringInfoTypes;
                     }
 
-                    if (methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.mbStringLanguageFuncs, 0)) {
+                    if (isCompletionList(metaCompletion, "mb_language")) {
                         resultElements = PhpCompletionTokens.mbStringLanguageElements;
                     }
 
-                    if (methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.obHandlerFuncs, 0)) {
+                    if (isCompletionList(metaCompletion, "ob_handler") && parameters.getInvocationCount() <= 1) {
                         resultElements = PhpCompletionTokens.obHandlerElements;
+                        overwriteExistingCompletions = true;
                     }
 
-                    if (methodMatches(funcName, paramIndex, PhpCompletionTokens.socketFuncs)) {
+                    if (isCompletionList(metaCompletion, "socket_transport")) {
                         resultElements = PhpCompletionTokens.socketTransports;
                         resultParams = new String[resultElements.length];
                         Arrays.fill(resultParams, funcName.equals("stream_socket_client") ? "<host>:<port>" : "<host>");
                     }
 
-                    if (methodMatches(funcName, paramIndex, PhpCompletionTokens.envFuncs)) {
+                    if (isCompletionList(metaCompletion, "env_var")) {
                         resultElements = PhpCompletionTokens.envNames;
                     }
 
-                    if (methodMatches(funcName, paramIndex, PhpCompletionTokens.packFuncs) && !stringPrefix.contains("*")) {
+                    if (isCompletionList(metaCompletion, "pack_format_code") && !stringPrefix.contains("*")) {
                         resultElements = PhpCompletionTokens.packCodes;
                         resultInfos = PhpCompletionTokens.packCodesInfos;
                         allowMultiple = true;
@@ -273,7 +283,7 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                         splitter = "";
                     }
 
-                    if (methodMatches(funcName, paramIndex, PhpCompletionTokens.unpackFuncs) && !stringPrefix.contains("*")) {
+                    if (isCompletionList(metaCompletion, "unpack_format_code") && !stringPrefix.contains("*")) {
                         resultElements = PhpCompletionTokens.packCodes;
                         resultInfos = PhpCompletionTokens.packCodesInfos;
                         allowMultiple = true;
@@ -282,9 +292,8 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                         splitterSpace = "";
                     }
 
-                    if (methodMatches(funcName, paramIndex, PhpCompletionTokens.formatFuncs) || methodMatches(funcName, paramIndex, PhpCompletionTokens.scanFormatFuncs)) {
-
-                        boolean isScanFormat = methodMatches(funcName, paramIndex, PhpCompletionTokens.scanFormatFuncs);
+                    if (isCompletionList(metaCompletion, "format_spec") || isCompletionList(metaCompletion, "scan_format_spec")) {
+                        boolean isScanFormat = isCompletionList(metaCompletion, "scan_format_spec");
                         FormatSpecification formatSpec = getFormatSpecification(stringPrefix);
                         boolean insideFormat = formatSpec != null;
 
@@ -331,8 +340,8 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                         }
                     }
 
-                    if (methodMatchesAt(funcName, paramIndex, PhpCompletionTokens.httpHeaderResponseFuncs, 0)) {
-                        boolean isFullHeader = funcName.equals("header");
+                    if (isCompletionList(metaCompletion, "http_response_header_name") || isCompletionList(metaCompletion, "http_response_header_string")) {
+                        boolean isFullHeader = isCompletionList(metaCompletion, "http_response_header_string");
                         if (!stringPrefix.contains(":") && !stringPrefix.startsWith("HTTP/1.0") && !stringPrefix.startsWith("HTTP/1.1")) {
                             resultElements = PhpCompletionTokens.httpHeaderResponseFields;
                             resultPostfixAlt = " ";
@@ -537,7 +546,40 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
                         }
                     }
 
-                    if (funcName.equals("argumentsSet")) {
+                    if (isCompletionList(metaCompletion, "http_request_header_name")) {
+                        resultElements = PhpCompletionTokens.httpHeaderRequestFields;
+                        overwriteExistingCompletions = true;
+                    }
+
+                    if (isCompletionList(metaCompletion, "http_method")) {
+                        resultElements = PhpCompletionTokens.httpMethods;
+                    }
+
+                    if (isCompletionList(metaCompletion, "http_cachecontrol_directive")) {
+                        resultElements = PhpCompletionTokens.httpCacheControlDirectives;
+                    }
+
+                    if (isCompletionList(metaCompletion, "http_encoding_token")) {
+                        resultElements = PhpCompletionTokens.httpEncodingTokens;
+                    }
+
+                    if (isCompletionList(metaCompletion, "http_charset")) {
+                        resultElements = PhpCompletionTokens.httpCharSets;
+                    }
+
+                    if (isCompletionList(metaCompletion, "http_statuscode_text")) {
+                        resultElements = PhpCompletionTokens.httpStatusCodes;
+                    }
+
+                    if (isCompletionList(metaCompletion, "iso_language_code")) {
+                        resultElements = PhpCompletionTokens.isoLanguageCodes;
+                    }
+
+                    if (isCompletionList(metaCompletion, "mime_type")) {
+                        resultElements = PhpCompletionTokens.mimeTypes;
+                    }
+
+                    if (isCompletionList(metaCompletion, "phpstorm_meta_arguments_set")) {
                         resultElements = collectMetaArgumentsSets(parameters.getPosition());
                     }
 
@@ -628,6 +670,14 @@ public class PhpFunctionCompletionContributor extends CompletionContributor {
 
                 private boolean patternMatches(Pattern pattern, @NotNull String string) {
                     return pattern.matcher(string).lookingAt();
+                }
+
+                private boolean isCompletionList(PhpMetaCompletion completion, @NotNull String list) {
+                    if (completion == null) {
+                        return false;
+                    }
+
+                    return list.equals(completion.getCompletionList());
                 }
             }
         );

@@ -4,6 +4,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.ResolveResult;
 import com.intellij.util.ObjectUtils;
+import com.jetbrains.php.codeInsight.PhpCodeInsightUtil;
 import com.jetbrains.php.lang.psi.PhpPsiUtil;
 import com.jetbrains.php.lang.psi.elements.*;
 import net.king2500.plugins.PhpAdvancedAutoComplete.PhpCompletionTokens;
@@ -160,5 +161,17 @@ public class PhpElementsUtil {
     @Nullable
     private static Function getFunction(PhpReference reference) {
         return StreamEx.of(reference.multiResolve(false)).map(ResolveResult::getElement).select(Function.class).findFirst().orElse(null);
+    }
+
+    @Nullable
+    public static String getFQN(FunctionReference targetFunctionReference) {
+        if (targetFunctionReference instanceof MethodReference) {
+            PhpReference classReference = ObjectUtils.tryCast(((MethodReference)targetFunctionReference).getClassReference(), PhpReference.class);
+            if (classReference != null) {
+                return PhpCodeInsightUtil.getImmediateFQN(classReference) + "." + targetFunctionReference.getName();
+            }
+        }
+
+        return PhpCodeInsightUtil.getImmediateFQN(targetFunctionReference);
     }
 }
